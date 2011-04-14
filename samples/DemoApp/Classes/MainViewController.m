@@ -39,7 +39,7 @@
 	if (ccNetworkManager == nil) {
 		ccNetworkManager = [[CCNetworkManager alloc] initWithDelegate:self];
 	}
-	[ccNetworkManager searchPlaces:nil distance:nil page:CC_FIRST_PAGE perPage:CC_DEFAULT_PER_PAGE];
+	[ccNetworkManager searchPlaces:nil location:nil distance:nil page:CC_FIRST_PAGE perPage:CC_DEFAULT_PER_PAGE];
 	
 }
 
@@ -74,7 +74,7 @@
 
 -(IBAction)getPlaces 
 {
-	[ccNetworkManager searchPlaces:nil distance:nil page:CC_FIRST_PAGE perPage:CC_DEFAULT_PER_PAGE];
+	[ccNetworkManager searchPlaces:nil location:nil distance:nil page:CC_FIRST_PAGE perPage:CC_DEFAULT_PER_PAGE];
 }
 
 -(IBAction)switchView {

@@ -154,6 +154,7 @@
 - (void)showImagePicker:(NSInteger)sourceType rectForPopover:(CGRect)rect {
 	UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
 	imagePickerController.delegate = self;
+    imagePickerController.sourceType = sourceType;
 	[self presentModalViewController:imagePickerController animated:YES];
 	[imagePickerController release];
 }

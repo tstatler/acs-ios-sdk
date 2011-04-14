@@ -199,7 +199,7 @@
 {
     switch (section) {
         case USERS: 
-            return 4;
+            return 5;
         case PLACES:
             return 4;
         case CHECKINS:
@@ -263,6 +263,8 @@
                 cell.textLabel.text = @"Show current user profile";
             } else if (indexPath.row == 2) {
                 cell.textLabel.text = @"Update current user profile";
+            } else if (indexPath.row == 3) {
+                cell.textLabel.text = @"Search users";
             } else {
                 if ([[Cocoafish defaultCocoafish] getCurrentUser].facebookAccessToken != nil) {
                     cell.textLabel.text = @"Unlink from Facebook";
@@ -274,7 +276,7 @@
         case PLACES:
             switch (indexPath.row) {
                 case 0:
-                    cell.textLabel.text = @"List all places";
+                    cell.textLabel.text = @"Search places";
                     break;
                 case 1:
                     cell.textLabel.text = @"Show the test place";
@@ -496,6 +498,8 @@
                 [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
                 return;
 
+            } else if (indexPath.row == 3) {
+                [controller.ccNetworkManager searchUsers:[[Cocoafish defaultCocoafish] getCurrentUser].firstName page:CC_FIRST_PAGE perPage:CC_DEFAULT_PER_PAGE];
             } else {
                 if ([[Cocoafish defaultCocoafish] getFacebook] == nil) {
                     // check if a facebook id is provided
@@ -526,7 +530,9 @@
 
                 case 0:
                     // show all places
-                    [controller.ccNetworkManager searchPlaces:nil distance:nil page:CC_FIRST_PAGE perPage:CC_DEFAULT_PER_PAGE];
+                    [controller.ccNetworkManager searchPlaces:@"Cocoafish"
+                        location:[[[CLLocation alloc] initWithLatitude:37.743961 longitude:-122.42202] autorelease] 
+                        distance:[NSNumber numberWithDouble:5.0] page:CC_FIRST_PAGE perPage:CC_DEFAULT_PER_PAGE];
                     break;
                 case 1:
                     // show the test place

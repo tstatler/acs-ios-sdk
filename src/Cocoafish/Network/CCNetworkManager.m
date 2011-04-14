@@ -245,6 +245,21 @@
 
 }
 
+-(void)searchUsers:(NSString *)query page:(int)page perPage:(int)perPage
+{
+    NSMutableArray *additionalParams = [NSMutableArray arrayWithObjects:[NSString stringWithFormat:@"page=%d", page], [NSString stringWithFormat:@"per_page=%d", perPage], nil];
+    if (query) {
+        [additionalParams addObject:[NSString stringWithFormat:@"q=%@", query]];
+    }
+    
+	NSString *urlPath = [self generateFullRequestUrl:@"users/search.json" additionalParams:additionalParams];
+	
+	NSURL *url = [NSURL URLWithString:urlPath];
+	ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
+    
+	[self performAsyncRequest:request callback:@selector(getRequestDone:)];
+}
+
 
 -(void)login:(NSString *)login password:(NSString *)password
 {
@@ -617,9 +632,19 @@
 
 }
 
--(void)searchPlaces:(CLLocation *)location distance:(NSNumber *)distance page:(int)page perPage:(int)perPage
+-(void)searchPlaces:(NSString *)query location:(CLLocation *)location distance:(NSNumber *)distance page:(int)page perPage:(int)perPage
 {
-    NSArray *additionalParams = [NSArray arrayWithObjects:[NSString stringWithFormat:@"page=%d", page], [NSString stringWithFormat:@"per_page=%d", perPage], nil];
+    NSMutableArray *additionalParams = [NSMutableArray arrayWithObjects:[NSString stringWithFormat:@"page=%d", page], [NSString stringWithFormat:@"per_page=%d", perPage], nil];
+    if (query) {
+        [additionalParams addObject:[NSString stringWithFormat:@"q=%@", query]];
+    }
+    if (location) {
+        [additionalParams addObject:[NSString stringWithFormat:@"latitude=%f", location.coordinate.latitude]];
+        [additionalParams addObject:[NSString stringWithFormat:@"longitude=%f", location.coordinate.longitude]];
+    }
+    if (distance) {
+        [additionalParams addObject:[NSString stringWithFormat:@"distance=%f", [distance doubleValue]]];
+    }
     
 	NSString *urlPath = [self generateFullRequestUrl:@"places/search.json" additionalParams:additionalParams];
 	

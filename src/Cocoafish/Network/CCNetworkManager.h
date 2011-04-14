@@ -49,6 +49,7 @@
 -(void)deleteUser;  // delete current user
 -(void)showCurrentUser;
 -(void)showUser:(NSString *)userId;
+-(void)searchUsers:(NSString *)query page:(int)page perPage:(int)perPage;
 -(void)updateUser:(CCUser *)updatedUser;    // update current user
 
 // Checkins
@@ -65,7 +66,7 @@
 -(void)deletePlace:(NSString *)placeId;
 -(void)createPlace:(CCPlace *)newPlace;
 -(void)showPlace:(NSString *)placeId;
--(void)searchPlaces:(CLLocation *)location distance:(NSNumber *)distance page:(int)page perPage:(int)perPage;
+-(void)searchPlaces:(NSString *)query location:(CLLocation *)location distance:(NSNumber *)distance page:(int)page perPage:(int)perPage;
 -(void)updatePlace:(CCPlace *)place;
 //-(void)getPlacesInRegion:(MKCoordinateRegion)region;
 
