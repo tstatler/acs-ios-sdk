@@ -93,12 +93,33 @@
 	[_ccNetworkManager createCheckin:place message:message image:image];
 }
 
+-(void)networkManager:(CCNetworkManager *)networkManager didUpdate:(NSArray *)objectArray objectType:(Class)objectType
+{
+    CCKeyValuePair *keyval;
+    if (objectType == [CCKeyValuePair class]) {
+        keyval = [objectArray objectAtIndex:0];
+    }
+    UIAlertView *alert = [[UIAlertView alloc] 
+						  initWithTitle:@"Yay!" 
+						  message:[NSString stringWithFormat:@"You just earned 5 points and your total score is %@", keyval.value]
+						  delegate:self 
+						  cancelButtonTitle:@"Ok"
+						  otherButtonTitles:nil];
+	[alert show];
+	[alert release];
+    
+}
+
 -(void)networkManager:(CCNetworkManager *)networkManager didCreate:(NSArray *)objectArray objectType:(Class)objectType
 {
     CCCheckin *checkin;
     if (objectType == [CCCheckin class]) {
         checkin = [objectArray objectAtIndex:0];;
     }
+    // update user score
+    NSString *score_key = [NSString stringWithFormat:@"%@_score",[[Cocoafish defaultCocoafish] getCurrentUser].email];
+    [_ccNetworkManager incrBy:score_key value:5];
+     
 	if (checkin) {
 		@synchronized(self) {
 			[placeCheckins insertObject:checkin atIndex:0];
@@ -106,6 +127,7 @@
 	
 		[self.tableView reloadData];
 	}
+   
 	
 }
 

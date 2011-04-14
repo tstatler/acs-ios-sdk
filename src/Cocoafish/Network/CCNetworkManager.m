@@ -836,6 +836,20 @@
 	[self performAsyncRequest:request callback:@selector(deleteRequestDone:)];
 }
 
+-(void)incrBy:(NSString *)name value:(NSInteger)value
+{
+    NSArray *additionalParams = [NSArray arrayWithObjects:[NSString stringWithFormat:@"name=%@", name], [NSString stringWithFormat:@"value=%d", value], nil];
+    NSString *urlPath = [self generateFullRequestUrl:@"keyvalues/incrby.json" additionalParams:additionalParams];
+    
+	NSURL *url = [NSURL URLWithString:urlPath];
+	
+	ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
+    [request setRequestMethod:@"PUT"];
+	
+	[self performAsyncRequest:request callback:@selector(updateRequestDone:)];
+    
+}
+
 #pragma mark - Event related
 -(void)createEvent:(NSString *)name details:(NSString *)details placeId:(NSString *)placeId startTime:(NSDate *)startTime endTime:(NSDate *)endTime
 {    

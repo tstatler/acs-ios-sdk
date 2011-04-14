@@ -82,6 +82,7 @@
 -(void)getValueForKey:(NSString *)value;
 -(void)appendValueForKey:(NSString *)key appendValue:(NSString *)appendValue;
 -(void)deleteKeyValue:(NSString *)key;
+-(void)incrBy:(NSString *)name value:(NSInteger)value;
 
 // Event related
 -(void)createEvent:(NSString *)name details:(NSString *)details placeId:(NSString *)placeId startTime:(NSDate *)startTime endTime:(NSDate *)endTime;

@@ -138,8 +138,8 @@
 @end
 
 
-#define DEFAULT_PHOTO_MAX_SIZE  0 // keep the original size
-#define DEFAULT_JPEG_COMPRESSION   1 // best quality
+#define DEFAULT_PHOTO_MAX_SIZE  800 
+#define DEFAULT_JPEG_COMPRESSION   0.5 // half quality
 #define DEFAULT_PHOTO_FILE_NAME @"photo.jpg"
 #define DEFAULT_PHOTO_KEY   @"photo"
 
