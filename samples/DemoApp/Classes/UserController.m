@@ -77,9 +77,9 @@
 		
 		if ([currentUser.facebookAccessToken length] > 0) {
 			// create the link with facebook button
-			button = [[UIBarButtonItem alloc] initWithTitle:@"Unlink With Facebook" style:UIBarButtonItemStylePlain target:self action:@selector(unlinkFromFacebook)];
+			button = [[UIBarButtonItem alloc] initWithTitle:@"Unlink Facebook" style:UIBarButtonItemStylePlain target:self action:@selector(unlinkFromFacebook)];
 		} else {
-			button = [[UIBarButtonItem alloc] initWithTitle:@"Link With Facebook" style:UIBarButtonItemStylePlain target:self action:@selector(linkWithFacebook)];
+			button = [[UIBarButtonItem alloc] initWithTitle:@"Link Facebook" style:UIBarButtonItemStylePlain target:self action:@selector(linkWithFacebook)];
 		}
 		self.navigationItem.leftBarButtonItem = button;
 		[button release];
@@ -122,9 +122,7 @@
 
 -(void)getUserCheckins
 {
-//	if ([userCheckins count] == 0) {
 	[_ccNetworkManager searchCheckins:[[Cocoafish defaultCocoafish] getCurrentUser] page:CC_FIRST_PAGE perPage:CC_DEFAULT_PER_PAGE];
-//	}
 }
 
 // successful 
@@ -330,7 +328,7 @@
 -(void)fbDidLogin
 {
 	NSLog(@"fbDidLogin");
-	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Unlink With Facebook" style:UIBarButtonItemStylePlain target:self action:@selector(unlinkFromFacebook)];
+	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Unlink Facebook" style:UIBarButtonItemStylePlain target:self action:@selector(unlinkFromFacebook)];
 	self.navigationItem.leftBarButtonItem = button;
 	[button release];
 
