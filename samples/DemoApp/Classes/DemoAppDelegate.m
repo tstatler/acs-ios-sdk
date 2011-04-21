@@ -10,12 +10,14 @@
 #import "MainViewController.h"
 #import "Cocoafish.h"
 
-// Your cocoafish app key must be set before running this demo
-static NSString * const cocoafishAppKey = nil;
-static NSString * const oauthConsumerKey = nil;
-static NSString * const oauthConsumerSecret = nil;
+// Your cocoafish oauth token/secret must be set before running this demo
+//#define COCOAFISH_OAUTH_CONSUMER_KEY @"your consumer key here"
+//#define COCOAFISH_OAUTH_CONSUMER_SECRET @"your consumer secret here"
+#if !defined(COCOAFISH_OAUTH_CONSUMER_KEY) || !defined(COCOAFISH_OAUTH_CONSUMER_SECRET)
+    #error : Please uncomment above lines and set your oauth key and secret
+#endif
 
-// If you want to add facebook support, please set the facebook app id here.
+// If you want to add facebook support, please set the facebook app id here and pass it to initializeWithOauthConsumerKey.
 static NSString * const facebookAppId = nil;
 
 
@@ -28,12 +30,14 @@ static NSString * const facebookAppId = nil;
 #pragma mark -
 #pragma mark Application lifecycle
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{    
     
 	// Initialize Cocoafish
-	//[Cocoafish initializeWithOauthConsumerKey:oauthConsumerKey consumerSecret:oauthConsumerSecret customAppIds:[NSDictionary dictionaryWithObject:facebookAppId forKey:@"Facebook"]];
-	
-    [Cocoafish initializeWithOauthConsumerKey:oauthConsumerKey consumerSecret:oauthConsumerSecret customAppIds:nil];
+    [Cocoafish initializeWithOauthConsumerKey:COCOAFISH_OAUTH_CONSUMER_KEY consumerSecret:COCOAFISH_OAUTH_CONSUMER_SECRET customAppIds:nil];
+   
+    // Initialize Cocoafish with facebook App Id if you set one
+ /*   [Cocoafish initializeWithOauthConsumerKey:COCOAFISH_OAUTH_CONSUMER_KEY consumerSecret:COCOAFISH_OAUTH_CONSUMER_SECRET customAppIds:[NSDictionary dictionaryWithObject:facebookAppId forKey:@"facebook"]]; */
     
 	 // Add the tab bar controller's view to the window and display.
     [window addSubview:tabBarController.view];

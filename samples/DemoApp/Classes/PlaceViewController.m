@@ -33,6 +33,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePhotoDownloaded:) name:@"PhotoDownloadFinished" object:[Cocoafish defaultCocoafish]];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePhotoProcessed:) name:@"PhotosProcessed" object:[Cocoafish defaultCocoafish]];
 
+    self.navigationItem.title = place.name;
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }

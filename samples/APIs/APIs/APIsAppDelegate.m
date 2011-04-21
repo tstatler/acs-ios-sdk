@@ -8,9 +8,12 @@
 
 #import "APIsAppDelegate.h"
 
-// Alternatively you can use your oauth token and secret instead of the app key for security purpose
-static NSString * const oauthConsumerKey = nil;
-static NSString * const oauthConsumerSecret = nil;
+// Your cocoafish oauth token/secret must be set before running this demo
+//#define COCOAFISH_OAUTH_CONSUMER_KEY @"your consumer key here"
+//#define COCOAFISH_OAUTH_CONSUMER_SECRET @"your consumer secret here"
+#if !defined(COCOAFISH_OAUTH_CONSUMER_KEY) || !defined(COCOAFISH_OAUTH_CONSUMER_SECRET)
+    #error : Please uncomment above lines and set your oauth key and secret
+#endif
 
 // If you want to add facebook support, please set the facebook app id here.
 static NSString * const facebookAppId = nil;
@@ -27,10 +30,12 @@ static NSString * const facebookAppId = nil;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [Cocoafish initializeWithOauthConsumerKey:oauthConsumerKey consumerSecret:oauthConsumerSecret customAppIds:[NSDictionary dictionaryWithObject:facebookAppId forKey:@"Facebook"]];
-    // Override point for customization after application launch.
-    // Add the navigation controller's view to the window and display.
-                                                                                                                                                                                        
+	// Initialize Cocoafish
+    [Cocoafish initializeWithOauthConsumerKey:COCOAFISH_OAUTH_CONSUMER_KEY consumerSecret:COCOAFISH_OAUTH_CONSUMER_SECRET customAppIds:nil];
+    
+    // Initialize Cocoafish with facebook App Id if you set one
+    /*   [Cocoafish initializeWithOauthConsumerKey:COCOAFISH_OAUTH_CONSUMER_KEY consumerSecret:COCOAFISH_OAUTH_CONSUMER_SECRET customAppIds:[NSDictionary dictionaryWithObject:facebookAppId forKey:@"facebook"]]; */
+    
     self.window.rootViewController = self.navigationController;
     [self.window makeKeyAndVisible];
     return YES;

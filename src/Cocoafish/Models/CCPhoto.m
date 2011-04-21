@@ -11,6 +11,7 @@
 #import "CCDownloadManager.h"
 #import "ASIFormDataRequest.h"
 #import "CocoaFishLibrary.h"
+#import "WBImage.h"
 
 @interface CCPhoto ()
 
@@ -138,8 +139,8 @@
 @end
 
 
-#define DEFAULT_PHOTO_MAX_SIZE  800 
-#define DEFAULT_JPEG_COMPRESSION   0.5 // half quality
+#define DEFAULT_PHOTO_MAX_SIZE  0 // original photo size 
+#define DEFAULT_JPEG_COMPRESSION   1 // best photo quality
 #define DEFAULT_PHOTO_FILE_NAME @"photo.jpg"
 #define DEFAULT_PHOTO_KEY   @"photo"
 
@@ -174,8 +175,8 @@
     if (image == nil) {
         return nil;
     }
-    if (jpegCompression <= 0 || jpegCompression > 1) {
-        [NSException raise:@"jpegCompression must be greater than zero and less or equal to 1" format:@"invalid parameter"];
+    if (jpegCompression < 0 || jpegCompression > 1) {
+        [NSException raise:@"jpegCompression must be greater than or equal to zero and less than or equal to 1" format:@"invalid parameter"];
     }
     if (maxPhotoSize <= 0) {
         [NSException raise:@"maxPhotoSize must be greater than zero" format:@"invalid parameter"];
@@ -194,8 +195,13 @@
 }
 
 -(void)processAndSetPhotoData
-{
-    UIImage *processedImage = scaleAndRotateImage(_rawImage, _maxPhotoSize);
+{    
+    UIImage *processedImage = [UIImage imageWithCGImage:[_rawImage CGImage]];
+    
+    [processedImage rotate:processedImage.imageOrientation];
+    if (_maxPhotoSize > 0) {
+        [processedImage scaleWithMaxSize:_maxPhotoSize];
+    }
     
     // convert to jpeg and save
     NSData *photoData = [UIImageJPEGRepresentation(processedImage, _jpegCompression) retain];

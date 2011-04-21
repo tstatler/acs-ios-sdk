@@ -16,6 +16,7 @@
 		B613B684126BAC4300EC9ABA /* ProgressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B613B682126BAC4300EC9ABA /* ProgressViewController.m */; };
 		B613B685126BAC4300EC9ABA /* ProgressViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B613B683126BAC4300EC9ABA /* ProgressViewController.xib */; };
 		B6314425134BBB1B0065A657 /* CCMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = B6314424134BBB1B0065A657 /* CCMessage.m */; };
+		B653F29D1360AA7600686E72 /* WBImage.m in Sources */ = {isa = PBXBuildFile; fileRef = B653F29C1360AA7600686E72 /* WBImage.m */; };
 		B6544E50125E83A4003AFCAB /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B6544E4E125E83A4003AFCAB /* MapViewController.m */; };
 		B6544E51125E83A4003AFCAB /* MapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B6544E4F125E83A4003AFCAB /* MapViewController.xib */; };
 		B6544E55125E83F7003AFCAB /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B6544E53125E83F7003AFCAB /* MainViewController.m */; };
@@ -106,6 +107,8 @@
 		B613B683126BAC4300EC9ABA /* ProgressViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProgressViewController.xib; sourceTree = "<group>"; };
 		B6314423134BBB1B0065A657 /* CCMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCMessage.h; sourceTree = "<group>"; };
 		B6314424134BBB1B0065A657 /* CCMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCMessage.m; sourceTree = "<group>"; };
+		B653F29B1360AA7600686E72 /* WBImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBImage.h; sourceTree = "<group>"; };
+		B653F29C1360AA7600686E72 /* WBImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBImage.m; sourceTree = "<group>"; };
 		B6544E4D125E83A4003AFCAB /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
 		B6544E4E125E83A4003AFCAB /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
 		B6544E4F125E83A4003AFCAB /* MapViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MapViewController.xib; sourceTree = "<group>"; };
@@ -352,6 +355,15 @@
 			name = User;
 			sourceTree = "<group>";
 		};
+		B653F29A1360AA7600686E72 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				B653F29B1360AA7600686E72 /* WBImage.h */,
+				B653F29C1360AA7600686E72 /* WBImage.m */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
 		B6544E26125E678B003AFCAB /* Explore */ = {
 			isa = PBXGroup;
 			children = (
@@ -428,6 +440,7 @@
 		B67B68D713341319001E4472 /* Cocoafish */ = {
 			isa = PBXGroup;
 			children = (
+				B653F29A1360AA7600686E72 /* Common */,
 				B67B68D813341319001E4472 /* Cache */,
 				B67B68DB13341319001E4472 /* Cocoafish.h */,
 				B67B68DC13341319001E4472 /* Cocoafish.m */,
@@ -691,6 +704,7 @@
 				B6D3036A1346B79F001259F3 /* CCEvent.m in Sources */,
 				B6D3037013485434001259F3 /* CCRequest.m in Sources */,
 				B6314425134BBB1B0065A657 /* CCMessage.m in Sources */,
+				B653F29D1360AA7600686E72 /* WBImage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
