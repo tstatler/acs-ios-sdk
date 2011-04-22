@@ -51,6 +51,7 @@ typedef enum PhotoSize {
 @interface CCUploadImage :  NSObject  {
 @private
     UIImage *_rawImage;
+    NSData *_photoData;
     int _maxPhotoSize;
     double _jpegCompression;
     
@@ -63,8 +64,6 @@ typedef enum PhotoSize {
 
 @property (nonatomic, retain) ASIHTTPRequest *request;
 @property (nonatomic) SEL didFinishSelector;
-@property (nonatomic, readonly) int maxPhotoSize;
-@property (nonatomic, readonly) double jpegCompression;
 @property (nonatomic,retain) NSString *photoFileName;
 @property (nonatomic, retain) NSString *photoKey;
 

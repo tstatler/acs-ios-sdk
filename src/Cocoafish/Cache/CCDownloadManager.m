@@ -12,7 +12,7 @@
 #import "Cocoafish.h"
 #import "CCResponse.h"
 
-#define DEFAULT_TIME_INTERVAL	3
+#define DEFAULT_TIME_INTERVAL	2
 
 @interface CCDownloadManager ()
 

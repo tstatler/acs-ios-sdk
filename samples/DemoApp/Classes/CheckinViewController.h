@@ -12,10 +12,10 @@
 @class CCUploadImage;
 @protocol CheckinViewControllerDelegate;
 
-@interface CheckinViewController : UIViewController<UITextViewDelegate, UINavigationControllerDelegate, TapDetectingImageViewDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate> {
+@interface CheckinViewController : UIViewController<UITextFieldDelegate, UINavigationControllerDelegate, TapDetectingImageViewDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate> {
 	id<CheckinViewControllerDelegate> _delegate;
 
-	IBOutlet UITextView *msgView;
+	IBOutlet UITextField *msgView;
 	IBOutlet TapDetectingImageView *photoView;
     CCUploadImage *photoImage;
 	IBOutlet UILabel *photoLabel;

@@ -125,12 +125,12 @@
 	// Dismiss the image selection, hide the picker and show the image view with the picked image
 	[picker dismissModalViewControllerAnimated:YES];
 	
-	// Write the image to the photo album if we took it with the camera
+	/*// Write the image to the photo album if we took it with the camera
 	if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
 		NSLog(@"Start saving fullsize image to the camera roll");
 		UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
 		NSLog(@"End saving fullsize image to the camera roll");
-	}
+	}*/
 	
 	[self preparePhoto:image];
 	
@@ -146,7 +146,7 @@
 -(void)preparePhoto:(UIImage *)image
 {		
     if (photoImage == nil) {
-        photoImage = [[CCUploadImage alloc] initWithImage:image];
+        photoImage = [[CCUploadImage alloc] initWithImage:image maxPhotoSize:600  jpegCompression:0.5];
     }
  
 }
@@ -160,19 +160,13 @@
 	[imagePickerController release];
 }
 
-- (void)textViewDidBeginEditing:(UITextView *)textView
-{
-	UIBarButtonItem *doneButton;
-	
-	// create the login button	
-	doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(dismissKeyboard)];
-	self.navigationItem.rightBarButtonItem = doneButton;
-	[doneButton release];
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return NO;
 }
 
 -(void)dismissKeyboard
 {
-	self.navigationItem.rightBarButtonItem = nil;
 	[msgView resignFirstResponder];
 }
 

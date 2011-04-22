@@ -148,8 +148,6 @@
 
 @synthesize request = _request;
 @synthesize didFinishSelector = _didFinishSelector;
-@synthesize maxPhotoSize = _maxPhotoSize;
-@synthesize jpegCompression = _jpegCompression;
 @synthesize photoFileName = _photoFileName;
 @synthesize photoKey = _photoKey;
 
@@ -183,7 +181,7 @@
     }
     self = [super init];
     if (self) {
-        _rawImage = [image retain];
+        _rawImage = [image  retain];
         _photoFileName = DEFAULT_PHOTO_FILE_NAME;
         _photoKey = DEFAULT_PHOTO_KEY;
         _maxPhotoSize = maxPhotoSize;
@@ -196,23 +194,22 @@
 
 -(void)processAndSetPhotoData
 {    
-    UIImage *processedImage = [UIImage imageWithCGImage:[_rawImage CGImage]];
+    if (!_photoData) {
+        UIImage *processedImage = [_rawImage rotateAndScaleFromCameraWithMaxSize:_maxPhotoSize];
+        [_rawImage release];
+        _rawImage = nil;
     
-    [processedImage rotate:processedImage.imageOrientation];
-    if (_maxPhotoSize > 0) {
-        [processedImage scaleWithMaxSize:_maxPhotoSize];
+        // convert to jpeg and save
+        _photoData = [UIImageJPEGRepresentation(processedImage, _jpegCompression) retain];
     }
-    
-    // convert to jpeg and save
-    NSData *photoData = [UIImageJPEGRepresentation(processedImage, _jpegCompression) retain];
-    [((ASIFormDataRequest *)_request) setData:photoData withFileName:_photoFileName andContentType:@"image/jpeg" forKey:_photoKey];
-    [photoData release];
+    [((ASIFormDataRequest *)_request) setData:_photoData withFileName:_photoFileName andContentType:@"image/jpeg" forKey:_photoKey];
     
 }
 
 -(void)dealloc
 {
     [_rawImage release];
+    [_photoData release];
     [_request release];
     [_photoFileName release];
     [_photoKey release];
