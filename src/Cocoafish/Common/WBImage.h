@@ -9,6 +9,11 @@
 
 @interface UIImage (WBImage)
 
+// Added by Cocoafish Inc.
+-(UIImage *)scaleAndRotateImage:(int) kMaxResolution;
+
+/* Comment by Cocoafish Inc. the original methods don't work well, scale stretches the photo
+
 // rotate UIImage to any angle
 -(UIImage*)rotate:(UIImageOrientation)orient;
 
@@ -19,6 +24,7 @@
 -(UIImage*)scaleWithMaxSize:(CGFloat)maxSize;
 -(UIImage*)scaleWithMaxSize:(CGFloat)maxSize
                     quality:(CGInterpolationQuality)quality;
+*/
 
 @end
 

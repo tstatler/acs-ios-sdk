@@ -195,7 +195,7 @@
 -(void)processAndSetPhotoData
 {    
     if (!_photoData) {
-        UIImage *processedImage = [_rawImage rotateAndScaleFromCameraWithMaxSize:_maxPhotoSize];
+        UIImage *processedImage = [_rawImage scaleAndRotateImage:_maxPhotoSize];
         [_rawImage release];
         _rawImage = nil;
     

@@ -21,5 +21,3 @@ NSString* getUniqueIdentifier();
 float osVersion();
 
 NSString * timeElapsedFrom(NSDate *startDate);
-
-UIImage *scaleAndRotateImage(UIImage *img, int kMaxResolution);
