@@ -1107,10 +1107,10 @@
         } else  {
             continue;
         }
-        if (!class_respondsToSelector(class, @selector(initWithJsonResponse:))) {
+     /*   if (!class_respondsToSelector(class, @selector(initWithJsonResponse:))) {
             // class doesn't have support initWithJsonResponse
             continue;
-        }
+        }*/
         NSArray *jsonArray = [jsonResponse objectForKey:jsonTag];
         if (jsonArray == nil) {
             continue;

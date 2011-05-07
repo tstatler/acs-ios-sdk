@@ -64,7 +64,7 @@
 
 -(CCMutableUser *)mutableCopy
 {
-    CCMutableUser *userCopy = [[[CCMutableUser alloc] initWithId:self.objectId first:self.firstName last:self.lastName email:self.email] autorelease];;
+    CCMutableUser *userCopy = [[[CCMutableUser alloc] initWithId:self.objectId first:self.firstName last:self.lastName email:self.email username:self.username] autorelease];
     userCopy.username = [self.username copy];
     return userCopy;
 }
