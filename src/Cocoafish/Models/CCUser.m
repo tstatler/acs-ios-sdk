@@ -43,15 +43,16 @@
 	return self;
 }
 
--(id)initWithId:(NSString *)objectId first:(NSString *)first last:(NSString *)last email:(NSString *)email
+-(id)initWithId:(NSString *)objectId first:(NSString *)first last:(NSString *)last email:(NSString *)email username:(NSString *)username
 {
-	if (objectId == nil || first == nil) {
+	if (objectId == nil || (email == nil && username == nil)) {
 		return nil;
 	}
 	if ((self = [super initWithId:objectId])) {
 		self.firstName = first;
 		self.lastName = last;
 		self.email = email;
+        self.username = username;
 	}
 	return self;
 }

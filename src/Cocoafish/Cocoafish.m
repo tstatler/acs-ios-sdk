@@ -81,7 +81,7 @@ static Cocoafish *theDefaultCocoafish = nil;
 	
 	// restore currentUser info if there is any
 	NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-	_currentUser = [[[CCUser alloc] initWithId:[prefs stringForKey:@"cc_user_id"] first:[prefs stringForKey:@"cc_user_first_name"] last:[prefs stringForKey:@"cc_user_last_name"] email:[prefs stringForKey:@"cc_user_email"]] retain];
+	_currentUser = [[[CCUser alloc] initWithId:[prefs stringForKey:@"cc_user_id"] first:[prefs stringForKey:@"cc_user_first_name"] last:[prefs stringForKey:@"cc_user_last_name"] email:[prefs stringForKey:@"cc_user_email"] username:[prefs stringForKey:@"cc_username"]] retain];
 	if (_currentUser) {
 		[self restoreUserSession];
         if (_ccNetworkManager == nil) {
@@ -128,11 +128,13 @@ static Cocoafish *theDefaultCocoafish = nil;
 		[prefs setObject:user.firstName forKey:@"cc_user_first_name"];
 		[prefs setObject:user.lastName forKey:@"cc_user_last_name"];
 		[prefs setObject:user.email forKey:@"cc_user_email"];
+        [prefs setObject:user.username forKey:@"cc_username"];
 	} else {
 		[prefs removeObjectForKey:@"cc_user_id"];
 		[prefs removeObjectForKey:@"cc_user_first_name"];
 		[prefs removeObjectForKey:@"cc_user_last_name"];
 		[prefs removeObjectForKey:@"cc_user_email"];
+        [prefs removeObjectForKey:@"cc_username"];
 		// logout from facebook too if applicable
 		[_facebook logout:self];
 	}

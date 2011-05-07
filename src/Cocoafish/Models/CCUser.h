@@ -28,7 +28,7 @@
 //@property (nonatomic, readonly) Boolean facebookAuthorized;
 @property (nonatomic, retain, readonly) NSString *facebookAccessToken;
 
--(id)initWithId:(NSString *)objectId first:(NSString *)first last:(NSString *)last email:(NSString *)email;
+-(id)initWithId:(NSString *)objectId first:(NSString *)first last:(NSString *)last email:(NSString *)email username:(NSString *)username;
 -(CCMutableUser *)mutableCopy;
 
 @end
