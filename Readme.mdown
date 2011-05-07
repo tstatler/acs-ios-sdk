@@ -50,16 +50,16 @@ To build and run the sample application with Xcode (4.0):
 
 APIs Application
 ----------------
-The APIs application under samples provides a list of api calls supported by sdk.
+The APIs application under samples provides a list of API calls supported by SDK.
 
 Integrate With Your Own Application
 -----------------------------------
 
-If you want to integrate Cocoafish with an existing application, then follow these steps:
+Follow these steps to integrate Cocoafish with an existing application:
 
 * Create your own ios project, for example -- client.
 
-* Select add files to 'Your projfect', goto the cocoafish-ios-sdk/src, select Cocoafish, ASIHTTPRequest and FBConnect folders, make sure to check create groups for added folders.
+* Select add files to 'Your project'. Go to cocoafish-ios-sdk/src and select the Cocoafish, ASIHTTPRequest and FBConnect folders. Make sure to check create groups for added folders.
 
 * Add YAJL.framework to your project. There is a copy of YAJL.framework under cocoafish-ios-sdk/src. 
 
@@ -67,7 +67,7 @@ If you want to integrate Cocoafish with an existing application, then follow the
 
 * Under Other Linker Flags in your target, add -ObjC and -all_load  
 
-* You should now be able to build and use all the Cocoafish apis.
+* You should now be able to build and use all the Cocoafish APIs.
 
 Usage
 -----
