@@ -83,6 +83,10 @@
 		B6042994133D3973008CEE69 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = B6042948133D3973008CEE69 /* SBJsonParser.m */; };
 		B6042995133D3973008CEE69 /* SBJsonWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = B6042949133D3973008CEE69 /* SBJsonWriter.h */; };
 		B6042996133D3973008CEE69 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = B604294A133D3973008CEE69 /* SBJsonWriter.m */; };
+		B60CDFB41375B70D00231BC3 /* WBImage.h in Headers */ = {isa = PBXBuildFile; fileRef = B60CDFB21375B70D00231BC3 /* WBImage.h */; };
+		B60CDFB51375B70D00231BC3 /* WBImage.m in Sources */ = {isa = PBXBuildFile; fileRef = B60CDFB31375B70D00231BC3 /* WBImage.m */; };
+		B60CDFB81375B72600231BC3 /* CCRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = B60CDFB61375B72600231BC3 /* CCRequest.h */; };
+		B60CDFB91375B72600231BC3 /* CCRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B60CDFB71375B72600231BC3 /* CCRequest.m */; };
 		B6314436134C32D10065A657 /* CCEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = B6314432134C32D10065A657 /* CCEvent.h */; };
 		B6314437134C32D10065A657 /* CCEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = B6314433134C32D10065A657 /* CCEvent.m */; };
 		B6314438134C32D10065A657 /* CCMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = B6314434134C32D10065A657 /* CCMessage.h */; };
@@ -172,6 +176,10 @@
 		B6042948133D3973008CEE69 /* SBJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonParser.m; sourceTree = "<group>"; };
 		B6042949133D3973008CEE69 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
 		B604294A133D3973008CEE69 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
+		B60CDFB21375B70D00231BC3 /* WBImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBImage.h; sourceTree = "<group>"; };
+		B60CDFB31375B70D00231BC3 /* WBImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBImage.m; sourceTree = "<group>"; };
+		B60CDFB61375B72600231BC3 /* CCRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCRequest.h; sourceTree = "<group>"; };
+		B60CDFB71375B72600231BC3 /* CCRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCRequest.m; sourceTree = "<group>"; };
 		B6314432134C32D10065A657 /* CCEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCEvent.h; sourceTree = "<group>"; };
 		B6314433134C32D10065A657 /* CCEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCEvent.m; sourceTree = "<group>"; };
 		B6314434134C32D10065A657 /* CCMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCMessage.h; sourceTree = "<group>"; };
@@ -274,6 +282,7 @@
 		B604290D133D3973008CEE69 /* Cocoafish */ = {
 			isa = PBXGroup;
 			children = (
+				B60CDFB11375B70D00231BC3 /* Common */,
 				B604290E133D3973008CEE69 /* Cache */,
 				B6042911133D3973008CEE69 /* Cocoafish.h */,
 				B6042912133D3973008CEE69 /* Cocoafish.m */,
@@ -321,6 +330,8 @@
 		B6042922133D3973008CEE69 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				B60CDFB61375B72600231BC3 /* CCRequest.h */,
+				B60CDFB71375B72600231BC3 /* CCRequest.m */,
 				B6042923133D3973008CEE69 /* CCConstants.h */,
 				B6042924133D3973008CEE69 /* CCConstants.m */,
 				B6042925133D3973008CEE69 /* CCDownloadRequest.h */,
@@ -384,6 +395,15 @@
 			path = JSON;
 			sourceTree = "<group>";
 		};
+		B60CDFB11375B70D00231BC3 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				B60CDFB21375B70D00231BC3 /* WBImage.h */,
+				B60CDFB31375B70D00231BC3 /* WBImage.m */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -434,6 +454,8 @@
 				B6042995133D3973008CEE69 /* SBJsonWriter.h in Headers */,
 				B6314436134C32D10065A657 /* CCEvent.h in Headers */,
 				B6314438134C32D10065A657 /* CCMessage.h in Headers */,
+				B60CDFB41375B70D00231BC3 /* WBImage.h in Headers */,
+				B60CDFB81375B72600231BC3 /* CCRequest.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -523,6 +545,8 @@
 				B6042996133D3973008CEE69 /* SBJsonWriter.m in Sources */,
 				B6314437134C32D10065A657 /* CCEvent.m in Sources */,
 				B6314439134C32D10065A657 /* CCMessage.m in Sources */,
+				B60CDFB51375B70D00231BC3 /* WBImage.m in Sources */,
+				B60CDFB91375B72600231BC3 /* CCRequest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

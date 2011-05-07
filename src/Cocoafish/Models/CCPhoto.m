@@ -10,7 +10,6 @@
 #import "Cocoafish.h"
 #import "CCDownloadManager.h"
 #import "ASIFormDataRequest.h"
-#import "CocoaFishLibrary.h"
 #import "WBImage.h"
 
 @interface CCPhoto ()
