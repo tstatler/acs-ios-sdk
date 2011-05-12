@@ -514,10 +514,15 @@
 
 }
 
--(void)searchUserStatuses:(CCUser *)user page:(int)page perPage:(int)perPage
+-(void)searchUserStatuses:(CCUser *)user startTime:(NSDate *)startTime page:(int)page perPage:(int)perPage
 {
-	NSArray *additionalParams = [NSArray arrayWithObjects:[NSString stringWithFormat:@"user_id=%@", user.objectId], [NSString stringWithFormat:@"page=%d", page], [NSString stringWithFormat:@"per_page=%d", perPage], nil];
-
+	NSMutableArray *additionalParams = [NSMutableArray arrayWithObjects:[NSString stringWithFormat:@"page=%d", page], [NSString stringWithFormat:@"per_page=%d", perPage], nil];
+    if (user != nil) {
+        [additionalParams addObject:[NSString stringWithFormat:@"user_id=%@", user.objectId]];
+    }
+    if (startTime != nil) {
+        [additionalParams addObject:[NSString stringWithFormat:@"start_time=%.0f", [startTime timeIntervalSince1970]]];
+    }
 	NSString *urlPath = [self generateFullRequestUrl:@"statuses/search.json" additionalParams:additionalParams];
 
 	NSURL *url = [NSURL URLWithString:urlPath];
@@ -527,7 +532,6 @@
 	[self performAsyncRequest:request callback:@selector(getRequestDone:)];
 
 }
-
 -(void)deletePlace:(NSString *)placeId
 {
     NSString *urlPath = [self generateFullRequestUrl:[NSString stringWithFormat:@"places/delete/%@.json", placeId] additionalParams:nil];
@@ -807,6 +811,8 @@
 	return YES;
 }
 
+#pragma mark - KeyValues related
+
 -(void)setValueForKey:(NSString *)key value:(NSString *)value
 {
     NSArray *additionalParams = [NSArray arrayWithObjects:[NSString stringWithFormat:@"name=%@", key], [NSString stringWithFormat:@"value=%@", value], nil];
@@ -874,6 +880,21 @@
 	[self performAsyncRequest:request callback:@selector(updateRequestDone:)];
     
 }
+
+-(void)searchKeyValues:(NSString *)query page:(int)page per_page:(int)perPage
+{
+    NSMutableArray *additionalParams = [NSMutableArray arrayWithObjects:[NSString stringWithFormat:@"page=%d", page], [NSString stringWithFormat:@"per_page=%d", perPage], nil];
+    if (query) {
+        [additionalParams addObject:[NSString stringWithFormat:@"q=%@", query]];
+    }
+    NSString *urlPath = [self generateFullRequestUrl:@"keyvalues/search.json" additionalParams:additionalParams];
+    NSURL *url = [NSURL URLWithString:urlPath];
+
+	ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
+	
+	[self performAsyncRequest:request callback:@selector(getRequestDone:)];
+}
+
 
 #pragma mark - Event related
 -(void)createEvent:(NSString *)name details:(NSString *)details placeId:(NSString *)placeId startTime:(NSDate *)startTime endTime:(NSDate *)endTime

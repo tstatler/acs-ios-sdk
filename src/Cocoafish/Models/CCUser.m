@@ -7,6 +7,7 @@
 //
 
 #import "CCUser.h"
+#import "CCPhoto.h"
 
 @interface CCUser ()
 
@@ -16,6 +17,7 @@
 @property (nonatomic, retain, readwrite) NSString *lastName;
 //@property (nonatomic, readwrite) Boolean facebookAuthorized;
 @property (nonatomic, retain, readwrite) NSString *facebookAccessToken;
+@property (nonatomic, retain, readwrite) CCPhoto *profilePhoto;
 
 @end
 
@@ -25,6 +27,7 @@
 @synthesize username = _username;
 @synthesize firstName = _firstName;
 @synthesize lastName = _lastName;
+@synthesize profilePhoto = _profilePhoto;
 //@synthesize facebookAuthorized = _facebookAuthorized;
 @synthesize facebookAccessToken = _facebookAccessToken;
 
@@ -37,6 +40,7 @@
 		self.username = [jsonResponse objectForKey:CC_JSON_USERNAME];
 		self.firstName = [jsonResponse objectForKey:CC_JSON_USER_FIRST];
 		self.lastName = [jsonResponse objectForKey:CC_JSON_USER_LAST];
+        self.profilePhoto = [[CCPhoto alloc] initWithJsonResponse:[jsonResponse objectForKey:CC_JSON_PHOTO]];
 		//self.facebookAuthorized = [[jsonResponse objectForKey:CC_JSON_USER_FACEBOOK_AUTHORIZED] boolValue];
         self.facebookAccessToken = [jsonResponse objectForKey:CC_JSON_USER_FACEBOOK_ACCESS_TOKEN];
 	}
@@ -65,7 +69,8 @@
 -(CCMutableUser *)mutableCopy
 {
     CCMutableUser *userCopy = [[[CCMutableUser alloc] initWithId:self.objectId first:self.firstName last:self.lastName email:self.email username:self.username] autorelease];
-    userCopy.username = [self.username copy];
+ //   userCopy.username = [self.username copy];
+    userCopy.profilePhoto = [self.profilePhoto retain];
     return userCopy;
 }
 
@@ -76,6 +81,7 @@
 	self.firstName = nil;
 	self.lastName = nil;
     self.facebookAccessToken = nil;
+    self.profilePhoto = nil;
 	[super dealloc];
 }
 
@@ -87,6 +93,7 @@
 @synthesize lastName;
 @synthesize email;
 @synthesize username;
+@synthesize profilePhoto;
 
 @end
 

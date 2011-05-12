@@ -10,12 +10,14 @@
 
 @class CCMutableUser;
 
+@class CCPhoto;
 @interface CCUser : CCObject {
 
 	NSString *_firstName;
 	NSString *_lastName;
 	NSString *_email;
 	NSString *_username;
+    CCPhoto *_profilePhoto;
 //	Boolean	_facebookAuthorized;
 @private
     NSString *_facebookAccessToken;
@@ -25,6 +27,7 @@
 @property (nonatomic, retain, readonly) NSString *lastName;
 @property (nonatomic, retain, readonly) NSString *email;
 @property (nonatomic, retain, readonly) NSString *username;
+@property (nonatomic, retain, readonly) CCPhoto *profilePhoto;
 //@property (nonatomic, readonly) Boolean facebookAuthorized;
 @property (nonatomic, retain, readonly) NSString *facebookAccessToken;
 
@@ -41,6 +44,7 @@
 @property (nonatomic, retain, readwrite) NSString *lastName;
 @property (nonatomic, retain, readwrite) NSString *email;
 @property (nonatomic, retain, readwrite) NSString *username;
+@property (nonatomic, retain, readwrite) CCPhoto *profilePhoto;
 
 @end
 

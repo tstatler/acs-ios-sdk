@@ -8,11 +8,14 @@
 
 #import "CCObject.h"
 
+@class CCUser;
 @interface CCStatus : CCObject {
 
 	NSString *_message;
+    CCUser *_user;
 }
 
 @property (nonatomic, retain, readonly) NSString *message;
+@property (nonatomic, retain, readonly) CCUser *user;
 
 @end

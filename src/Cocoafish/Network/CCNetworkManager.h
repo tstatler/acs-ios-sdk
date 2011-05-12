@@ -60,7 +60,7 @@
 
 // Statuses
 -(void)createUserStatus:(NSString *)status;
--(void)searchUserStatuses:(CCUser *)user page:(int)page perPage:(int)perPage;
+-(void)searchUserStatuses:(CCUser *)user startTime:(NSDate *)startTime page:(int)page perPage:(int)perPage;
 
 // Places
 -(void)deletePlace:(NSString *)placeId;
@@ -84,6 +84,7 @@
 -(void)appendValueForKey:(NSString *)key appendValue:(NSString *)appendValue;
 -(void)deleteKeyValue:(NSString *)key;
 -(void)incrBy:(NSString *)name value:(NSInteger)value;
+-(void)searchKeyValues:(NSString *)keyword page:(int)page per_page:(int)perPage;
 
 // Event related
 -(void)createEvent:(NSString *)name details:(NSString *)details placeId:(NSString *)placeId startTime:(NSDate *)startTime endTime:(NSDate *)endTime;

@@ -7,20 +7,24 @@
 //
 
 #import "CCStatus.h"
+#import "CCUser.h"
 
 @interface CCStatus ()
 
 @property (nonatomic, retain, readwrite) NSString *message;
+@property (nonatomic, retain, readwrite) CCUser *user;
 
 @end
 
 @implementation CCStatus
 @synthesize message = _message;
+@synthesize user = _user;
 
 -(id)initWithJsonResponse:(NSDictionary *)jsonResponse
 {
 	if ((self = [super initWithJsonResponse:jsonResponse])) {
 		self.message = [jsonResponse objectForKey:CC_JSON_MESSAGE];
+        self.user = [[CCUser alloc] initWithJsonResponse:[jsonResponse objectForKey:CC_JSON_USER]];
 	}
 	
 	return self;
@@ -34,6 +38,7 @@
 -(void)dealloc
 {
 	self.message = nil;
+    self.user = nil;
 	[super dealloc];
 }
 
