@@ -6,10 +6,10 @@
 //  Copyright 2011 Cocoafish Inc. All rights reserved.
 //
 
-#import "CCObject.h"
+#import "CCObjectWithPhoto.h"
 
 @class CCUser;
-@interface CCStatus : CCObject {
+@interface CCStatus : CCObjectWithPhoto {
 
 	NSString *_message;
     CCUser *_user;

@@ -23,36 +23,13 @@
 		_ccNetworkManager = [[CCNetworkManager alloc] initWithDelegate:self];
 	}
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePhotoDownloaded:) name:@"PhotoDownloadFinished" object:[Cocoafish defaultCocoafish]];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePhotoProcessed:) name:@"PhotosProcessed" object:[Cocoafish defaultCocoafish]];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDownloaded:) name:@"DownloadFinished" object:[Cocoafish defaultCocoafish]];
 
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
--(void)handlePhotoProcessed:(NSNotification *)notification
-{
-	NSDictionary *userInfo = [notification userInfo];
-	
-	NSDictionary *photos = [userInfo valueForKey:@"photos"];
-	@synchronized (self) {
-		int i = 0;
-		for (CCCheckin *checkin in userCheckins) {
-			CCPhoto *photo = [photos objectForKey:checkin.photo.objectId];
-			if (photo) {
-				[photo asyncGetPhoto:CC_THUMB_100];
-			}
-			
-			i++;
-			if (i == [photos count]) {
-				break;
-			}
-		}
-	}
-	
-}
-
--(void)handlePhotoDownloaded:(NSNotification *)notification
+-(void)handleDownloaded:(NSNotification *)notification
 {
 	[self.tableView reloadData];
 }
@@ -185,6 +162,8 @@
 	// show login window
 	LoginViewController *loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil];
 	[self.navigationController pushViewController:loginViewController animated:NO];
+    [userCheckins release];
+    userCheckins = nil;
 	[loginViewController release];
 	
 }
@@ -232,12 +211,8 @@
     // Configure the cell...
 	CCCheckin *checkin = [userCheckins objectAtIndex:indexPath.row];
 	cell.imageView.image = nil;
-	if (checkin.photo && checkin.photo.processed == YES) {
-		cell.imageView.image = [checkin.photo getPhoto:CC_THUMB_100];
-		if (cell.imageView.image == nil) {
-			[checkin.photo asyncGetPhoto:CC_THUMB_100];
-		}
-	}
+    cell.imageView.image = [checkin.photo getImage:CC_THUMB_100];
+	
     cell.textLabel.text = checkin.message;
 	cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", [[checkin place] name], timeElapsedFrom([checkin createdAt])];
 	

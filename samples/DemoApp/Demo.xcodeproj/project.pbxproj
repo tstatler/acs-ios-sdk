@@ -17,6 +17,7 @@
 		B613B684126BAC4300EC9ABA /* ProgressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B613B682126BAC4300EC9ABA /* ProgressViewController.m */; };
 		B613B685126BAC4300EC9ABA /* ProgressViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B613B683126BAC4300EC9ABA /* ProgressViewController.xib */; };
 		B6314425134BBB1B0065A657 /* CCMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = B6314424134BBB1B0065A657 /* CCMessage.m */; };
+		B64B268C137F9E2C0053E943 /* CCObjectWithPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B268B137F9E2B0053E943 /* CCObjectWithPhoto.m */; };
 		B653F29D1360AA7600686E72 /* WBImage.m in Sources */ = {isa = PBXBuildFile; fileRef = B653F29C1360AA7600686E72 /* WBImage.m */; };
 		B6544E50125E83A4003AFCAB /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B6544E4E125E83A4003AFCAB /* MapViewController.m */; };
 		B6544E51125E83A4003AFCAB /* MapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B6544E4F125E83A4003AFCAB /* MapViewController.xib */; };
@@ -110,6 +111,8 @@
 		B613B683126BAC4300EC9ABA /* ProgressViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProgressViewController.xib; sourceTree = "<group>"; };
 		B6314423134BBB1B0065A657 /* CCMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCMessage.h; sourceTree = "<group>"; };
 		B6314424134BBB1B0065A657 /* CCMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCMessage.m; sourceTree = "<group>"; };
+		B64B268A137F9E2B0053E943 /* CCObjectWithPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCObjectWithPhoto.h; sourceTree = "<group>"; };
+		B64B268B137F9E2B0053E943 /* CCObjectWithPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCObjectWithPhoto.m; sourceTree = "<group>"; };
 		B653F29B1360AA7600686E72 /* WBImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBImage.h; sourceTree = "<group>"; };
 		B653F29C1360AA7600686E72 /* WBImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBImage.m; sourceTree = "<group>"; };
 		B6544E4D125E83A4003AFCAB /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
@@ -487,6 +490,8 @@
 				B6314424134BBB1B0065A657 /* CCMessage.m */,
 				B60CE05C13766C2100231BC3 /* CCLeaderboard.h */,
 				B60CE05D13766C2100231BC3 /* CCLeaderboard.m */,
+				B64B268A137F9E2B0053E943 /* CCObjectWithPhoto.h */,
+				B64B268B137F9E2B0053E943 /* CCObjectWithPhoto.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -711,6 +716,7 @@
 				B6314425134BBB1B0065A657 /* CCMessage.m in Sources */,
 				B653F29D1360AA7600686E72 /* WBImage.m in Sources */,
 				B60CE05E13766C2100231BC3 /* CCLeaderboard.m in Sources */,
+				B64B268C137F9E2C0053E943 /* CCObjectWithPhoto.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

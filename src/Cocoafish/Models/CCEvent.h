@@ -7,11 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "CCObject.h"
+#import "CCObjectWithPhoto.h"
 
 @class CCUser;
 @class CCPlace;
-@interface CCEvent : CCObject {
+@interface CCEvent : CCObjectWithPhoto {
 @private
     NSString *_name;
     NSString *_details;

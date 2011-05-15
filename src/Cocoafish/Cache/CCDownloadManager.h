@@ -12,15 +12,16 @@
 @class CCPhoto;
 
 @interface CCDownloadManager : NSObject <CCNetworkManagerDelegate> {
-	NSMutableDictionary	*_processingPhotos; // list of photo objects that are in processing state
+	NSMutableDictionary	*_processingPhotos; // list of photo objects or objects with a photo object that are in processing state
 	NSMutableSet *_downloadInProgress; // objects (photo, document, etc) that are currently being downloaded
 	CCNetworkManager *_ccNetworkManager;
 	NSTimer *_downloadNotificationTimer;	// Timer to send out download finished notifcation
 	NSTimer *_autoUpdateTimer; // timer used to get photo updates if needed
 	int _timeInterval; // used by timer
+    NSMutableDictionary *_pendingPhotoDownloadQueue; // If a download request was issued before the photo was processed
 }
 
 
--(Boolean)downloadPhoto:(CCPhoto *)photo size:(int)size;
--(void)addProcessingPhoto:(CCPhoto *)photo;
+-(void)downloadPhoto:(CCPhoto *)photo size:(int)size;
+-(void)addProcessingPhoto:(CCPhoto *)photo parent:(CCObject *)parent;
 @end

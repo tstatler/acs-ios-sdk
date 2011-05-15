@@ -11,7 +11,7 @@
 #import "CCConstants.h"
 
 
-@interface CCObject : NSObject {
+@interface CCObject : NSObject <NSCopying> {
 
 	NSString * _objectId;
 	NSDate * _createdAt;
@@ -27,5 +27,4 @@
 -(id)initWithId:(NSString *)objectId;
 
 -(NSString *)arrayDescription:(NSArray *)array;
-
 @end

@@ -255,7 +255,7 @@
 	}
 	
 	// Get the text strings
-	CCMutableUser *newUser = [[[CCMutableUser alloc] init] autorelease];
+	CCUser *newUser = [[[CCUser alloc] init] autorelease];
 	newUser.firstName = ((UITextField *)[textFields objectAtIndex:FIRST_NAME]).text;
 	newUser.lastName = ((UITextField *)[textFields objectAtIndex:LAST_NAME]).text;
 	newUser.email = ((UITextField *)[textFields objectAtIndex:EMAIL_ADDRESS]).text;
@@ -312,7 +312,7 @@
 	}
 	[self.view addSubview:registerProgress.view];
 	
-	[_ccNetworkManager registerUser:newUser password:password passwordConfirmation:password_verify];
+	[_ccNetworkManager registerUser:newUser password:password passwordConfirmation:password_verify image:nil];
 	
 	// Debug
 	 NSLog(@"Registering new user: %@, password: %@", newUser, password); 

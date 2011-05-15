@@ -84,11 +84,8 @@ static Cocoafish *theDefaultCocoafish = nil;
 	_currentUser = [[[CCUser alloc] initWithId:[prefs stringForKey:@"cc_user_id"] first:[prefs stringForKey:@"cc_user_first_name"] last:[prefs stringForKey:@"cc_user_last_name"] email:[prefs stringForKey:@"cc_user_email"] username:[prefs stringForKey:@"cc_username"]] retain];
 	if (_currentUser) {
 		[self restoreUserSession];
-        if (_ccNetworkManager == nil) {
-            _ccNetworkManager = [[CCNetworkManager alloc] initWithDelegate:self];
-        }
-        [_ccNetworkManager showCurrentUser];
-        
+        CCNetworkManager *ccm = [[[CCNetworkManager alloc] initWithDelegate:self] autorelease];
+        [ccm showCurrentUser];
 	}
 	
 }
@@ -221,19 +218,9 @@ static Cocoafish *theDefaultCocoafish = nil;
 
 #pragma CCNetworkManager delegate
 -(void)networkManager:(CCNetworkManager *)networkManager didFailWithError:(NSError *)error
-{
-    [_ccNetworkManager release];
-    _ccNetworkManager = nil;
-    
+{    
 }
 
--(void)networkManager:(CCNetworkManager *)networkManager response:(CCResponse *)response didGetUser:(CCUser *)user
-{
-    // Update current user object
-    [[Cocoafish defaultCocoafish] setCurrentUser:user];
-    [_ccNetworkManager release];
-    _ccNetworkManager = nil;
-}
 
 #pragma mark -
 #pragma mark user Cookie
@@ -316,7 +303,6 @@ static Cocoafish *theDefaultCocoafish = nil;
 	[_consumerSecret release];
 	[_downloadManager release];
 	[_cocoafishDir release];
-    [_ccNetworkManager release];
 	[super dealloc];
 }
 

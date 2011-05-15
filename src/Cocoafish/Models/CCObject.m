@@ -20,6 +20,7 @@
 @synthesize createdAt = _createdAt;
 @synthesize updatedAt = _updatedAt;
 
+
 -(id)initWithJsonResponse:(NSDictionary *)jsonResponse
 {
 	if (jsonResponse == nil) {
@@ -58,6 +59,16 @@
     }
     return self;
     
+}
+
+-(id)copyWithZone:(NSZone *)zone  
+{
+    CCObject *copy = [[[self class] allocWithZone:zone] init];
+    copy.objectId = [_objectId copy];
+    copy.updatedAt = [_updatedAt copy];
+    copy.createdAt = [_createdAt copy];
+
+    return copy;
 }
 
 - (NSString *)description {

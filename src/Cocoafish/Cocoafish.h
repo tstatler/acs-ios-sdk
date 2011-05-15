@@ -31,7 +31,6 @@
 	Facebook *_facebook; // handles facebook authentication
 	NSString *_cocoafishDir;
 	CCDownloadManager *_downloadManager;
-    CCNetworkManager *_ccNetworkManager;
 }
 
 @property(nonatomic, assign) id<CCFBSessionDelegate> _fbSessionDelegate;

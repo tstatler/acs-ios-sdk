@@ -1,4 +1,4 @@
-//
+ //
 //  CCDownloadManager.m
 //  Cocoafish-ios-sdk
 //
@@ -12,7 +12,7 @@
 #import "Cocoafish.h"
 #import "CCResponse.h"
 
-#define DEFAULT_TIME_INTERVAL	2
+#define DEFAULT_TIME_INTERVAL	3
 
 @interface CCDownloadManager ()
 
@@ -35,19 +35,40 @@
 	return self;
 }
 
--(Boolean)downloadPhoto:(CCPhoto *)photo size:(int)size
+-(void)downloadPhoto:(CCPhoto *)photo size:(int)size
 {
 	@synchronized(self) {
-		NSString *downloadPath = [photo localPath:size];
+        if (!photo.processed) {
+            // we don't have the photo url info yet, put in the queue
+            if (_pendingPhotoDownloadQueue == nil) {
+                _pendingPhotoDownloadQueue = [[NSMutableDictionary alloc] init];
+            }
+            NSMutableArray *sizes = [_pendingPhotoDownloadQueue objectForKey:photo.objectId];
+            if (sizes == nil) {
+                sizes = [NSMutableArray arrayWithObject:[NSNumber numberWithInt:size]];
+                [_pendingPhotoDownloadQueue setObject:sizes forKey:photo.objectId];
+            } else {
+                Boolean found = false;
+                for (NSNumber *cursize in sizes) {
+                    if ([cursize intValue] == size) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    [sizes addObject:[NSNumber numberWithInt:size]];
+                }
+            }
+            return;
+        }
+        NSString *downloadPath = [photo localPath:size];
 		if ([_downloadInProgress containsObject:downloadPath]) {
 			// download already in progress, no op
-			return YES;
+			return;
 		}
-		Boolean ret = [_ccNetworkManager downloadPhoto:self photo:photo size:size];
-		if (ret) {
-			[_downloadInProgress addObject:[photo localPath:size]];
-		}
-		return ret;
+		[_ccNetworkManager downloadPhoto:self photo:photo size:size];
+        [_downloadInProgress addObject:[photo localPath:size]];
+		
 	}
 }
 
@@ -57,7 +78,7 @@
 	CCDownloadRequest *downloadRequest = (CCDownloadRequest *)request;
 	NSDictionary * dict = [NSDictionary dictionaryWithObjectsAndKeys:downloadRequest.size, @"size", downloadRequest.object, @"object", nil];
 	
-	NSNotification * myNotification = [NSNotification notificationWithName:@"PhotoDownloadFinished" object:[Cocoafish defaultCocoafish] userInfo:dict];
+	NSNotification * myNotification = [NSNotification notificationWithName:@"DownloadFinished" object:[Cocoafish defaultCocoafish] userInfo:dict];
 	[[NSNotificationQueue defaultQueue] enqueueNotification:myNotification postingStyle:NSPostNow];	
 	@synchronized(self) {
 		if (downloadRequest.size != nil) {
@@ -71,25 +92,21 @@
 {
 	CCDownloadRequest *downloadRequest = (CCDownloadRequest *)request;
 	NSDictionary * dict = [NSDictionary dictionaryWithObjectsAndKeys:downloadRequest.size, @"size", downloadRequest.object, @"object", nil];
-	NSNotification * myNotification = [NSNotification notificationWithName:@"PhotoDownloadFailed" object:[Cocoafish defaultCocoafish] userInfo:dict];
+	NSNotification * myNotification = [NSNotification notificationWithName:@"sDownloadFailed" object:[Cocoafish defaultCocoafish] userInfo:dict];
 	[[NSNotificationQueue defaultQueue] enqueueNotification:myNotification postingStyle:NSPostNow];	
 } 
 
--(void)addProcessingPhoto:(CCPhoto *)photo
+-(void)addProcessingPhoto:(CCPhoto *)photo parent:(CCObject *)parent;
 {
 	if (!photo) {
 		return;
 	}
+    if (parent == nil) {
+        // set parnt to photo self if no parent was given
+        parent = photo;
+    }
 	@synchronized(self) {
-		NSMutableSet *objectList = [_processingPhotos objectForKey:photo.objectId];
-		if (objectList == nil) {
-			// add an entry for this photo id
-			objectList = [NSMutableSet setWithObject:photo];
-			[_processingPhotos setObject:objectList forKey:photo.objectId];
-		} else {
-			// add this photo object to the list
-			[objectList addObject:photo];
-		}
+        [_processingPhotos setObject:parent forKey:photo.objectId];
 		
 		if (self.autoUpdateTimer != nil) {
 			[self.autoUpdateTimer invalidate];
@@ -111,7 +128,7 @@
 	@synchronized(self) {
 		self.autoUpdateTimer = nil;
 		
-		NSArray *photoIds;
+		NSArray *objectIds;
 		if ([_processingPhotos count] > 100) {
 			// we will check 100 at a time
 			NSRange theRange;
@@ -119,45 +136,65 @@
 			theRange.location = 0;
 			theRange.length = 100;
 			
-			photoIds = [[_processingPhotos allKeys] subarrayWithRange:theRange];
+			objectIds = [[_processingPhotos allKeys] subarrayWithRange:theRange];
 		} else {
-			photoIds = [_processingPhotos allKeys]; 
+			objectIds = [_processingPhotos allKeys]; 
 		}
 
-		if ([photoIds count] > 0) {
-			// send request
-			[_ccNetworkManager getPhotosByIds:photoIds];
+		if ([objectIds count] > 0) {
+			// construct the request
+            NSMutableDictionary *idsByType = [NSMutableDictionary dictionaryWithCapacity:1];
+            for (NSString *objectId in objectIds) {
+                CCObject *parent = [_processingPhotos objectForKey:objectId];
+                NSMutableArray *ids = [idsByType objectForKey:NSStringFromClass([parent class])];
+                if (ids == nil) {
+                    ids = [NSMutableArray arrayWithObject:parent.objectId];
+                    [idsByType setObject:ids forKey:NSStringFromClass([parent class])];
+                } else {
+                    [ids addObject:parent.objectId];
+                }
+            }
+			[_ccNetworkManager getObjectsByIds:idsByType];
 		}
 		
 	}
 }
 
 
--(void)networkManager:(CCNetworkManager *)networkManager didGet:(NSArray *)photos objectType:(Class)objectType pagination:(CCPagination *)pagination
+-(void)networkManager:(CCNetworkManager *)networkManager didGet:(NSArray *)objects objectType:(Class)objectType pagination:(CCPagination *)pagination
 {
-    if (objectType != [CCPhoto class]) {
-        return;
-    }
-	NSMutableDictionary *processedPhotos = [[[NSMutableDictionary alloc] init] autorelease];
+    NSMutableDictionary *processedPhotos = [NSMutableDictionary dictionaryWithCapacity:1];
 
-	@synchronized(self) {		
-		for (CCPhoto *updatedPhoto in photos) {
-			if (updatedPhoto.processed) {
-				// this photo is ready
-				[processedPhotos setObject:updatedPhoto forKey:updatedPhoto.objectId];
-				
-				// Update all the existing objects with url info
-				NSMutableSet *objectList = [_processingPhotos objectForKey:updatedPhoto.objectId];
-				for (CCPhoto *photo in objectList) {
-					[photo updateUrls:updatedPhoto.urls];
-				}
-			}			
-		}
-		if ([processedPhotos count] > 0) {
-			[_processingPhotos removeObjectsForKeys:[processedPhotos allKeys]];
-		}
+	@synchronized(self) {	
+        for (CCObject *object in objects) {
+            CCPhoto *photo = nil;
+            if (objectType == [CCPhoto class]) {
+                photo = (CCPhoto *)object;
+            }  else if ([object isKindOfClass:[CCObjectWithPhoto class]]) {
+                photo = ((CCObjectWithPhoto *)object).photo;
+            } else {
+                continue;
+            }/*else if (objectType == [CCUser class]) {
+                photo = ((CCUser *)object).photo;
+            } else if (objectType == [CCCheckin class]) {
+                photo = ((CCCheckin *)object).photo;
+            } else if (objectType == [CCStatus class]) {
+                photo = ((CCStatus *)object).photo;
+            }*/
+
+            if (photo.processed) {
+                [_processingPhotos removeObjectForKey:photo.objectId];
+                [processedPhotos setObject:photo forKey:photo.objectId];
+                NSArray *sizes = [_pendingPhotoDownloadQueue objectForKey:photo.objectId];
+                // there are some pending download, perform them now since we have the urls
+                for (NSNumber *size in sizes) {
+                    [photo getImage:[size intValue]];
+                }
+                [_pendingPhotoDownloadQueue removeObjectForKey:photo.objectId];
+            }
+        }
 		
-		if ([_processingPhotos count] > 0) {
+        if ([_processingPhotos count] > 0) {
 			// there are still some photos are being processed on the server
 			if (_autoUpdateTimer == nil) {
 				if (_timeInterval < 864000) {
@@ -206,3 +243,4 @@
 	
 }
 @end
+

@@ -23,6 +23,8 @@
 @property (nonatomic, retain, readwrite) NSDictionary *urls;
 @property (nonatomic, retain, readwrite) NSDate *takenAt;
 
+-(void)handlePhotoProcessed:(NSNotification *)notification;
+
 @end
 
 @implementation CCPhoto
@@ -57,7 +59,8 @@
 		if (self.processed == NO) {
 			// Photo hasn't been processed on the server, add to the download manager queue 
 			// it will pull for its status periodically.
-			[[Cocoafish defaultCocoafish].downloadManager addProcessingPhoto:self];
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePhotoProcessed:) name:@"PhotosProcessed" object:[Cocoafish defaultCocoafish]];
+			[[Cocoafish defaultCocoafish].downloadManager addProcessingPhoto:self parent:nil];
 		}
 			
 	}
@@ -73,6 +76,7 @@
 
 -(void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 	self.filename = nil;
 	self.collectionName = nil;
 	self.md5 = nil;
@@ -82,18 +86,21 @@
 	[super dealloc];
 }
 
--(void)updateUrls:(NSDictionary *)urls
+-(void)handlePhotoProcessed:(NSNotification *)notification
 {
-	if (urls == nil) {
-		return;
-	}
-	@synchronized(self) {
-		self.urls = urls;
-		self.processed = YES;
-	}
+	NSDictionary *userInfo = [notification userInfo];
+    
+	NSDictionary *photos = [userInfo valueForKey:@"photos"];
+    CCPhoto *updatedPhoto = [photos objectForKey:self.objectId];
+    if (updatedPhoto) {
+        self.urls = updatedPhoto.urls;
+        self.processed = YES;
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+    }
+    
 }
 
--(NSString *)getPhotoUrl:(PhotoSize)photoSize
+-(NSString *)getImageUrl:(PhotoSize)photoSize
 {
 	@synchronized(self) {
 		switch (photoSize) {
@@ -112,6 +119,7 @@
 			case CC_ORIGINAL:
 				return [_urls objectForKey:@"original"];
 			default:
+                [NSException raise:@"Invalid Photo Size" format:@"Unknown photo size",photoSize];
 				break;
 		}
 	}
@@ -119,20 +127,23 @@
 			
 }
 
--(UIImage *)getPhoto:(PhotoSize)photoSize
+-(UIImage *)getImage:(PhotoSize)photoSize
 {
-	return [UIImage imageWithContentsOfFile:[self localPath:photoSize]];
+    UIImage *image = [UIImage imageWithContentsOfFile:[self localPath:photoSize]];
+    if (!image) {
+        [[Cocoafish defaultCocoafish].downloadManager downloadPhoto:self size:photoSize];
+        // try again if the image was just downloaded
+        image = [UIImage imageWithContentsOfFile:[self localPath:photoSize]];
+    }
+    return image;
 }
 
 -(NSString *)localPath:(PhotoSize)photoSize
 {
+    if (photoSize < CC_SQUARE_75 || photoSize > CC_ORIGINAL) {
+        [NSException raise:@"Invalid Photo Size" format:@"Unknown photo size",photoSize];
+    }
 	return [NSString stringWithFormat:@"%@/%@_%d", [Cocoafish defaultCocoafish].cocoafishDir, self.objectId, photoSize];
-}
-
--(Boolean)asyncGetPhoto:(PhotoSize)photoSize
-{
-	// will download in the background and send a notification later
-	return [[Cocoafish defaultCocoafish].downloadManager downloadPhoto:self size:photoSize];
 }
 
 @end
@@ -190,7 +201,6 @@
     return self;
 
 }
-
 -(void)processAndSetPhotoData
 {    
     if (!_photoData) {

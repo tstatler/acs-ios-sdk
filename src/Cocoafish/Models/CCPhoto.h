@@ -29,7 +29,8 @@ typedef enum PhotoSize {
 	BOOL _processed;
 	NSString  *_contentType;
 	NSDictionary *_urls;
-	NSDate *takenAt;
+	NSDate *_takenAt;
+    
 }
 
 @property (nonatomic, retain, readonly) NSString *filename;
@@ -41,11 +42,9 @@ typedef enum PhotoSize {
 @property (nonatomic, retain, readonly) NSDate *takenAt;
 @property (nonatomic, retain, readonly) NSDictionary *urls;
 
--(NSString *)getPhotoUrl:(PhotoSize)photoSize;
--(Boolean)asyncGetPhoto:(PhotoSize)photoSize;
--(UIImage *)getPhoto:(PhotoSize)photoSize;
+-(NSString *)getImageUrl:(PhotoSize)photoSize;
+-(UIImage *)getImage:(PhotoSize)photoSize;
 -(NSString *)localPath:(PhotoSize)photoSize;
--(void)updateUrls:(NSDictionary *)urls;
 @end
 
 @interface CCUploadImage :  NSObject  {

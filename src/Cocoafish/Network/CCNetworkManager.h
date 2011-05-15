@@ -43,14 +43,14 @@
 -(void)cancelAllRequests;
 
 // Users
--(void)registerUser:(CCUser *)user password:(NSString *)password passwordConfirmation:(NSString *)passwordConfirmation;
+-(void)registerUser:(CCUser *)user password:(NSString *)password passwordConfirmation:(NSString *)passwordConfirmation image:(CCUploadImage *)image;
 -(void)login:(NSString *)login password:(NSString *)password;
 -(void)logout;
 -(void)deleteUser;  // delete current user
 -(void)showCurrentUser;
 -(void)showUser:(NSString *)userId;
 -(void)searchUsers:(NSString *)query page:(int)page perPage:(int)perPage;
--(void)updateUser:(CCUser *)updatedUser;    // update current user
+-(void)updateUser:(CCUser *)updatedUser image:(CCUploadImage *)image; // update current user
 
 // Checkins
 -(void)searchCheckins:(CCObject *)belongTo page:(int)page perPage:(int)perPage;
@@ -59,15 +59,15 @@
 -(void)deleteCheckin:(NSString *)checkinId;
 
 // Statuses
--(void)createUserStatus:(NSString *)status;
+-(void)createUserStatus:(NSString *)status image:(CCUploadImage *)image;
 -(void)searchUserStatuses:(CCUser *)user startTime:(NSDate *)startTime page:(int)page perPage:(int)perPage;
 
 // Places
 -(void)deletePlace:(NSString *)placeId;
--(void)createPlace:(CCPlace *)newPlace;
+-(void)createPlace:(CCPlace *)newPlace image:(CCUploadImage *)image;
 -(void)showPlace:(NSString *)placeId;
 -(void)searchPlaces:(NSString *)query location:(CLLocation *)location distance:(NSNumber *)distance page:(int)page perPage:(int)perPage;
--(void)updatePlace:(CCPlace *)place;
+-(void)updatePlace:(CCPlace *)place image:(CCUploadImage *)image;
 //-(void)getPlacesInRegion:(MKCoordinateRegion)region;
 
 // Photos
@@ -87,8 +87,8 @@
 -(void)searchKeyValues:(NSString *)keyword page:(int)page per_page:(int)perPage;
 
 // Event related
--(void)createEvent:(NSString *)name details:(NSString *)details placeId:(NSString *)placeId startTime:(NSDate *)startTime endTime:(NSDate *)endTime;
--(void)updateEvent:(NSString *)eventId name:(NSString *)name details:(NSString *)details placeId:(NSString *)placeId startTime:(NSDate *)startTime endTime:(NSDate *)endTime;
+-(void)createEvent:(NSString *)name details:(NSString *)details placeId:(NSString *)placeId startTime:(NSDate *)startTime endTime:(NSDate *)endTime image:(CCUploadImage *)image;
+-(void)updateEvent:(NSString *)eventId name:(NSString *)name details:(NSString *)details placeId:(NSString *)placeId startTime:(NSDate *)startTime endTime:(NSDate *)endTime image:(CCUploadImage *)image;
 -(void)showEvent:(NSString *)eventId;
 -(void)searchEvents:(CCObject *)belongTo page:(int)page perPage:(int)perPage;
 -(void)deleteEvent:(NSString *)eventId;
@@ -102,6 +102,9 @@
 -(void)showMessageThreads:(int)page perPage:(int)perPage;
 -(void)showThreadMessages:(NSString *)threadId page:(int)page perPage:(int)perPage;
 -(void)deleteMessage:(NSString *)messageId;
+
+// Objects
+-(void)getObjectsByIds:(NSDictionary *)idsByType;
 
 // Used to login with cocoafish after a successful facebook login
 -(CCUser *)loginWithFacebook:(NSString *)fbAppId accessToken:(NSString *)accessToken error:(NSError **)error;

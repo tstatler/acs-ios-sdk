@@ -8,22 +8,6 @@
 
 #import "CCPlace.h"
 
-@interface CCPlace ()
-
-@property (nonatomic, retain, readwrite) NSString *name;
-@property (nonatomic, retain, readwrite) NSString *address;
-@property (nonatomic, retain, readwrite) NSString *crossStreet;
-@property (nonatomic, retain, readwrite) NSString *city;
-@property (nonatomic, retain, readwrite) NSString *state;
-@property (nonatomic, retain, readwrite) NSString *postalCode;
-@property (nonatomic, retain, readwrite) NSString *country;
-@property (nonatomic, retain, readwrite) NSString *phone;
-@property (nonatomic, retain, readwrite) CLLocation *location;
-@property (nonatomic, retain, readwrite) NSString *website;
-@property (nonatomic, retain, readwrite) NSString *twitter;
-
-@end
-
 @implementation CCPlace
 
 @synthesize name = _name;
@@ -31,7 +15,7 @@
 @synthesize crossStreet = _crossStreet;
 @synthesize city = _city;
 @synthesize state = _state;
-@synthesize postalCode = _PostalCode;
+@synthesize postalCode = _postalCode;
 @synthesize country = _country;
 @synthesize phone = _phone;
 @synthesize location = _location;
@@ -72,24 +56,22 @@
             self.country, self.phone, self.website, self.twitter, [self.location description], [super description]];
 }
 
--(CCMutablePlace *)mutableCopy
+-(id)copyWithZone:(NSZone *)zone  
 {
-    CCMutablePlace *placeCopy = [[CCMutablePlace alloc] initWithId:self.objectId];
-    placeCopy.name = [self.name copy];
-    placeCopy.address = [self.address copy];
-    placeCopy.crossStreet = [self.address copy];
-    placeCopy.city = [self.city copy];
-    placeCopy.state = [self.state copy];
-    placeCopy.postalCode = [self.postalCode copy];
-    placeCopy.country = [self.country copy];
-    placeCopy.phone = [self.phone copy];
-    placeCopy.website = [self.website copy];
-    placeCopy.twitter = [self.twitter copy];
-    placeCopy.location = [self.location copy];
-                                 
-    return placeCopy;
+    CCPlace *copy = [super copyWithZone:zone];
+    copy.name = [_name copy];
+    copy.address = [_address copy];
+    copy.crossStreet = [_crossStreet copy];
+    copy.city = [_city copy];
+    copy.state = [_state copy];
+    copy.postalCode = [_postalCode copy];
+    copy.country = [_country copy];
+    copy.phone = [_phone copy];
+    copy.website = [_website copy];
+    copy.twitter = [_twitter copy];
+    copy.location= [_location copy];
+    return copy;
 }
-
 
 -(void)dealloc
 {
@@ -107,19 +89,4 @@
 	[super dealloc];
 }
 
-@end
-
-@implementation CCMutablePlace
-
-@synthesize name ;
-@synthesize address;
-@synthesize crossStreet;
-@synthesize state;
-@synthesize postalCode;
-@synthesize city;
-@synthesize country;
-@synthesize phone;
-@synthesize website;
-@synthesize twitter;
-@synthesize location;
 @end

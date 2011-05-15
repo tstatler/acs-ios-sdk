@@ -475,7 +475,7 @@
 
     AlertPrompt *prompt;
     APIViewController *controller = [[APIViewController alloc] initWithNibName:@"APIViewController" bundle:nil];  
-    CCMutablePlace *newPlace;
+    CCPlace *newPlace;
     CheckinViewController *checkinController;
     PhotoAddViewController *photoController;
     UIAlertView *alert;
@@ -548,7 +548,7 @@
                         [controller.ccNetworkManager deletePlace:testPlace.objectId];
                     } else {
                         // create a test place
-                        newPlace = [[CCMutablePlace alloc] init];
+                        newPlace = [[CCPlace alloc] init];
                         newPlace.name = @"Cocoafish";
                         newPlace.address = @"58 South Park Ave.";
                         newPlace.city = @"San Francisco";
@@ -558,7 +558,7 @@
                         newPlace.website = @"http://cocoafish.com";
                         newPlace.twitter = @"cocoafish";
                         newPlace.location = [[CLLocation alloc] initWithLatitude:37.782227 longitude:-122.393159];
-                        [controller.ccNetworkManager createPlace:newPlace];
+                        [controller.ccNetworkManager createPlace:newPlace image:[[[CCUploadImage alloc] initWithImage:[UIImage imageNamed:@"sample.png"]] autorelease]];
                         
                     }
                     break;
@@ -790,7 +790,7 @@
                             [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
                             return;
                         }
-                        [controller.ccNetworkManager createEvent:@"Cocoafish Happy Hour" details:@"Bring your own drink" placeId:testPlace.objectId startTime:[NSDate date] endTime:[NSDate dateWithTimeIntervalSinceNow:7200]];
+                        [controller.ccNetworkManager createEvent:@"Cocoafish Happy Hour" details:@"Bring your own drink" placeId:testPlace.objectId startTime:[NSDate date] endTime:[NSDate dateWithTimeIntervalSinceNow:7200] image:[[[CCUploadImage alloc] initWithImage:[UIImage imageNamed:@"sample.png"]] autorelease]];
                     } else {
                         [controller.ccNetworkManager deleteEvent:testEvent.objectId];
                     }
@@ -865,11 +865,11 @@
         NSString *entered = [(AlertPrompt *)alertView enteredText];
         APIViewController *controller = [[APIViewController alloc] initWithNibName:@"APIViewController" bundle:nil];  
         if (lastIndexPath.section == USERS) {
-            CCMutableUser *updatedUser = [[[Cocoafish defaultCocoafish] getCurrentUser] mutableCopy];
+            CCUser *updatedUser = [[[Cocoafish defaultCocoafish] getCurrentUser] copy];
             updatedUser.email = entered;
-            [controller.ccNetworkManager updateUser:updatedUser];
+            [controller.ccNetworkManager updateUser:updatedUser image:[[[CCUploadImage alloc] initWithImage:[UIImage imageNamed:@"sample.png"]] autorelease]];
         } else if (lastIndexPath.section == STATUSES) {
-            [controller.ccNetworkManager createUserStatus:entered];
+            [controller.ccNetworkManager createUserStatus:entered image:[[[CCUploadImage alloc] initWithImage:[UIImage imageNamed:@"sample.png"]] autorelease]];
         } else if (lastIndexPath.section == KEY_VALUES){
             if (lastIndexPath.row == 0) {
                 // set key value
@@ -879,7 +879,7 @@
                 [controller.ccNetworkManager appendValueForKey:@"Test" appendValue:entered];
             }
         } else if (lastIndexPath.section == EVENTS) {
-            [controller.ccNetworkManager updateEvent:testEvent.objectId name:entered details:nil placeId:nil startTime:nil endTime:nil];
+            [controller.ccNetworkManager updateEvent:testEvent.objectId name:entered details:nil placeId:nil startTime:nil endTime:nil image:[[[CCUploadImage alloc] initWithImage:[UIImage imageNamed:@"sample.png"]] autorelease]];
         } else if (lastIndexPath.section == MESSAGES) {
             if (lastIndexPath.row == 0) {
                 [controller.ccNetworkManager createMessage:entered body:@"Thanks for using Cocoafish" toUserIds:[NSArray arrayWithObject:[[Cocoafish defaultCocoafish] getCurrentUser].objectId]];
@@ -888,9 +888,9 @@
 
             }
         } else {
-            CCMutablePlace *updatedPlace = [testPlace mutableCopy];
+            CCPlace *updatedPlace = [testPlace copy];
             updatedPlace.name = entered;
-            [controller.ccNetworkManager updatePlace:updatedPlace];
+            [controller.ccNetworkManager updatePlace:updatedPlace image:[[[CCUploadImage alloc] initWithImage:[UIImage imageNamed:@"sample.png"]] autorelease]];
         }
         [self.navigationController pushViewController:controller animated:YES];
         [controller release];
