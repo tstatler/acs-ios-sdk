@@ -629,7 +629,7 @@
                 case 1:
                 default:
                     // get a user's statuses
-                    [controller.ccNetworkManager searchUserStatuses:[[Cocoafish defaultCocoafish] getCurrentUser] page:CC_FIRST_PAGE perPage:CC_DEFAULT_PER_PAGE];
+                    [controller.ccNetworkManager searchUserStatuses:[[Cocoafish defaultCocoafish] getCurrentUser] startTime:nil page:CC_FIRST_PAGE perPage:CC_DEFAULT_PER_PAGE];
                     break;
             }
             break;
