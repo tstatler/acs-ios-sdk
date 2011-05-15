@@ -91,6 +91,7 @@
 	@synchronized(self) {
 		[_requestSet removeObject:finishedRequest];
 	}
+
     [self release];
 }
 
@@ -1270,7 +1271,6 @@
             [_delegate networkManager:self didFailWithError:error];
         }
     }
-    [self removeFinishedRequest:request];
 
     return nil;
 }
@@ -1294,7 +1294,8 @@
             [[Cocoafish defaultCocoafish] setCurrentUser:user];
             
         }
-    } 
+    }
+    [self removeFinishedRequest:request];
 }
 
 // Create action finished
@@ -1308,6 +1309,8 @@
             [[Cocoafish defaultCocoafish] setCurrentUser:nil];
         }
     } 
+    [self removeFinishedRequest:request];
+
 }
 
 // Create action finished
@@ -1340,6 +1343,8 @@
         }
             
     } 
+    [self removeFinishedRequest:request];
+
 }
 
 // get action finished
@@ -1365,6 +1370,8 @@
             [_delegate networkManager:self meta:response.meta didSucceed:response.response];
         }
     } 
+    [self removeFinishedRequest:request];
+
 }
 
 // update action finished
@@ -1396,6 +1403,8 @@
             [_delegate networkManager:self meta:response.meta didSucceed:response.response];
         }
     } 
+    [self removeFinishedRequest:request];
+
 }
 
 // delete action finished
@@ -1418,6 +1427,8 @@
         }
         
     } 
+    [self removeFinishedRequest:request];
+
 }
 
 -(void)compoundRequestDone:(ASIHTTPRequest *)request
@@ -1428,6 +1439,8 @@
             [_delegate networkManager:self meta:response.meta didSucceedWithCompound:response.responses];
         }
     }    
+    [self removeFinishedRequest:request];
+
 }
 
 -(void)requestFailed:(ASIHTTPRequest *)request
