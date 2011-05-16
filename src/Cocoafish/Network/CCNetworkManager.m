@@ -1240,7 +1240,7 @@
         if (jsonArray == nil) {
             continue;
         }
-        if ([jsonArray isKindOfClass:[NSArray class]] && [jsonArray count] > 0) {
+        if ([jsonArray isKindOfClass:[NSArray class]]) {
             NSMutableArray *array = [NSMutableArray arrayWithCapacity:[jsonArray count]];
             for (NSDictionary *jsonObject in jsonArray) {
                 CCObject *object = (CCObject *)[[class alloc] initWithJsonResponse:jsonObject];
@@ -1331,9 +1331,7 @@
             for (NSString *classKey in classKeys) {
                 Class class = NSClassFromString(classKey);
                 NSArray *objects = [results objectForKey:classKey];
-                if ([objects count] > 0) {
-                    [_delegate networkManager:self didCreate:objects objectType:class];
-                }
+                [_delegate networkManager:self didCreate:objects objectType:class];
             }
         } else if ([_delegate respondsToSelector:@selector(networkManager:meta:didSucceed:)]) {
             
@@ -1359,9 +1357,8 @@
             for (NSString *classKey in classKeys) {
                 Class class = NSClassFromString(classKey);
                 NSArray *objects = [results objectForKey:classKey];
-                if ([objects count] > 0) {
-                    [_delegate networkManager:self didGet:objects objectType:class pagination:response.meta.pagination];
-                }
+                [_delegate networkManager:self didGet:objects objectType:class pagination:response.meta.pagination];
+            
             }
         } else if ([_delegate respondsToSelector:@selector(networkManager:meta:didSucceed:)]) {
             
@@ -1392,9 +1389,7 @@
             for (NSString *classKey in classKeys) {
                 Class class = NSClassFromString(classKey);
                 NSArray *objects = [results objectForKey:classKey];
-                if ([objects count] > 0) {
-                    [_delegate networkManager:self didUpdate:objects objectType:class];
-                }
+                [_delegate networkManager:self didUpdate:objects objectType:class];
             }
         } else if ([_delegate respondsToSelector:@selector(networkManager:meta:didSucceed:)]) {
             
