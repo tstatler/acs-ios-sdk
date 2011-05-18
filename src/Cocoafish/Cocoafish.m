@@ -306,6 +306,14 @@ static Cocoafish *theDefaultCocoafish = nil;
 	[super dealloc];
 }
 
+#pragma CCNetworkManager delegate methods
+-(void)networkManager:(CCNetworkManager *)networkManager didGet:(NSArray *)objectArray objectType:(Class)objectType pagination:(CCPagination *)pagination
+{
+    if (objectType == [CCUser class] && [objectArray count] == 1) {
+        [[Cocoafish defaultCocoafish] setCurrentUser:[objectArray objectAtIndex:0]];
+    }
+}
+
 +(void)initializeWithAppKey:(NSString *)appKey customAppIds:(NSDictionary *)customAppIds
 {
     @synchronized(theDefaultCocoafish) {
