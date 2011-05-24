@@ -19,6 +19,8 @@
 	NSTimer *_autoUpdateTimer; // timer used to get photo updates if needed
 	int _timeInterval; // used by timer
     NSMutableDictionary *_pendingPhotoDownloadQueue; // If a download request was issued before the photo was processed
+    unsigned long long int _curCacheSize;
+    NSDate *_lastCacheCleanupTime;
 }
 
 

@@ -16,7 +16,7 @@ static Cocoafish *theDefaultCocoafish = nil;
 -(void)saveUserSession;
 -(void)restoreUserSession;
 -(void) printCookieStorage;
--(void)cleanupCacheDir;
+//-(void)cleanupCacheDir;
 -(id)initWithAppKey:(NSString *)appKey customAppIds:(NSDictionary *)customAppIds;
 -(id)initWithOauthConsumerKey:(NSString *)consumerKey consumerSecret:(NSString *)consumerSecret customAppIds:(NSDictionary *)customAppIds;
 -(void)initCommon:(NSDictionary *)customAppIds;
@@ -57,17 +57,18 @@ static Cocoafish *theDefaultCocoafish = nil;
 -(void)initCommon:(NSDictionary *)customAppIds
 {
     theDefaultCocoafish = self;
-	_downloadManager = [[CCDownloadManager alloc] init];
 
 	// create Cocoafish dir if there is none
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES); 
 	NSString *documentsDirectory = [paths objectAtIndex:0]; // Get documents folder
 	_cocoafishDir = [[NSString alloc] initWithFormat:@"%@/CocoafishCache", documentsDirectory];
-	[self cleanupCacheDir];
+	//[self cleanupCacheDir];
 
 	if (![[NSFileManager defaultManager] createDirectoryAtPath:_cocoafishDir withIntermediateDirectories:NO attributes:nil error:nil]) {
 		NSLog(@"Failed to create %@, photo download will not work", _cocoafishDir);
 	}
+    
+    _downloadManager = [[CCDownloadManager alloc] init];
 	
 	// initialize all the custom app Ids such as facebook
 	if (customAppIds != nil) {
@@ -289,14 +290,14 @@ static Cocoafish *theDefaultCocoafish = nil;
 }
 
 
--(void)cleanupCacheDir
+/*-(void)cleanupCacheDir
 {
 	[[NSFileManager defaultManager] removeItemAtPath:_cocoafishDir error:nil];
-}
+}*/
 
 -(void)dealloc
 {
-	[self cleanupCacheDir];
+	//[self cleanupCacheDir];
 	[_currentUser release];
 	[_appKey release];
 	[_consumerKey release];

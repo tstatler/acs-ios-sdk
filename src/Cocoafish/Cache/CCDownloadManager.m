@@ -13,10 +13,13 @@
 #import "CCResponse.h"
 
 #define DEFAULT_TIME_INTERVAL	3
+#define MAX_CACHE_SIZE      5242880 // file cache size 5M
+#define MAX_CACHE_TIME      86400   // maximum file cached for 1 day
 
 @interface CCDownloadManager ()
 
 @property (nonatomic, retain, readwrite) NSTimer *autoUpdateTimer;
+-(void)cleanupCache; 
 @end
 
 @implementation CCDownloadManager
@@ -31,6 +34,7 @@
 		}
 		_downloadInProgress = [[NSMutableSet alloc] init];
 		_processingPhotos = [[NSMutableDictionary alloc] init];
+        [self cleanupCache];
 	}
 	return self;
 }
@@ -74,7 +78,8 @@
 
 -(void)downloadDone:(ASIHTTPRequest *)request
 {
-
+    // Cleanup file cache if necessary
+    [self cleanupCache];
 	CCDownloadRequest *downloadRequest = (CCDownloadRequest *)request;
 	NSDictionary * dict = [NSDictionary dictionaryWithObjectsAndKeys:downloadRequest.size, @"size", downloadRequest.object, @"object", nil];
 	
@@ -236,8 +241,102 @@
 	}
 }
 
+
+-(void)cleanupCache
+{
+    @synchronized(self) {
+        // Get the list of cached files by create date, (last access date would be better but don't know how to
+        // get it on IOS
+        NSError* error = nil;
+        NSArray* filesArray = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[Cocoafish defaultCocoafish].cocoafishDir error:&error];
+        if(error != nil) {
+            NSLog(@"Error in reading files: %@", [error localizedDescription]);
+            return;
+        }
+        if ([filesArray count] == 0) {
+            return;
+        }
+
+        if (_lastCacheCleanupTime != nil && [[NSDate date] timeIntervalSinceDate:_lastCacheCleanupTime] < 5) {
+            // we just checked less than 5 seconds ago, do not cleanup cache more than every 5 seconds
+            return;
+        }
+        [_lastCacheCleanupTime release];
+        _lastCacheCleanupTime = [[NSDate date] retain];
+
+        unsigned long long int fileSize = 0;
+
+        // sort by creation date
+        NSMutableArray* filesAndProperties = [NSMutableArray arrayWithCapacity:[filesArray count]];
+        NSDate *oldestFileDate= nil;
+        for(NSString* file in filesArray) {
+            NSString* filePath = [[Cocoafish defaultCocoafish].cocoafishDir stringByAppendingPathComponent:file];
+            NSDictionary* properties = [[NSFileManager defaultManager]
+                                        attributesOfItemAtPath:filePath
+                                        error:&error];
+            
+            if(error == nil)
+            {
+                NSDate* modDate = [properties objectForKey:NSFileModificationDate];
+                if (oldestFileDate == nil) {
+                    oldestFileDate = modDate;
+                } else if ([oldestFileDate compare:modDate] == NSOrderedAscending) {
+                    oldestFileDate = modDate;
+                }
+                [filesAndProperties addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                                               filePath, @"path",
+                                               modDate, @"lastModDate", 
+                                               [NSNumber numberWithUnsignedLongLong:[properties fileSize]], @"size",
+                                               nil]];   
+                fileSize += [properties fileSize];
+
+            }
+        }
+        
+        if (fileSize <= MAX_CACHE_SIZE && (oldestFileDate && [[NSDate date] timeIntervalSinceDate:oldestFileDate] < MAX_CACHE_TIME) ) {
+            // if cache is smaller than the max and the oldest file is less than one day old, do nothing
+            return;
+        }
+        
+        // sort using a block
+        // order inverted as we want latest date first
+        NSArray* sortedFiles = [filesAndProperties sortedArrayUsingComparator:
+                                ^(id path1, id path2)
+                                {                               
+                                    // compare 
+                                    NSComparisonResult comp = [[path1 objectForKey:@"lastModDate"] compare:
+                                                               [path2 objectForKey:@"lastModDate"]];
+                                   /* // invert ordering
+                                    if (comp == NSOrderedDescending) {
+                                        comp = NSOrderedAscending;
+                                    }
+                                    else if(comp == NSOrderedAscending){
+                                        comp = NSOrderedDescending;
+                                    }*/
+                                    return comp;                                
+                                }];
+        
+        // Delete the oldest ones
+        for (NSDictionary *file in sortedFiles) {
+            if ([[NSDate date] timeIntervalSinceDate:[file objectForKey:@"lastModDate"]] < MAX_CACHE_TIME && fileSize < MAX_CACHE_TIME) {
+                break;
+            }
+            if ([[NSFileManager defaultManager] removeItemAtPath:[file objectForKey:@"path"] error:&error] != YES) {
+                NSLog(@"Unable to delete file: %@", [error localizedDescription]);
+                continue;
+            }
+            fileSize -= [[file objectForKey:@"size"] unsignedLongLongValue];
+            if (fileSize < MAX_CACHE_SIZE) {
+                break;
+            }
+        }
+    }
+
+}
+
 -(void)dealloc
 {
+    [_lastCacheCleanupTime release];
 	[_ccNetworkManager release];
 	[super dealloc];
 	

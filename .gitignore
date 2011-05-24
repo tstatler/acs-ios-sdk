@@ -1,6 +1,11 @@
 samples/DemoApp/build/
+samples/APIs/APIs.xcodeproj/xcuserdata
+samples/APIs/APIs.xcodeproj/*.pbxuser
+samples/APIs/APIs.xcodeproj/*.mode*
+samples/DemoApp/Demo.xcodeproj/xcuserdata
 samples/DemoApp/Demo.xcodeproj/*.pbxuser
 samples/DemoApp/Demo.xcodeproj/*.mode*
+src/Cocoafish-ios-sdk.xcodeproj/xcuserdata
 src/Cocoafish-ios-sdk.xcodeproj/*.pbxuser
 src/Cocoafish-ios-sdk.xcodeproj/*.mode*
 src/build/
