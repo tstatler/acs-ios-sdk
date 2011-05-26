@@ -381,11 +381,12 @@
 		NSLog(@"%@", [request responseString]);
 		CCResponse *response = [[CCResponse alloc] initWithJsonData:[request responseData]];
 		if (response && [response.meta.status isEqualToString:CC_STATUS_OK]) {
-			NSMutableArray *users = nil;
-            Class class = [self parseResultArray:response.response resultArray:&users];
-			if (class == [CCUser class] && [users count] == 1) {
-				currentUser = [users objectAtIndex:0];
-			}
+            NSDictionary *results = [self parseJsonResponse:response.response];
+            NSArray *users = [results objectForKey:NSStringFromClass([CCUser class])];       
+                        
+            if ([users count] == 1) {
+                currentUser = [users objectAtIndex:0];
+            }
 			if (!currentUser) {
 				NSLog(@"Did not receive user info after facebookLogin");
 			} else {
@@ -424,11 +425,13 @@
 		NSLog(@"%@", [request responseString]);
 		CCResponse *response = [[CCResponse alloc] initWithJsonData:[request responseData]];
 		if (response && [response.meta.status isEqualToString:CC_STATUS_OK]) {
-			NSMutableArray *users = nil;
-            Class class = [self parseResultArray:response.response resultArray:&users];
-			if (class == [CCUser class] && [users count] == 1) {
-				currentUser = [users objectAtIndex:0];
-			}
+            NSDictionary *results = [self parseJsonResponse:response.response];
+            NSArray *users = [results objectForKey:NSStringFromClass([CCUser class])];       
+                        
+            if ([users count] == 1) {
+                currentUser = [users objectAtIndex:0];
+            }
+
 			if (!currentUser) {
 				NSLog(@"Did not receive user info after facebookLogin");
 			} else {

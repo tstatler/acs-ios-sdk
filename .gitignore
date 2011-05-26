@@ -1,7 +1,9 @@
 samples/DemoApp/build/
 samples/APIs/APIs.xcodeproj/xcuserdata
+samples/APIs/APIs.xcodeproj/project.xcworkspace/xcuserdata
 samples/APIs/APIs.xcodeproj/*.pbxuser
 samples/APIs/APIs.xcodeproj/*.mode*
+samples/DemoApp/Demo.xcodeproj/project.xcworkspace/xcuserdata
 samples/DemoApp/Demo.xcodeproj/xcuserdata
 samples/DemoApp/Demo.xcodeproj/*.pbxuser
 samples/DemoApp/Demo.xcodeproj/*.mode*
