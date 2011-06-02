@@ -54,6 +54,11 @@
                                     [self.place description], [super description]];
 }
 
+-(NSString *)modelName
+{
+    return @"checkin";
+}
+
 -(void)dealloc
 {
 	self.user = nil;

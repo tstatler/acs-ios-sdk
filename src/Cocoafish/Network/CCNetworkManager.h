@@ -26,6 +26,7 @@
 @class CCUploadImage;
 @class CCMeta;
 @class CCMessage;
+@class CCRequest;
 
 @protocol CCNetworkManagerDelegate;
 
@@ -43,68 +44,70 @@
 -(void)cancelAllRequests;
 
 // Users
--(void)registerUser:(CCUser *)user password:(NSString *)password passwordConfirmation:(NSString *)passwordConfirmation image:(CCUploadImage *)image;
--(void)login:(NSString *)login password:(NSString *)password;
--(void)logout;
--(void)deleteUser;  // delete current user
--(void)showCurrentUser;
--(void)showUser:(NSString *)userId;
--(void)searchUsers:(NSString *)query page:(int)page perPage:(int)perPage;
--(void)updateUser:(CCUser *)updatedUser image:(CCUploadImage *)image; // update current user
+-(CCRequest *)registerUser:(CCUser *)user password:(NSString *)password passwordConfirmation:(NSString *)passwordConfirmation image:(CCUploadImage *)image;
+-(CCRequest *)login:(NSString *)login password:(NSString *)password;
+-(CCRequest *)logout;
+-(CCRequest *)deleteUser;  // delete current user
+-(CCRequest *)showCurrentUser;
+-(CCRequest *)showUser:(NSString *)userId;
+-(CCRequest *)searchUsers:(NSString *)query page:(int)page perPage:(int)perPage;
+-(CCRequest *)updateUser:(CCUser *)updatedUser image:(CCUploadImage *)image; // update current user
 
 // Checkins
--(void)searchCheckins:(CCObject *)belongTo page:(int)page perPage:(int)perPage;
--(void)showCheckin:(NSString *)checkId;
--(void)createCheckin:(CCObject *)belongTo message:(NSString *)message image:(CCUploadImage *)image;
--(void)deleteCheckin:(NSString *)checkinId;
+-(CCRequest *)searchCheckins:(CCObject *)belongTo page:(int)page perPage:(int)perPage;
+-(CCRequest *)showCheckin:(NSString *)checkId;
+-(CCRequest *)createCheckin:(CCObject *)belongTo message:(NSString *)message image:(CCUploadImage *)image;
+-(CCRequest *)deleteCheckin:(NSString *)checkinId;
 
 // Statuses
--(void)createUserStatus:(NSString *)status image:(CCUploadImage *)image;
--(void)searchUserStatuses:(CCUser *)user startTime:(NSDate *)startTime page:(int)page perPage:(int)perPage;
+-(CCRequest *)createUserStatus:(NSString *)status image:(CCUploadImage *)image;
+-(CCRequest *)searchUserStatuses:(CCUser *)user startTime:(NSDate *)startTime page:(int)page perPage:(int)perPage;
 
 // Places
--(void)deletePlace:(NSString *)placeId;
--(void)createPlace:(CCPlace *)newPlace image:(CCUploadImage *)image;
--(void)showPlace:(NSString *)placeId;
--(void)searchPlaces:(NSString *)query location:(CLLocation *)location distance:(NSNumber *)distance page:(int)page perPage:(int)perPage;
--(void)updatePlace:(CCPlace *)place image:(CCUploadImage *)image;
+-(CCRequest *)deletePlace:(NSString *)placeId;
+-(CCRequest *)createPlace:(CCPlace *)newPlace image:(CCUploadImage *)image;
+-(CCRequest *)showPlace:(NSString *)placeId;
+-(CCRequest *)searchPlaces:(NSString *)query location:(CLLocation *)location distance:(NSNumber *)distance page:(int)page perPage:(int)perPage;
+-(CCRequest *)updatePlace:(CCPlace *)place image:(CCUploadImage *)image;
 //-(void)getPlacesInRegion:(MKCoordinateRegion)region;
 
 // Photos
--(void)createPhoto:(CCObject *)photoHost collectionName:(NSString *)collectionName image:(CCUploadImage *)image;
--(void)searchPhotos:(CCObject *)photoHost collectionName:(NSString *)collectionName page:(int)page perPage:(int)perPage;
--(void)showPhoto:(NSString *)photoId;
--(void)deletePhoto:(NSString *)photoId;
--(void)getPhotosByIds:(NSArray *)photoIds;
--(Boolean)downloadPhoto:(id)sender photo:(CCPhoto *)photo size:(int)size;
+-(CCRequest *)createPhoto:(CCObject *)photoHost collectionName:(NSString *)collectionName image:(CCUploadImage *)image;
+-(CCRequest *)updatePhoto:(NSString *)photoId collectionName:(NSString *)collectionName image:(CCUploadImage *)image;
+-(CCRequest *)searchPhotos:(CCObject *)photoHost collectionName:(NSString *)collectionName page:(int)page perPage:(int)perPage;
+-(CCRequest *)showPhoto:(NSString *)photoId;
+-(CCRequest *)deletePhoto:(NSString *)photoId;
+-(CCRequest *)downloadPhoto:(id)sender photo:(CCPhoto *)photo size:(int)size;
 
 // Key Value Pairs
--(void)setValueForKey:(NSString *)key value:(NSString *)value;
--(void)getValueForKey:(NSString *)value;
--(void)appendValueForKey:(NSString *)key appendValue:(NSString *)appendValue;
--(void)deleteKeyValue:(NSString *)key;
--(void)incrBy:(NSString *)name value:(NSInteger)value;
--(void)searchKeyValues:(NSString *)keyword page:(int)page per_page:(int)perPage;
+-(CCRequest *)setValueForKey:(NSString *)key value:(NSString *)value;
+-(CCRequest *)getValueForKey:(NSString *)value;
+-(CCRequest *)appendValueForKey:(NSString *)key appendValue:(NSString *)appendValue;
+-(CCRequest *)deleteKeyValue:(NSString *)key;
+-(CCRequest *)incrBy:(NSString *)name value:(NSInteger)value;
+-(CCRequest *)searchKeyValues:(NSString *)keyword page:(int)page per_page:(int)perPage;
+-(CCRequest *)setValuesForKey:(NSString *)key values:(NSArray *)values;
+-(NSArray *)getValuesForKey:(NSString *)key;
 
 // Event related
--(void)createEvent:(NSString *)name details:(NSString *)details placeId:(NSString *)placeId startTime:(NSDate *)startTime endTime:(NSDate *)endTime image:(CCUploadImage *)image;
--(void)updateEvent:(NSString *)eventId name:(NSString *)name details:(NSString *)details placeId:(NSString *)placeId startTime:(NSDate *)startTime endTime:(NSDate *)endTime image:(CCUploadImage *)image;
--(void)showEvent:(NSString *)eventId;
--(void)searchEvents:(CCObject *)belongTo page:(int)page perPage:(int)perPage;
--(void)deleteEvent:(NSString *)eventId;
+-(CCRequest *)createEvent:(NSString *)name details:(NSString *)details placeId:(NSString *)placeId startTime:(NSDate *)startTime endTime:(NSDate *)endTime image:(CCUploadImage *)image;
+-(CCRequest *)updateEvent:(NSString *)eventId name:(NSString *)name details:(NSString *)details placeId:(NSString *)placeId startTime:(NSDate *)startTime endTime:(NSDate *)endTime image:(CCUploadImage *)image;
+-(CCRequest *)showEvent:(NSString *)eventId;
+-(CCRequest *)searchEvents:(CCObject *)belongTo page:(int)page perPage:(int)perPage;
+-(CCRequest *)deleteEvent:(NSString *)eventId;
 
 // Message related
--(void)createMessage:(NSString *)subject body:(NSString *)body toUserIds:(NSArray *)toUserIds;
--(void)replyMessage:(NSString *)messageId body:(NSString *)body;
--(void)showMessage:(NSString *)messageId;
--(void)showInboxMessages:(int)page perPage:(int)perPage;
--(void)showSentMessages:(int)page perPage:(int)perPage;
--(void)showMessageThreads:(int)page perPage:(int)perPage;
--(void)showThreadMessages:(NSString *)threadId page:(int)page perPage:(int)perPage;
--(void)deleteMessage:(NSString *)messageId;
+-(CCRequest *)createMessage:(NSString *)subject body:(NSString *)body toUserIds:(NSArray *)toUserIds;
+-(CCRequest *)replyMessage:(NSString *)messageId body:(NSString *)body;
+-(CCRequest *)showMessage:(NSString *)messageId;
+-(CCRequest *)showInboxMessages:(int)page perPage:(int)perPage;
+-(CCRequest *)showSentMessages:(int)page perPage:(int)perPage;
+-(CCRequest *)showMessageThreads:(int)page perPage:(int)perPage;
+-(CCRequest *)showThreadMessages:(NSString *)threadId page:(int)page perPage:(int)perPage;
+-(CCRequest *)deleteMessage:(NSString *)messageId;
 
 // Objects
--(void)getObjectsByIds:(NSDictionary *)idsByType;
+-(CCRequest *)getObjectsByIds:(NSDictionary *)idsByType;
 
 // Used to login with cocoafish after a successful facebook login
 -(CCUser *)loginWithFacebook:(NSString *)fbAppId accessToken:(NSString *)accessToken error:(NSError **)error;
@@ -139,7 +142,7 @@
 -(void)networkManager:(CCNetworkManager *)networkManager meta:(CCMeta *)meta didSucceedWithCompound:(NSArray *)responses;
 
 // generic callback, if we received custom objects or above callbacks were not implemented
--(void)networkManager:(CCNetworkManager *)networkManager meta:(CCMeta *)meta didSucceed:(NSDictionary *)jsonResponse;
+-(void)networkManager:(CCNetworkManager *)networkManager didSucceed:(CCResponse *)response;
 
 
 @required

@@ -7,14 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "CCNetworkManager.h"
+#import "Cocoafish.h"
 
-@class CCPhoto;
-
-@interface CCDownloadManager : NSObject <CCNetworkManagerDelegate> {
+@interface CCDownloadManager : NSObject <CCRequestDelegate> {
 	NSMutableDictionary	*_processingPhotos; // list of photo objects or objects with a photo object that are in processing state
 	NSMutableSet *_downloadInProgress; // objects (photo, document, etc) that are currently being downloaded
-	CCNetworkManager *_ccNetworkManager;
 	NSTimer *_downloadNotificationTimer;	// Timer to send out download finished notifcation
 	NSTimer *_autoUpdateTimer; // timer used to get photo updates if needed
 	int _timeInterval; // used by timer

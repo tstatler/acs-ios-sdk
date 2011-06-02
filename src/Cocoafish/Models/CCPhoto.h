@@ -9,7 +9,7 @@
 #import "CCObject.h"
 
 @class UIImage;
-@class ASIHTTPRequest;
+@class CCRequest;
 typedef enum PhotoSize {
 	CC_SQUARE_75,
 	CC_THUMB_100,
@@ -57,11 +57,11 @@ typedef enum PhotoSize {
     // the following are used by CCNetworkManager
     SEL _didFinishSelector; // callback method once the request is finished
     NSString *_photoKey; 
-    ASIHTTPRequest *_request;
+    CCRequest *_request;
     NSString *_photoFileName;
 }
 
-@property (nonatomic, retain) ASIHTTPRequest *request;
+@property (nonatomic, retain) CCRequest *request;
 @property (nonatomic) SEL didFinishSelector;
 @property (nonatomic,retain) NSString *photoFileName;
 @property (nonatomic, retain) NSString *photoKey;

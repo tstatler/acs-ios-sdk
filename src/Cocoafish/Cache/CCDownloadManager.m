@@ -7,10 +7,10 @@
 //
 
 #import "CCDownloadManager.h"
-#import "CCDownloadRequest.h"
 #import "CCPhoto.h"
 #import "Cocoafish.h"
 #import "CCResponse.h"
+#import "CCRequest.h"
 
 #define DEFAULT_TIME_INTERVAL	3
 #define MAX_CACHE_SIZE      5242880 // file cache size 5M
@@ -29,9 +29,6 @@
 {
 	self = [super init];
 	if (self) {
-		if (_ccNetworkManager == nil) {
-			_ccNetworkManager = [[CCNetworkManager alloc] initWithDelegate:self];
-		}
 		_downloadInProgress = [[NSMutableSet alloc] init];
 		_processingPhotos = [[NSMutableDictionary alloc] init];
         [self cleanupCache];
@@ -70,34 +67,43 @@
 			// download already in progress, no op
 			return;
 		}
-		[_ccNetworkManager downloadPhoto:self photo:photo size:size];
-        [_downloadInProgress addObject:[photo localPath:size]];
+        
+        NSString *urlPath = [photo getImageUrl:size];
+        NSURL *url = [NSURL URLWithString:urlPath];
+        CCRequest *request = [[[CCRequest alloc] initWithURL:url method:@"GET"] autorelease];
+        [request setUserInfo:[NSDictionary dictionaryWithObjectsAndKeys:photo, @"object", [NSNumber numberWithInt:size], @"size", nil]];
+        [request setDownloadDestinationPath:[photo localPath:size]];
+        // set callbacks
+        [request setDelegate:self];
+        [request setDidFinishSelector:@selector(downloadDone:)];
+        [request setDidFailSelector:@selector(downloadFailed:)];
+        [request startAsynchronous];
 		
 	}
 }
 
--(void)downloadDone:(ASIHTTPRequest *)request
+-(void)downloadDone:(CCRequest *)request
 {
     // Cleanup file cache if necessary
     [self cleanupCache];
-	CCDownloadRequest *downloadRequest = (CCDownloadRequest *)request;
-	NSDictionary * dict = [NSDictionary dictionaryWithObjectsAndKeys:downloadRequest.size, @"size", downloadRequest.object, @"object", nil];
+//	CCDownloadRequest *downloadRequest = (CCDownloadRequest *)request;
+//	NSDictionary * dict = [NSDictionary dictionaryWithObjectsAndKeys:downloadRequest.size, @"size", downloadRequest.object, @"object", nil];
 	
-	NSNotification * myNotification = [NSNotification notificationWithName:@"DownloadFinished" object:[Cocoafish defaultCocoafish] userInfo:dict];
+	NSNotification * myNotification = [NSNotification notificationWithName:@"DownloadFinished" object:[Cocoafish defaultCocoafish] userInfo:request.userInfo];
 	[[NSNotificationQueue defaultQueue] enqueueNotification:myNotification postingStyle:NSPostNow];	
 	@synchronized(self) {
-		if (downloadRequest.size != nil) {
+        NSNumber *size = [request.userInfo objectForKey:@"size"];
+        CCObject *object = [request.userInfo objectForKey:@"object"];
+		if ([object class] == [CCPhoto class]) {
 			// it is a photo download
-			[_downloadInProgress removeObject:[(CCPhoto *)downloadRequest.object localPath:[downloadRequest.size intValue]]];
+			[_downloadInProgress removeObject:[(CCPhoto *)object localPath:[size intValue]]];
 		}
 	}
 } 
 	
--(void)downloadFailed:(ASIHTTPRequest *)request
+-(void)downloadFailed:(CCRequest *)request
 {
-	CCDownloadRequest *downloadRequest = (CCDownloadRequest *)request;
-	NSDictionary * dict = [NSDictionary dictionaryWithObjectsAndKeys:downloadRequest.size, @"size", downloadRequest.object, @"object", nil];
-	NSNotification * myNotification = [NSNotification notificationWithName:@"sDownloadFailed" object:[Cocoafish defaultCocoafish] userInfo:dict];
+	NSNotification * myNotification = [NSNotification notificationWithName:@"DownloadFailed" object:[Cocoafish defaultCocoafish] userInfo:request.userInfo];
 	[[NSNotificationQueue defaultQueue] enqueueNotification:myNotification postingStyle:NSPostNow];	
 } 
 
@@ -148,44 +154,52 @@
 
 		if ([objectIds count] > 0) {
 			// construct the request
-            NSMutableDictionary *idsByType = [NSMutableDictionary dictionaryWithCapacity:1];
+            NSMutableDictionary *paramDict = [NSMutableDictionary dictionaryWithCapacity:1];
             for (NSString *objectId in objectIds) {
                 CCObject *parent = [_processingPhotos objectForKey:objectId];
-                NSMutableArray *ids = [idsByType objectForKey:NSStringFromClass([parent class])];
+                NSString *key = [NSString stringWithFormat:@"%@_ids", [parent modelName]];
+                NSMutableArray *ids = [paramDict objectForKey:key];
                 if (ids == nil) {
                     ids = [NSMutableArray arrayWithObject:parent.objectId];
-                    [idsByType setObject:ids forKey:NSStringFromClass([parent class])];
+                    [paramDict setObject:ids forKey:key];
+                    
                 } else {
                     [ids addObject:parent.objectId];
                 }
             }
-			[_ccNetworkManager getObjectsByIds:idsByType];
+            
+            CCRequest *request = [Cocoafish restRequest:self httpMethod:@"GET" baseUrl:@"objects/show.json" paramDict:paramDict attachment:nil];
+            [request startAsynchronous];
 		}
 		
 	}
 }
 
-
--(void)networkManager:(CCNetworkManager *)networkManager didGet:(NSArray *)objects objectType:(Class)objectType pagination:(CCPagination *)pagination
+-(void)request:(CCRequest *)request didSucceed:(CCResponse *)response
 {
+    NSArray *types = [NSArray arrayWithObjects:NSStringFromClass([CCPhoto class]), NSStringFromClass([CCUser class]), NSStringFromClass([CCCheckin class]), NSStringFromClass([CCStatus class]), NSStringFromClass([CCEvent class]), nil];
+    
+    NSMutableArray *objects = [NSMutableArray arrayWithCapacity:1];
+    for (NSString *type in types) {
+        Class class = NSClassFromString(type);
+        NSArray *array = [response getObjectsOfType:class];
+        if ([array count] > 0) {
+            [objects addObjectsFromArray:array];
+        }
+    }
+    
     NSMutableDictionary *processedPhotos = [NSMutableDictionary dictionaryWithCapacity:1];
 
 	@synchronized(self) {	
         for (CCObject *object in objects) {
             CCPhoto *photo = nil;
-            if (objectType == [CCPhoto class]) {
+            if ([object class] == [CCPhoto class]) {
                 photo = (CCPhoto *)object;
             }  else if ([object isKindOfClass:[CCObjectWithPhoto class]]) {
                 photo = ((CCObjectWithPhoto *)object).photo;
             } else {
                 continue;
-            }/*else if (objectType == [CCUser class]) {
-                photo = ((CCUser *)object).photo;
-            } else if (objectType == [CCCheckin class]) {
-                photo = ((CCCheckin *)object).photo;
-            } else if (objectType == [CCStatus class]) {
-                photo = ((CCStatus *)object).photo;
-            }*/
+            }
 
             if (photo.processed) {
                 [_processingPhotos removeObjectForKey:photo.objectId];
@@ -216,7 +230,7 @@
 	
 	if ([processedPhotos count] > 0) {
 		// send out notification
-		NSDictionary *dict = [NSDictionary dictionaryWithObject:processedPhotos forKey:@"photos"];
+		NSDictionary *dict = [NSDictionary dictionaryWithObject:[processedPhotos allKeys] forKey:@"photoIds"];
 		
 		NSNotification * myNotification = [NSNotification notificationWithName:@"PhotosProcessed" object:[Cocoafish defaultCocoafish] userInfo:dict];
 		[[NSNotificationQueue defaultQueue] enqueueNotification:myNotification postingStyle:NSPostNow];	
@@ -224,7 +238,7 @@
 	
 }
 
--(void)networkManager:(CCNetworkManager *)networkManager didFailWithError:(NSError *)error
+-(void)request:(CCRequest *)request didFailWithError:(NSError *)error
 {
 	// restart the timer
 	@synchronized(self) {
@@ -337,7 +351,6 @@
 -(void)dealloc
 {
     [_lastCacheCleanupTime release];
-	[_ccNetworkManager release];
 	[super dealloc];
 	
 }

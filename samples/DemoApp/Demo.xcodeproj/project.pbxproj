@@ -17,6 +17,8 @@
 		B613B684126BAC4300EC9ABA /* ProgressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B613B682126BAC4300EC9ABA /* ProgressViewController.m */; };
 		B613B685126BAC4300EC9ABA /* ProgressViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B613B683126BAC4300EC9ABA /* ProgressViewController.xib */; };
 		B6314425134BBB1B0065A657 /* CCMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = B6314424134BBB1B0065A657 /* CCMessage.m */; };
+		B63DBCCB1397446D0068E556 /* CCAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = B63DBCCA1397446D0068E556 /* CCAttachment.m */; };
+		B63DBCED139851310068E556 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B63DBCEC139851310068E556 /* AssetsLibrary.framework */; };
 		B64B268C137F9E2C0053E943 /* CCObjectWithPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B268B137F9E2B0053E943 /* CCObjectWithPhoto.m */; };
 		B653F29D1360AA7600686E72 /* WBImage.m in Sources */ = {isa = PBXBuildFile; fileRef = B653F29C1360AA7600686E72 /* WBImage.m */; };
 		B6544E50125E83A4003AFCAB /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B6544E4E125E83A4003AFCAB /* MapViewController.m */; };
@@ -46,7 +48,6 @@
 		B67B692413341319001E4472 /* CCStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = B67B68E913341319001E4472 /* CCStatus.m */; };
 		B67B692513341319001E4472 /* CCUser.m in Sources */ = {isa = PBXBuildFile; fileRef = B67B68EB13341319001E4472 /* CCUser.m */; };
 		B67B692613341319001E4472 /* CCConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = B67B68EE13341319001E4472 /* CCConstants.m */; };
-		B67B692713341319001E4472 /* CCDownloadRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B67B68F013341319001E4472 /* CCDownloadRequest.m */; };
 		B67B692813341319001E4472 /* CCNetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B67B68F213341319001E4472 /* CCNetworkManager.m */; };
 		B67B692913341319001E4472 /* CCResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = B67B68F413341319001E4472 /* CCResponse.m */; };
 		B67B692A13341319001E4472 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = B67B68F713341319001E4472 /* NSData+Base64.m */; };
@@ -111,6 +112,9 @@
 		B613B683126BAC4300EC9ABA /* ProgressViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProgressViewController.xib; sourceTree = "<group>"; };
 		B6314423134BBB1B0065A657 /* CCMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCMessage.h; sourceTree = "<group>"; };
 		B6314424134BBB1B0065A657 /* CCMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCMessage.m; sourceTree = "<group>"; };
+		B63DBCC91397446D0068E556 /* CCAttachment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCAttachment.h; sourceTree = "<group>"; };
+		B63DBCCA1397446D0068E556 /* CCAttachment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCAttachment.m; sourceTree = "<group>"; };
+		B63DBCEC139851310068E556 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		B64B268A137F9E2B0053E943 /* CCObjectWithPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCObjectWithPhoto.h; sourceTree = "<group>"; };
 		B64B268B137F9E2B0053E943 /* CCObjectWithPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCObjectWithPhoto.m; sourceTree = "<group>"; };
 		B653F29B1360AA7600686E72 /* WBImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBImage.h; sourceTree = "<group>"; };
@@ -169,8 +173,6 @@
 		B67B68EB13341319001E4472 /* CCUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCUser.m; sourceTree = "<group>"; };
 		B67B68ED13341319001E4472 /* CCConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCConstants.h; sourceTree = "<group>"; };
 		B67B68EE13341319001E4472 /* CCConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCConstants.m; sourceTree = "<group>"; };
-		B67B68EF13341319001E4472 /* CCDownloadRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCDownloadRequest.h; sourceTree = "<group>"; };
-		B67B68F013341319001E4472 /* CCDownloadRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCDownloadRequest.m; sourceTree = "<group>"; };
 		B67B68F113341319001E4472 /* CCNetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCNetworkManager.h; sourceTree = "<group>"; };
 		B67B68F213341319001E4472 /* CCNetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCNetworkManager.m; sourceTree = "<group>"; };
 		B67B68F313341319001E4472 /* CCResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCResponse.h; sourceTree = "<group>"; };
@@ -249,6 +251,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B63DBCED139851310068E556 /* AssetsLibrary.framework in Frameworks */,
 				B67B6A3413347538001E4472 /* YAJL.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				B6544FEC125F9480003AFCAB /* MapKit.framework in Frameworks */,
@@ -291,6 +294,7 @@
 		29B97314FDCFA39411CA2CEA /* Demo */ = {
 			isa = PBXGroup;
 			children = (
+				B63DBCEC139851310068E556 /* AssetsLibrary.framework */,
 				B67B68C213341319001E4472 /* ASIHTTPRequest */,
 				B67B68D713341319001E4472 /* Cocoafish */,
 				B67B68FC13341319001E4472 /* FBConnect */,
@@ -492,6 +496,8 @@
 				B60CE05D13766C2100231BC3 /* CCLeaderboard.m */,
 				B64B268A137F9E2B0053E943 /* CCObjectWithPhoto.h */,
 				B64B268B137F9E2B0053E943 /* CCObjectWithPhoto.m */,
+				B63DBCC91397446D0068E556 /* CCAttachment.h */,
+				B63DBCCA1397446D0068E556 /* CCAttachment.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -503,8 +509,6 @@
 				B6D3036F13485434001259F3 /* CCRequest.m */,
 				B67B68ED13341319001E4472 /* CCConstants.h */,
 				B67B68EE13341319001E4472 /* CCConstants.m */,
-				B67B68EF13341319001E4472 /* CCDownloadRequest.h */,
-				B67B68F013341319001E4472 /* CCDownloadRequest.m */,
 				B67B68F113341319001E4472 /* CCNetworkManager.h */,
 				B67B68F213341319001E4472 /* CCNetworkManager.m */,
 				B67B68F313341319001E4472 /* CCResponse.h */,
@@ -694,7 +698,6 @@
 				B67B692413341319001E4472 /* CCStatus.m in Sources */,
 				B67B692513341319001E4472 /* CCUser.m in Sources */,
 				B67B692613341319001E4472 /* CCConstants.m in Sources */,
-				B67B692713341319001E4472 /* CCDownloadRequest.m in Sources */,
 				B67B692813341319001E4472 /* CCNetworkManager.m in Sources */,
 				B67B692913341319001E4472 /* CCResponse.m in Sources */,
 				B67B692A13341319001E4472 /* NSData+Base64.m in Sources */,
@@ -717,6 +720,7 @@
 				B653F29D1360AA7600686E72 /* WBImage.m in Sources */,
 				B60CE05E13766C2100231BC3 /* CCLeaderboard.m in Sources */,
 				B64B268C137F9E2C0053E943 /* CCObjectWithPhoto.m in Sources */,
+				B63DBCCB1397446D0068E556 /* CCAttachment.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

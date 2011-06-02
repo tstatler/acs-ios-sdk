@@ -17,11 +17,13 @@
 #import "CCEvent.h"
 #import "CCResponse.h"
 #import "CCMessage.h"
+#import "CCRequest.h"
+#import "CCAttachment.h"
 
 @protocol CCFBSessionDelegate;
 
 @class CCDownloadManager;
-@interface Cocoafish : NSObject<FBSessionDelegate, FBRequestDelegate, CCNetworkManagerDelegate> {
+@interface Cocoafish : NSObject<FBSessionDelegate, FBRequestDelegate, CCRequestDelegate> {
 	id<CCFBSessionDelegate> _fbSessionDelegate;
 	CCUser *_currentUser;
 	NSString *_appKey;
@@ -52,10 +54,12 @@
 -(void)unlinkFromFacebook:(NSError **)error;
 -(BOOL)handleOpenURL:(NSURL *)url;
 
++(CCRequest *)restRequest:(id)delegate httpMethod:(NSString *)httpMethod baseUrl:(NSString *)baseUrl paramDict:(NSDictionary *)paramtDict attachment:(CCAttachment *)attachment;
+
 @end
 
 
-// Your program should implement the delegate methods if you use cocoafish b  b
+// Your program should implement the delegate methods if you use cocoafish
 // to perform facebook login
 @protocol CCFBSessionDelegate <NSObject>
 
@@ -72,3 +76,5 @@
 - (void)fbDidNotLogin:(BOOL)cancelled error:(NSError *)error;
 
 @end
+
+

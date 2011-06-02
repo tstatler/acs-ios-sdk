@@ -73,6 +73,11 @@
     return copy;
 }
 
+-(NSString *)modelName
+{
+    return @"place";
+}
+
 -(void)dealloc
 {
 	self.name = nil;

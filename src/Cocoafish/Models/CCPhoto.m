@@ -9,7 +9,7 @@
 #import "CCPhoto.h"
 #import "Cocoafish.h"
 #import "CCDownloadManager.h"
-#import "ASIFormDataRequest.h"
+#import "CCRequest.h"
 #import "WBImage.h"
 
 @interface CCPhoto ()
@@ -72,6 +72,11 @@
     return [NSString stringWithFormat:@"CCPhoto:\n\tfilename: %@\n\tsize: %d\n\tcollectionName: %@\n\tmd5: %@\n\tprocessed: %d\n\tcontentType :%@\n\ttakenAt: %@\n\turls: %@\n\t%@",
             self.filename, self.size, self.collectionName, self.md5, 
             self.processed, self.contentType, self.takenAt, [self.urls description], [super description]];
+}
+
+-(NSString *)modelName
+{
+    return @"photo";
 }
 
 -(void)dealloc
@@ -211,7 +216,7 @@
         // convert to jpeg and save
         _photoData = [UIImageJPEGRepresentation(processedImage, _jpegCompression) retain];
     }
-    [((ASIFormDataRequest *)_request) setData:_photoData withFileName:_photoFileName andContentType:@"image/jpeg" forKey:_photoKey];
+    [_request setData:_photoData withFileName:_photoFileName andContentType:@"image/jpeg" forKey:_photoKey];
     
 }
 

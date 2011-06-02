@@ -146,7 +146,7 @@
 -(void)preparePhoto:(UIImage *)image
 {		
     if (photoImage == nil) {
-        photoImage = [[CCUploadImage alloc] initWithImage:image maxPhotoSize:600  jpegCompression:0.5];
+        photoImage = [[CCPhotoAttachment alloc] initWithImage:image maxPhotoSize:800  jpegCompression:0.5];
     }
  
 }

@@ -35,6 +35,11 @@
             self.message, [super description]];
 }
 
+-(NSString *)modelName
+{
+    return @"status";
+}
+
 -(void)dealloc
 {
 	self.message = nil;

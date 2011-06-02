@@ -85,8 +85,8 @@ static Cocoafish *theDefaultCocoafish = nil;
 	_currentUser = [[[CCUser alloc] initWithId:[prefs stringForKey:@"cc_user_id"] first:[prefs stringForKey:@"cc_user_first_name"] last:[prefs stringForKey:@"cc_user_last_name"] email:[prefs stringForKey:@"cc_user_email"] username:[prefs stringForKey:@"cc_username"]] retain];
 	if (_currentUser) {
 		[self restoreUserSession];
-        CCNetworkManager *ccm = [[[CCNetworkManager alloc] initWithDelegate:self] autorelease];
-        [ccm showCurrentUser];
+        CCRequest *request = [Cocoafish restRequest:self httpMethod:@"GET" baseUrl:@"users/show/me.json" paramDict:nil attachment:nil];
+        [request startAsynchronous];
 	}
 	
 }
@@ -169,9 +169,15 @@ static Cocoafish *theDefaultCocoafish = nil;
 
 -(void)unlinkFromFacebook:(NSError **)error
 {
-    CCNetworkManager *ccm = [[[CCNetworkManager alloc] init] autorelease];
-    
-	[ccm unlinkFromFacebook:error];
+    CCRequest *request = [Cocoafish restRequest:nil httpMethod:@"DELETE" baseUrl:@"social/facebook/unlink.json" paramDict:nil attachment:nil];
+    CCResponse *response = [request startSynchronous];
+    if (response && [response.meta.status isEqualToString:CC_STATUS_OK]) {
+        NSArray *users = [response getObjectsOfType:[CCUser class]];
+        if ([users count] == 1) {
+            CCUser *user = [users objectAtIndex:0];
+            [[Cocoafish defaultCocoafish] setCurrentUser:user];
+        }
+    }
 }
 
 /**
@@ -180,15 +186,25 @@ static Cocoafish *theDefaultCocoafish = nil;
 - (void)fbDidLogin {
 	
 	// login with cocoafish
-	CCNetworkManager *ccm = [[[CCNetworkManager alloc] init] autorelease];
 	NSError *error = nil;
 	CCUser *user = nil;
+    NSDictionary *paramDict = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:_facebookAppId, _facebook.accessToken, nil] forKeys:[NSArray arrayWithObjects:@"facebook_app_id", @"access_token", nil]];
+    CCRequest *request = nil;
 	if ([[Cocoafish defaultCocoafish] getCurrentUser] != nil) {
 		// This is for linking facebook with the existing user
-		user = [ccm linkWithFacebook:_facebookAppId  accessToken:_facebook.accessToken error:&error];
-	} else {
-		user = [ccm loginWithFacebook:_facebookAppId  accessToken:_facebook.accessToken error:&error];
-	}
+        request = [Cocoafish restRequest:nil httpMethod:@"POST" baseUrl:@"social/facebook/link.json" paramDict:paramDict attachment:nil];
+
+    } else {
+        request = [Cocoafish restRequest:nil httpMethod:@"POST" baseUrl:@"social/facebook/login.json" paramDict:paramDict attachment:nil];
+    }
+
+    CCResponse *response = [request startSynchronous];
+    if (response && [response.meta.status isEqualToString:CC_STATUS_OK]) {
+        NSArray *users = [response getObjectsOfType:[CCUser class]];
+        if ([users count] == 1) {
+            user = [users objectAtIndex:0];
+        }
+    }
 	if (user == nil) {
 		// Failed to register with the cocoafish server, logout from facebook
 		[_facebook logout:self];
@@ -196,6 +212,7 @@ static Cocoafish *theDefaultCocoafish = nil;
 			[_fbSessionDelegate fbDidNotLogin:NO error:error];
 		}
 	} else {
+        [[Cocoafish defaultCocoafish] setCurrentUser:user];
 		if (_fbSessionDelegate && [_fbSessionDelegate respondsToSelector:@selector(fbDidLogin)]) {
 			[_fbSessionDelegate fbDidLogin];
 		}
@@ -216,12 +233,6 @@ static Cocoafish *theDefaultCocoafish = nil;
 -(void)fbDidLogout {
 	// Logout has to go through cocoafish server
 }
-
-#pragma CCNetworkManager delegate
--(void)networkManager:(CCNetworkManager *)networkManager didFailWithError:(NSError *)error
-{    
-}
-
 
 #pragma mark -
 #pragma mark user Cookie
@@ -307,11 +318,14 @@ static Cocoafish *theDefaultCocoafish = nil;
 	[super dealloc];
 }
 
-#pragma CCNetworkManager delegate methods
--(void)networkManager:(CCNetworkManager *)networkManager didGet:(NSArray *)objectArray objectType:(Class)objectType pagination:(CCPagination *)pagination
+#pragma CCRequest delegate methods
+
+-(void)request:(CCRequest *)request didSucceed:(CCResponse *)response
 {
-    if (objectType == [CCUser class] && [objectArray count] == 1) {
-        [[Cocoafish defaultCocoafish] setCurrentUser:[objectArray objectAtIndex:0]];
+    NSArray *users = [response getObjectsOfType:[CCUser class]];
+    if ([users count] == 1) {
+        CCUser *user = [users objectAtIndex:0];
+        [[Cocoafish defaultCocoafish] setCurrentUser:user];
     }
 }
 
@@ -344,5 +358,56 @@ static Cocoafish *theDefaultCocoafish = nil;
         return theDefaultCocoafish;
     }
 }
+
+#pragma Rest Request
+
++(CCRequest *)restRequest:(id)delegate httpMethod:(NSString *)httpMethod baseUrl:(NSString *)baseUrl paramDict:(NSDictionary *)paramtDict attachment:(CCAttachment *)attachment
+{
+    if (!([httpMethod isEqualToString:@"DELETE"] || [httpMethod isEqualToString:@"GET"] || [httpMethod isEqualToString:@"POST"] || [httpMethod isEqualToString:@"PUT"])) {
+        [NSException raise:@"request Type not supported. Supported types are 'DELETE', 'POST', 'GET', 'PUT'" format:@"unknown request Type: %@", httpMethod];
+    }
+    
+    NSMutableArray *paramArray = [NSMutableArray arrayWithCapacity:1];
+    NSArray *keys = [paramtDict allKeys];
+    if ([httpMethod isEqualToString:@"GET"] || [httpMethod isEqualToString:@"DELETE"]) {
+        if ([paramtDict count] > 0) {
+            for (NSString *key in keys) {
+                id valueObject = [paramtDict valueForKey:key];
+                NSString *value = nil;
+                // URL encode string
+                if ([valueObject isKindOfClass:[NSArray class]]) {
+                    // concatenate the array
+                    value = [valueObject componentsJoinedByString:@","];
+                } else {
+                    value = (NSString *)valueObject;
+                }
+                value = [value stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+
+                [paramArray addObject:[NSString stringWithFormat:@"%@=%@", key, value]];
+            }
+        }
+    }
+    
+    NSString *urlPath = [CCRequest generateFullRequestUrl:baseUrl additionalParams:paramArray];
+    
+	NSURL *url = [NSURL URLWithString:urlPath];
+    
+    CCRequest *request =[ [[CCRequest alloc] initWithURL:url httpMethod:httpMethod requestDelegate:delegate attachment:attachment] autorelease];
+    
+    if ([httpMethod isEqualToString:@"POST"] || [httpMethod isEqualToString:@"PUT"]) {
+        for (NSString *key in keys) {
+            NSString *value = [paramtDict valueForKey:key];
+            [request setPostValue:value forKey:key];
+            
+        }
+        if (attachment) {
+            [request setData:[attachment attachmentData] withFileName:attachment.fileName andContentType:attachment.contentType forKey:attachment.postKey];
+        }
+    }
+    [request addOauthHeaderToRequest];
+    return request;
+
+}
+
 
 @end

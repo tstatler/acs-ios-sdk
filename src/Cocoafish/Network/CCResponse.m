@@ -10,6 +10,7 @@
 #import "CCConstants.h"
 #import "CCObject.h"
 #import <YAJL/YAJL.h>
+#import "Cocoafish.h"
 
 @interface CCResponse()
 @property (nonatomic, readwrite, retain) CCMeta *meta;
@@ -67,6 +68,18 @@
 			[self release];
 			self = nil;
 		}
+        // Update current User info
+        if ([_meta.status isEqualToString:CC_STATUS_OK]) {
+            if ([_meta.method isEqualToString:@"loginUser"] || [_meta.method isEqualToString:@"createUser"]) {
+                NSArray *users = [self getObjectsOfType:[CCUser class]];
+                if ([users count] == 1) {
+                    CCUser *user = [users objectAtIndex:0];
+                    [[Cocoafish defaultCocoafish] setCurrentUser:user];
+                }
+            } else if ([_meta.method isEqualToString:@"logoutUser"] || [_meta.method isEqualToString:@"deleteUser"]) {
+                [[Cocoafish defaultCocoafish] setCurrentUser:nil];
+            }
+        }
 	}
 	return self;
 }
@@ -92,6 +105,53 @@
 
 	[super dealloc];
 	
+}
+
+-(NSArray *)getObjectsOfType:(Class)objectType
+{
+    NSArray *jsonTagArray = [_response allKeys];
+    NSMutableArray *returnArray = nil;
+    for (NSString *jsonTag in jsonTagArray) {
+        Class class = [CCObject class];
+        if ([jsonTag caseInsensitiveCompare:CC_JSON_USERS] == NSOrderedSame) {
+            class = [CCUser class];
+        } else if ([jsonTag caseInsensitiveCompare:CC_JSON_PLACES] == NSOrderedSame) {
+            class = [CCPlace class];
+        } else if ([jsonTag caseInsensitiveCompare:CC_JSON_CHECKINS] == NSOrderedSame) {
+            class = [CCCheckin class];
+        } else if ([jsonTag caseInsensitiveCompare:CC_JSON_PHOTOS] == NSOrderedSame) {
+            class = [CCPhoto class];
+        } else if ([jsonTag caseInsensitiveCompare:CC_JSON_STATUSES] == NSOrderedSame) {
+            class = [CCStatus class];
+        } else if ([jsonTag caseInsensitiveCompare:CC_JSON_KEY_VALUES] == NSOrderedSame) {
+            class = [CCKeyValuePair class];
+        } else if ([jsonTag caseInsensitiveCompare:CC_JSON_EVENTS] == NSOrderedSame) {
+            class = [CCEvent class];
+        } else if ([jsonTag caseInsensitiveCompare:CC_JSON_MESSAGES] == NSOrderedSame) {
+            class = [CCMessage class];
+        } else  {
+            // We don't know how to handle this type of object yet
+            continue;
+        }
+        
+        if (class != objectType) {
+            continue;
+        }
+        NSArray *jsonArray = [_response objectForKey:jsonTag];
+        if (jsonArray == nil) {
+            return nil;
+        }
+        if ([jsonArray isKindOfClass:[NSArray class]]) {
+            returnArray = [NSMutableArray arrayWithCapacity:[jsonArray count]];
+            for (NSDictionary *jsonObject in jsonArray) {
+                id object = [[class alloc] initWithJsonResponse:jsonObject];
+                if (object) {
+                    [returnArray addObject:object];
+                }
+            }
+        }
+    }
+    return returnArray;
 }
 
 @end
@@ -151,6 +211,7 @@
     
 }
 
+
 @end
 
 @implementation CCMeta
@@ -197,4 +258,5 @@
     self.pagination = nil;
 	[super dealloc];
 }
+
 @end

@@ -21,6 +21,7 @@
 @property (nonatomic, retain, readonly) NSArray *responses;
 
 -(id)initWithJsonData:(NSData *)jsonData;
+-(NSArray *)getObjectsOfType:(Class)objectType;
 
 @end
 

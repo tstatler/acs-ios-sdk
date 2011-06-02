@@ -67,11 +67,37 @@
 	[controller release];
 }
 
--(void)startCheckin:(CheckinViewController *)controller message:(NSString *)message image:(CCUploadImage *)image
+-(void)startCheckin:(CheckinViewController *)controller message:(NSString *)message image:(CCPhotoAttachment *)image
 {
-	[_ccNetworkManager createCheckin:place message:message image:image];
+    NSDictionary *paramDict = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:message, place.objectId, nil] forKeys:[NSArray arrayWithObjects:@"message", @"place_id", nil]];
+    CCRequest *request = [Cocoafish restRequest:self httpMethod:@"POST" baseUrl:@"checkins/create.json" paramDict:paramDict attachment:image];
+    [request startAsynchronous];
+	//[_ccNetworkManager createCheckin:place message:message image:image];
 }
 
+#pragma CCRequestDelegate Methods
+-(void)request:(CCRequest *)request didSucceed:(CCResponse *)response
+{
+    if ([response.meta.method isEqualToString:@"createCheckin"]) {
+        NSArray *checkins = [response getObjectsOfType:[CCCheckin class]];
+        CCCheckin *checkin = nil;
+        if ([checkins count] == 1) {
+            checkin = [checkins objectAtIndex:0];
+        }
+        // update user score
+        NSString *score_key = [NSString stringWithFormat:@"%@_score",[[Cocoafish defaultCocoafish] getCurrentUser].email];
+        [_ccNetworkManager incrBy:score_key value:5];
+        
+        if (checkin) {
+            @synchronized(self) {
+                [placeCheckins insertObject:checkin atIndex:0];
+            }
+            
+            [self.tableView reloadData];
+        }
+        
+    }
+}
 -(void)networkManager:(CCNetworkManager *)networkManager didUpdate:(NSArray *)objectArray objectType:(Class)objectType
 {
     CCKeyValuePair *keyval;

@@ -45,6 +45,11 @@
             self.name, self.score, [super description]];
 }
 
+-(NSString *)modelName
+{
+    return @"leaderboard";
+}
+
 -(void)dealloc
 {
 	self.name = nil;

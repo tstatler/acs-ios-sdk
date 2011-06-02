@@ -83,6 +83,12 @@
     return [NSString stringWithFormat:@"{\n\t%@\n\t}", [array componentsJoinedByString:@"\n\t"]];
 }
 
+-(NSString *)modelName
+{
+    [NSException raise:@"Please set name in the subclass" format:@"name unset"];   
+    return nil;
+}
+
 -(void)dealloc
 {
 	self.createdAt = nil;

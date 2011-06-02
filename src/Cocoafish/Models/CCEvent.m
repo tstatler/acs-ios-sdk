@@ -69,6 +69,11 @@
             [self.place description], [super description]];
 }
 
+-(NSString *)modelName
+{
+    return @"event";
+}
+
 -(void)dealloc
 {
 	self.user = nil;

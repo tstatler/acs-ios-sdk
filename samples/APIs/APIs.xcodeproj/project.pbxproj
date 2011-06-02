@@ -66,6 +66,8 @@
 		B6042824133B1296008CEE69 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B6042811133B1294008CEE69 /* RegisterViewController.m */; };
 		B6042825133B1296008CEE69 /* RegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B6042812133B1295008CEE69 /* RegisterViewController.xib */; };
 		B6042826133B1296008CEE69 /* TapDetectingImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = B6042814133B1296008CEE69 /* TapDetectingImageView.m */; };
+		B63DBCF8139853D20068E556 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B63DBCF7139853D20068E556 /* AssetsLibrary.framework */; };
+		B63DBCFC139853F70068E556 /* CCAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = B63DBCFB139853F70068E556 /* CCAttachment.m */; };
 		B64B26C8138036200053E943 /* CCDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B2699138036200053E943 /* CCDownloadManager.m */; };
 		B64B26C9138036200053E943 /* Cocoafish.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B269B138036200053E943 /* Cocoafish.m */; };
 		B64B26CA138036200053E943 /* WBImage.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B269E138036200053E943 /* WBImage.m */; };
@@ -81,7 +83,6 @@
 		B64B26D4138036200053E943 /* CCStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B26B3138036200053E943 /* CCStatus.m */; };
 		B64B26D5138036200053E943 /* CCUser.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B26B5138036200053E943 /* CCUser.m */; };
 		B64B26D6138036200053E943 /* CCConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B26B8138036200053E943 /* CCConstants.m */; };
-		B64B26D7138036200053E943 /* CCDownloadRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B26BA138036200053E943 /* CCDownloadRequest.m */; };
 		B64B26D8138036200053E943 /* CCNetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B26BC138036200053E943 /* CCNetworkManager.m */; };
 		B64B26D9138036200053E943 /* CCRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B26BE138036200053E943 /* CCRequest.m */; };
 		B64B26DA138036200053E943 /* CCResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B26C0138036200053E943 /* CCResponse.m */; };
@@ -201,6 +202,9 @@
 		B6042812133B1295008CEE69 /* RegisterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RegisterViewController.xib; sourceTree = "<group>"; };
 		B6042813133B1295008CEE69 /* TapDetectingImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TapDetectingImageView.h; sourceTree = "<group>"; };
 		B6042814133B1296008CEE69 /* TapDetectingImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TapDetectingImageView.m; sourceTree = "<group>"; };
+		B63DBCF7139853D20068E556 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		B63DBCFA139853F70068E556 /* CCAttachment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCAttachment.h; sourceTree = "<group>"; };
+		B63DBCFB139853F70068E556 /* CCAttachment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCAttachment.m; sourceTree = "<group>"; };
 		B64B2698138036200053E943 /* CCDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCDownloadManager.h; sourceTree = "<group>"; };
 		B64B2699138036200053E943 /* CCDownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCDownloadManager.m; sourceTree = "<group>"; };
 		B64B269A138036200053E943 /* Cocoafish.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cocoafish.h; sourceTree = "<group>"; };
@@ -231,8 +235,6 @@
 		B64B26B5138036200053E943 /* CCUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCUser.m; sourceTree = "<group>"; };
 		B64B26B7138036200053E943 /* CCConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCConstants.h; sourceTree = "<group>"; };
 		B64B26B8138036200053E943 /* CCConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCConstants.m; sourceTree = "<group>"; };
-		B64B26B9138036200053E943 /* CCDownloadRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCDownloadRequest.h; sourceTree = "<group>"; };
-		B64B26BA138036200053E943 /* CCDownloadRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCDownloadRequest.m; sourceTree = "<group>"; };
 		B64B26BB138036200053E943 /* CCNetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCNetworkManager.h; sourceTree = "<group>"; };
 		B64B26BC138036200053E943 /* CCNetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCNetworkManager.m; sourceTree = "<group>"; };
 		B64B26BD138036200053E943 /* CCRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCRequest.h; sourceTree = "<group>"; };
@@ -253,6 +255,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B63DBCF8139853D20068E556 /* AssetsLibrary.framework in Frameworks */,
 				B60427F8133B124A008CEE69 /* YAJL.framework in Frameworks */,
 				B60427F6133B123A008CEE69 /* libz.1.2.3.dylib in Frameworks */,
 				B60427F4133B1235008CEE69 /* SystemConfiguration.framework in Frameworks */,
@@ -281,6 +284,7 @@
 		B604272C133B1161008CEE69 = {
 			isa = PBXGroup;
 			children = (
+				B63DBCF7139853D20068E556 /* AssetsLibrary.framework */,
 				B64B2696138036200053E943 /* Cocoafish */,
 				B6042774133B120B008CEE69 /* ASIHTTPRequest */,
 				B60427B0133B120B008CEE69 /* FBConnect */,
@@ -511,6 +515,8 @@
 		B64B269F138036200053E943 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B63DBCFA139853F70068E556 /* CCAttachment.h */,
+				B63DBCFB139853F70068E556 /* CCAttachment.m */,
 				B64B26A0138036200053E943 /* CCCheckin.h */,
 				B64B26A1138036200053E943 /* CCCheckin.m */,
 				B64B26A2138036200053E943 /* CCEvent.h */,
@@ -542,8 +548,6 @@
 			children = (
 				B64B26B7138036200053E943 /* CCConstants.h */,
 				B64B26B8138036200053E943 /* CCConstants.m */,
-				B64B26B9138036200053E943 /* CCDownloadRequest.h */,
-				B64B26BA138036200053E943 /* CCDownloadRequest.m */,
 				B64B26BB138036200053E943 /* CCNetworkManager.h */,
 				B64B26BC138036200053E943 /* CCNetworkManager.m */,
 				B64B26BD138036200053E943 /* CCRequest.h */,
@@ -732,13 +736,13 @@
 				B64B26D4138036200053E943 /* CCStatus.m in Sources */,
 				B64B26D5138036200053E943 /* CCUser.m in Sources */,
 				B64B26D6138036200053E943 /* CCConstants.m in Sources */,
-				B64B26D7138036200053E943 /* CCDownloadRequest.m in Sources */,
 				B64B26D8138036200053E943 /* CCNetworkManager.m in Sources */,
 				B64B26D9138036200053E943 /* CCRequest.m in Sources */,
 				B64B26DA138036200053E943 /* CCResponse.m in Sources */,
 				B64B26DB138036200053E943 /* NSData+Base64.m in Sources */,
 				B64B26DC138036200053E943 /* OAuth+Additions.m in Sources */,
 				B64B26DD138036200053E943 /* OAuthCore.m in Sources */,
+				B63DBCFC139853F70068E556 /* CCAttachment.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

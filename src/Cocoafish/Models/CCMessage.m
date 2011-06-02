@@ -66,6 +66,11 @@
             [self arrayDescription:self.to], [super description]];
 }
 
+-(NSString *)modelName
+{
+    return @"message";
+}
+
 -(void)dealloc
 {
 	self.threadId = nil;

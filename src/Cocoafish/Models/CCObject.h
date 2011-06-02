@@ -27,4 +27,6 @@
 -(id)initWithId:(NSString *)objectId;
 
 -(NSString *)arrayDescription:(NSArray *)array;
+
+-(NSString *)modelName; // class name on the server
 @end

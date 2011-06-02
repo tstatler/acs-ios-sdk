@@ -11,7 +11,7 @@
 #import "CheckinViewController.h"
 
 @class CheckinViewController;
-@interface PlaceViewController : UITableViewController <CCNetworkManagerDelegate, CheckinViewControllerDelegate> {
+@interface PlaceViewController : UITableViewController <CCNetworkManagerDelegate, CheckinViewControllerDelegate, CCRequestDelegate> {
 	CCPlace *place;
 	NSMutableArray *placeCheckins;
 	

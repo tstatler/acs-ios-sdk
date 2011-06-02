@@ -83,6 +83,11 @@
     return copy;
 }
 
+-(NSString *)modelName
+{
+    return @"user";
+}
+
 -(void)dealloc
 {
 	self.email = nil;

@@ -33,6 +33,11 @@
             self.key, self.value, [super description]];
 }
 
+-(NSString *)modelName
+{
+    return @"keyvalue";
+}
+
 -(void)dealloc
 {
 	self.key = nil;
