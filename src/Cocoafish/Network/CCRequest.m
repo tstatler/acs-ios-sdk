@@ -143,7 +143,6 @@
     NSString *paramsString = nil;
     if ([additionalParams count] > 0) {
         paramsString = [additionalParams componentsJoinedByString:@"&"];
-        paramsString = [paramsString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     }
 	if ([appKey length] > 0) {
 		if (paramsString) {

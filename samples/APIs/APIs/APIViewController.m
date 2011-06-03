@@ -132,4 +132,16 @@
     }
 }
 
+#pragma CCRequestDelegate callback
+-(void)request:(CCRequest *)request didSucceed:(CCResponse *)response
+{
+    statusLabel.text = @"Success";
+    body.text = [response.response description];
+}
+
+-(void)request:(CCRequest *)request didFailWithError:(NSError *)error
+{
+    statusLabel.text = @"Failed";
+    body.text = [error localizedDescription];   
+}
 @end

@@ -479,6 +479,7 @@
     CheckinViewController *checkinController;
     PhotoAddViewController *photoController;
     UIAlertView *alert;
+    CCRequest *request = nil;
     switch (indexPath.section) {
         case USERS:
             if (indexPath.row == 0) {
@@ -629,7 +630,7 @@
                 case 1:
                 default:
                     // get a user's statuses
-                    [controller.ccNetworkManager searchUserStatuses:[[Cocoafish defaultCocoafish] getCurrentUser] startTime:nil page:CC_FIRST_PAGE perPage:CC_DEFAULT_PER_PAGE];
+                    request = [Cocoafish restRequest:controller httpMethod:@"GET" baseUrl:@"statuses/search.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:[[Cocoafish defaultCocoafish] getCurrentUser].objectId, @"user_id", [NSDate distantPast], @"start_time", nil]  attachment:nil];
                     break;
             }
             break;
@@ -831,6 +832,7 @@
         default:
             break;
     }
+    [request startAsynchronous];
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
 }

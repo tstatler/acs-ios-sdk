@@ -77,4 +77,4 @@
 
 @end
 
-
+NSString* encodeToPercentEscapeString(NSString *string);

@@ -11,6 +11,16 @@
 
 static Cocoafish *theDefaultCocoafish = nil;
 
+// Encode a string to embed in an URL.
+NSString* encodeToPercentEscapeString(NSString *string) {
+    return (NSString *)
+    CFURLCreateStringByAddingPercentEscapes(NULL,
+                                            (CFStringRef) string,
+                                            NULL,
+                                            (CFStringRef) @"!*'();:@&=+$,/?%#[]",
+                                            kCFStringEncodingUTF8);
+}
+
 @interface Cocoafish (PrivateMethods)
 -(NSString *)getCookiePath;
 -(void)saveUserSession;
@@ -378,11 +388,12 @@ static Cocoafish *theDefaultCocoafish = nil;
                 if ([valueObject isKindOfClass:[NSArray class]]) {
                     // concatenate the array
                     value = [valueObject componentsJoinedByString:@","];
+                } else if (![valueObject isKindOfClass:[NSString class]]) {
+                    value = [valueObject description];
                 } else {
                     value = (NSString *)valueObject;
                 }
-                value = [value stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-
+                value = encodeToPercentEscapeString(value);
                 [paramArray addObject:[NSString stringWithFormat:@"%@=%@", key, value]];
             }
         }

@@ -39,7 +39,9 @@
 -(void)downloadPhoto:(CCPhoto *)photo size:(int)size
 {
 	@synchronized(self) {
-        if (!photo.processed) {
+        NSString *downloadPath = [photo localPath:size];
+
+        if (!downloadPath && !photo.processed) {
             // we don't have the photo url info yet, put in the queue
             if (_pendingPhotoDownloadQueue == nil) {
                 _pendingPhotoDownloadQueue = [[NSMutableDictionary alloc] init];
@@ -62,7 +64,6 @@
             }
             return;
         }
-        NSString *downloadPath = [photo localPath:size];
 		if ([_downloadInProgress containsObject:downloadPath]) {
 			// download already in progress, no op
 			return;
@@ -86,8 +87,6 @@
 {
     // Cleanup file cache if necessary
     [self cleanupCache];
-//	CCDownloadRequest *downloadRequest = (CCDownloadRequest *)request;
-//	NSDictionary * dict = [NSDictionary dictionaryWithObjectsAndKeys:downloadRequest.size, @"size", downloadRequest.object, @"object", nil];
 	
 	NSNotification * myNotification = [NSNotification notificationWithName:@"DownloadFinished" object:[Cocoafish defaultCocoafish] userInfo:request.userInfo];
 	[[NSNotificationQueue defaultQueue] enqueueNotification:myNotification postingStyle:NSPostNow];	
@@ -213,21 +212,20 @@
             }
         }
 		
-        if ([_processingPhotos count] > 0) {
-			// there are still some photos are being processed on the server
-			if (_autoUpdateTimer == nil) {
-				if (_timeInterval < 864000) {
-					_timeInterval = _timeInterval * 2;
-				}
-				self.autoUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:(_timeInterval)
-												target:self
-												selector:@selector(updateProcessingPhotos)
-												userInfo:nil
-												repeats:NO];
-			}
-		}
 	}
-	
+    if ([_processingPhotos count] > 0) {
+        // there are still some photos are being processed on the server
+        if (_autoUpdateTimer == nil) {
+            if (_timeInterval < 864000) {
+                _timeInterval = _timeInterval * 2;
+            }
+            self.autoUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:(_timeInterval)
+                                                                    target:self
+                                                                  selector:@selector(updateProcessingPhotos)
+                                                                  userInfo:nil
+                                                                   repeats:NO];
+        }
+    }
 	if ([processedPhotos count] > 0) {
 		// send out notification
 		NSDictionary *dict = [NSDictionary dictionaryWithObject:[processedPhotos allKeys] forKey:@"photoIds"];

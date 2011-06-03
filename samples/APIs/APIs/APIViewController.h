@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Cocoafish.h"
 
-@interface APIViewController : UIViewController <CCNetworkManagerDelegate> {
+@interface APIViewController : UIViewController <CCNetworkManagerDelegate, CCRequestDelegate> {
     IBOutlet UILabel *statusLabel;
     IBOutlet UITextView *header;
     IBOutlet UITextView *body;
