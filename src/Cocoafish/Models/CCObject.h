@@ -16,17 +16,21 @@
 	NSString * _objectId;
 	NSDate * _createdAt;
 	NSDate *_updatedAt;
+    NSArray *_tags;
 }
 
 @property (nonatomic, retain, readonly) NSString *objectId;
 @property (nonatomic, retain, readonly) NSDate *createdAt;
 @property (nonatomic, retain, readonly) NSDate *updatedAt;
+@property (nonatomic, retain, readonly) NSArray *tags;
 
 -(id)initWithJsonResponse:(NSDictionary *)jsonResponse;
 
 -(id)initWithId:(NSString *)objectId;
 
++(NSArray *)arrayWithJsonResponse:(NSDictionary *)jsonResponse class:(Class)class;
+
 -(NSString *)arrayDescription:(NSArray *)array;
 
--(NSString *)modelName; // class name on the server
++(NSString *)modelName; // class name on the server
 @end

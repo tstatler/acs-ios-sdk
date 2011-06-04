@@ -66,6 +66,8 @@
 		B67B693713341319001E4472 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = B67B691413341319001E4472 /* SBJsonWriter.m */; };
 		B67B693A13341370001E4472 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = B67B693913341370001E4472 /* Reachability.m */; };
 		B67B6A3413347538001E4472 /* YAJL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B67B6A3313347538001E4472 /* YAJL.framework */; };
+		B685E429139AAEF6001B50BD /* CCCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = B685E428139AAEF5001B50BD /* CCCollection.m */; };
+		B685E42D139AAF00001B50BD /* CCShareRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B685E42C139AAF00001B50BD /* CCShareRequest.m */; };
 		B6898BE612C0328F006D4ED8 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6898BE512C0328F006D4ED8 /* CoreLocation.framework */; };
 		B6898C1012C03445006D4ED8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6898C0F12C03445006D4ED8 /* UIKit.framework */; };
 		B6898C1212C03445006D4ED8 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B6898C1112C03445006D4ED8 /* libz.dylib */; };
@@ -209,6 +211,10 @@
 		B67B693813341370001E4472 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		B67B693913341370001E4472 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		B67B6A3313347538001E4472 /* YAJL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = YAJL.framework; path = ../../src/YAJL.framework; sourceTree = "<group>"; };
+		B685E427139AAEF5001B50BD /* CCCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCCollection.h; sourceTree = "<group>"; };
+		B685E428139AAEF5001B50BD /* CCCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCCollection.m; sourceTree = "<group>"; };
+		B685E42B139AAF00001B50BD /* CCShareRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCShareRequest.h; sourceTree = "<group>"; };
+		B685E42C139AAF00001B50BD /* CCShareRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCShareRequest.m; sourceTree = "<group>"; };
 		B6898BE512C0328F006D4ED8 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		B6898C0F12C03445006D4ED8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		B6898C1112C03445006D4ED8 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -474,6 +480,10 @@
 		B67B68DD13341319001E4472 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B685E42B139AAF00001B50BD /* CCShareRequest.h */,
+				B685E42C139AAF00001B50BD /* CCShareRequest.m */,
+				B685E427139AAEF5001B50BD /* CCCollection.h */,
+				B685E428139AAEF5001B50BD /* CCCollection.m */,
 				B6D303681346B79F001259F3 /* CCEvent.h */,
 				B6D303691346B79F001259F3 /* CCEvent.m */,
 				B67B68DE13341319001E4472 /* CCCheckin.h */,
@@ -721,6 +731,8 @@
 				B60CE05E13766C2100231BC3 /* CCLeaderboard.m in Sources */,
 				B64B268C137F9E2C0053E943 /* CCObjectWithPhoto.m in Sources */,
 				B63DBCCB1397446D0068E556 /* CCAttachment.m in Sources */,
+				B685E429139AAEF6001B50BD /* CCCollection.m in Sources */,
+				B685E42D139AAF00001B50BD /* CCShareRequest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

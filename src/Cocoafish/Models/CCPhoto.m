@@ -16,12 +16,13 @@
 
 @property (nonatomic, retain, readwrite) NSString *filename;
 @property (nonatomic, readwrite) int size;
-@property (nonatomic, retain, readwrite) NSString *collectionName;
+@property (nonatomic, retain, readwrite) NSArray *collections;
 @property (nonatomic, retain, readwrite) NSString *md5;
 @property (nonatomic, readwrite) BOOL processed;
 @property (nonatomic, retain, readwrite) NSString *contentType;
 @property (nonatomic, retain, readwrite) NSDictionary *urls;
 @property (nonatomic, retain, readwrite) NSDate *takenAt;
+@property (nonatomic, retain, readwrite) CCUser *user;
 
 -(void)handlePhotoProcessed:(NSNotification *)notification;
 
@@ -30,12 +31,13 @@
 @implementation CCPhoto
 @synthesize filename = _filename;
 @synthesize size = _size;
-@synthesize collectionName = _collectionName;
+@synthesize collections = _collections;
 @synthesize md5 = _md5;
 @synthesize processed = _processed;
 @synthesize contentType = _contentType;
 @synthesize urls = _urls;
 @synthesize takenAt = _takenAt;
+@synthesize user = _user;
 
 -(id)initWithJsonResponse:(NSDictionary *)jsonResponse
 {
@@ -43,11 +45,12 @@
 	if ((self = [super initWithJsonResponse:jsonResponse])) {
 		self.filename = [jsonResponse objectForKey:CC_JSON_FILENAME];
 		self.size = [[jsonResponse objectForKey:CC_JSON_SIZE] intValue];
-		self.collectionName = [jsonResponse objectForKey:CC_JSON_COLLECTION_NAME];
+        self.collections = [CCCollection arrayWithJsonResponse:jsonResponse class:[CCCollection class]];
 		self.md5 = [jsonResponse objectForKey:CC_JSON_MD5];
 		self.processed = [[jsonResponse objectForKey:CC_JSON_PROCESSED] boolValue];
 		self.contentType = [jsonResponse objectForKey:CC_JSON_CONTENT_TYPE];
 		self.urls = [jsonResponse objectForKey:CC_JSON_URLS];
+        _user = [jsonResponse objectForKey:CC_JSON_USER];
 		NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
 		dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZ";
 		
@@ -69,12 +72,12 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"CCPhoto:\n\tfilename: %@\n\tsize: %d\n\tcollectionName: %@\n\tmd5: %@\n\tprocessed: %d\n\tcontentType :%@\n\ttakenAt: %@\n\turls: %@\n\t%@",
-            self.filename, self.size, self.collectionName, self.md5, 
+    return [NSString stringWithFormat:@"CCPhoto:\n\tfilename: %@\n\tsize: %d\n\tmd5: %@\n\tprocessed: %d\n\tcontentType :%@\n\ttakenAt: %@\n\turls: %@\n\t%@",
+            self.filename, self.size, self.md5, 
             self.processed, self.contentType, self.takenAt, [self.urls description], [super description]];
 }
 
--(NSString *)modelName
++(NSString *)modelName
 {
     return @"photo";
 }
@@ -83,11 +86,12 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 	self.filename = nil;
-	self.collectionName = nil;
+	self.collections = nil;
 	self.md5 = nil;
 	self.contentType = nil;
 	self.urls = nil;
 	self.takenAt = nil;
+    self.user = nil;
 	[super dealloc];
 }
 

@@ -10,6 +10,7 @@
 
 @class UIImage;
 @class CCRequest;
+@class CCUser;
 typedef enum PhotoSize {
 	CC_SQUARE_75,
 	CC_THUMB_100,
@@ -24,23 +25,25 @@ typedef enum PhotoSize {
 	
 	NSString *_filename;
 	int _size;
-	NSString *_collectionName;
 	NSString *_md5;
 	BOOL _processed;
 	NSString  *_contentType;
 	NSDictionary *_urls;
 	NSDate *_takenAt;
+    NSArray *_collections;
+    CCUser *_user;
     
 }
 
 @property (nonatomic, retain, readonly) NSString *filename;
 @property (nonatomic, readonly) int size;
-@property (nonatomic, retain, readonly) NSString *collectionName;
+@property (nonatomic, retain, readonly) NSArray *collections;
 @property (nonatomic, retain, readonly) NSString *md5;
 @property (nonatomic, readonly) BOOL processed;
 @property (nonatomic, retain, readonly) NSString *contentType;
 @property (nonatomic, retain, readonly) NSDate *takenAt;
 @property (nonatomic, retain, readonly) NSDictionary *urls;
+@property (nonatomic, retain, readonly) CCUser *user;
 
 -(NSString *)getImageUrl:(PhotoSize)photoSize;
 -(UIImage *)getImage:(PhotoSize)photoSize;

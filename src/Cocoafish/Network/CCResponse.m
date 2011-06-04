@@ -109,7 +109,8 @@
 
 -(NSArray *)getObjectsOfType:(Class)objectType
 {
-    NSArray *jsonTagArray = [_response allKeys];
+    return [objectType arrayWithJsonResponse:_response class:objectType];
+  /*  NSArray *jsonTagArray = [_response allKeys];
     NSMutableArray *returnArray = nil;
     for (NSString *jsonTag in jsonTagArray) {
         Class class = [CCObject class];
@@ -148,10 +149,11 @@
                 if (object) {
                     [returnArray addObject:object];
                 }
+                [object release];
             }
         }
     }
-    return returnArray;
+    return returnArray;*/
 }
 
 @end

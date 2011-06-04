@@ -83,7 +83,7 @@
     return copy;
 }
 
--(NSString *)modelName
++(NSString *)modelName
 {
     return @"user";
 }

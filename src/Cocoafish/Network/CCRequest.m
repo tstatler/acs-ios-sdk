@@ -33,7 +33,7 @@
         [self setDelegate:self];
         [self setDidFinishSelector:@selector(requestDone:)];
         [self setDidFailSelector:@selector(requestFailed:)];
-        
+        [self addRequestHeader:@"Accepts-Encoding" value:@"gzip"];        
     }
     return self;
 }
@@ -49,6 +49,7 @@
         [self setDelegate:self];
         [self setDidFinishSelector:@selector(requestDone:)];
         [self setDidFailSelector:@selector(requestFailed:)];
+        [self addRequestHeader:@"Accepts-Encoding" value:@"gzip"];        
         
     }
     return self;
@@ -66,6 +67,7 @@
         [self setDelegate:self];
         [self setDidFinishSelector:@selector(requestDone:)];
         [self setDidFailSelector:@selector(requestFailed:)];
+        [self addRequestHeader:@"Accepts-Encoding" value:@"gzip"];         
     }
     return self;
     

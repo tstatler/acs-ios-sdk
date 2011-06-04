@@ -26,7 +26,7 @@
         @try {
             self.name = [jsonResponse objectForKey:CC_JSON_NAME];
             self.score = [[jsonResponse objectForKey:@"score"] intValue];	
-			self.user = [[CCUser alloc] initWithJsonResponse:[jsonResponse objectForKey:CC_JSON_USER]];
+			_user = [[CCUser alloc] initWithJsonResponse:[jsonResponse objectForKey:CC_JSON_USER]];
 
 		}
 		@catch (NSException *e) {
@@ -45,7 +45,7 @@
             self.name, self.score, [super description]];
 }
 
--(NSString *)modelName
++(NSString *)modelName
 {
     return @"leaderboard";
 }

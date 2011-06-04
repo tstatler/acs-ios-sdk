@@ -73,7 +73,7 @@
     return copy;
 }
 
--(NSString *)modelName
++(NSString *)modelName
 {
     return @"place";
 }

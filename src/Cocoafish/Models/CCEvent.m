@@ -37,8 +37,8 @@
         NSString *dateString = nil;
 		@try {
             self.name = [jsonResponse objectForKey:CC_JSON_NAME];
-			self.user = [[CCUser alloc] initWithJsonResponse:[jsonResponse objectForKey:CC_JSON_USER]];
-			self.place = [[CCPlace alloc] initWithJsonResponse:[jsonResponse objectForKey:CC_JSON_PLACE]];
+			_user = [[CCUser alloc] initWithJsonResponse:[jsonResponse objectForKey:CC_JSON_USER]];
+			_place = [[CCPlace alloc] initWithJsonResponse:[jsonResponse objectForKey:CC_JSON_PLACE]];
 
             
             dateString = [jsonResponse objectForKey:CC_JSON_START_TIME];
@@ -69,7 +69,7 @@
             [self.place description], [super description]];
 }
 
--(NSString *)modelName
++(NSString *)modelName
 {
     return @"event";
 }

@@ -35,7 +35,7 @@
 		@try {
             self.threadId = [jsonResponse objectForKey:CC_JSON_THREAD_ID];
             self.status = [jsonResponse objectForKey:CC_JSON_STATUS];
-			self.from = [[CCUser alloc] initWithJsonResponse:[jsonResponse objectForKey:CC_JSON_FROM]];
+			_from = [[CCUser alloc] initWithJsonResponse:[jsonResponse objectForKey:CC_JSON_FROM]];
             NSArray *toArray = [jsonResponse objectForKey:CC_JSON_TO];
             
             NSMutableArray *tmpArray = [NSMutableArray arrayWithCapacity:[toArray count]];
@@ -66,7 +66,7 @@
             [self arrayDescription:self.to], [super description]];
 }
 
--(NSString *)modelName
++(NSString *)modelName
 {
     return @"message";
 }

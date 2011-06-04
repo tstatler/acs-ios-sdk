@@ -1341,6 +1341,7 @@
                 if (object) {
                     [array addObject:object];
                 }
+                [object release];
             }
             if (resultDictionary == nil) {
                 resultDictionary = [NSMutableDictionary dictionaryWithCapacity:1];

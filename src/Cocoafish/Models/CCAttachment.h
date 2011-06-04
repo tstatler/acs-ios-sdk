@@ -34,7 +34,8 @@
     BOOL _needProcess;
 }
 
--(id)initWithALAsset:(ALAsset *)asste;
+-(id)initWithALAsset:(ALAsset *)asset;
+-(id)initWithALAsset:(ALAsset *)asset maxPhotoSize:(int)maxPhotoSize jpegCompression:(double)jpegCompression;
 -(id)initWithImage:(UIImage *)image;
 -(id)initWithImage:(UIImage *)image maxPhotoSize:(int)maxPhotoSize jpegCompression:(double)jpegCompression;
 

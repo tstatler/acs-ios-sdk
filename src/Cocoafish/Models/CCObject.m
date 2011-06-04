@@ -12,6 +12,7 @@
 @property (nonatomic, retain, readwrite) NSString *objectId;
 @property (nonatomic, retain, readwrite) NSDate *createdAt;
 @property (nonatomic, retain, readwrite) NSDate *updatedAt;
+@property (nonatomic, retain, readwrite) NSArray *tags;
 @end
 
 
@@ -19,7 +20,7 @@
 @synthesize objectId = _objectId;
 @synthesize createdAt = _createdAt;
 @synthesize updatedAt = _updatedAt;
-
+@synthesize tags = _tags;
 
 -(id)initWithJsonResponse:(NSDictionary *)jsonResponse
 {
@@ -44,6 +45,9 @@
 	if (dateString) {
 		self.updatedAt = [dateFormatter dateFromString:dateString];
 	}
+    
+    self.tags = [jsonResponse objectForKey:@"tags"];
+
 	return self;
 }
 
@@ -59,6 +63,23 @@
     }
     return self;
     
+}
+
++(NSArray *)arrayWithJsonResponse:(NSDictionary *)jsonResponse class:(Class)class
+{
+    NSArray *jsonArray = [jsonResponse objectForKey:[NSString stringWithFormat:@"%@s", [class modelName]]];
+    NSMutableArray *results = nil; 
+    if ([jsonArray count] > 0) {
+        results = [NSMutableArray arrayWithCapacity:[jsonArray count]];
+        for (NSDictionary *json in jsonArray) {
+            id object = [[class alloc] initWithJsonResponse:json];
+            if (object) {
+                [results addObject:object];
+            }
+            [object release];
+        }
+    }
+    return results;
 }
 
 -(id)copyWithZone:(NSZone *)zone  
@@ -83,9 +104,10 @@
     return [NSString stringWithFormat:@"{\n\t%@\n\t}", [array componentsJoinedByString:@"\n\t"]];
 }
 
--(NSString *)modelName
+// class name on the server
++(NSString *)modelName
 {
-    [NSException raise:@"Please set name in the subclass" format:@"name unset"];   
+    [NSException raise:@"Please set name in the subclass" format:@"modelName unset"];   
     return nil;
 }
 

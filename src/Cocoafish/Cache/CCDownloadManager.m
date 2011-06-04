@@ -39,10 +39,9 @@
 -(void)downloadPhoto:(CCPhoto *)photo size:(int)size
 {
 	@synchronized(self) {
-        NSString *downloadPath = [photo localPath:size];
-
-        if (!downloadPath && !photo.processed) {
-            // we don't have the photo url info yet, put in the queue
+        NSString *urlPath = [photo getImageUrl:size];
+        if (!urlPath && !photo.processed) {
+            // we don't have the photo url info yet because the photo is being processed, put in the queue
             if (_pendingPhotoDownloadQueue == nil) {
                 _pendingPhotoDownloadQueue = [[NSMutableDictionary alloc] init];
             }
@@ -64,12 +63,12 @@
             }
             return;
         }
+        NSString *downloadPath = [photo localPath:size];
 		if ([_downloadInProgress containsObject:downloadPath]) {
 			// download already in progress, no op
 			return;
 		}
         
-        NSString *urlPath = [photo getImageUrl:size];
         NSURL *url = [NSURL URLWithString:urlPath];
         CCRequest *request = [[[CCRequest alloc] initWithURL:url method:@"GET"] autorelease];
         [request setUserInfo:[NSDictionary dictionaryWithObjectsAndKeys:photo, @"object", [NSNumber numberWithInt:size], @"size", nil]];
@@ -156,7 +155,8 @@
             NSMutableDictionary *paramDict = [NSMutableDictionary dictionaryWithCapacity:1];
             for (NSString *objectId in objectIds) {
                 CCObject *parent = [_processingPhotos objectForKey:objectId];
-                NSString *key = [NSString stringWithFormat:@"%@_ids", [parent modelName]];
+              //  NSString *key = [NSString stringWithFormat:@"%@_ids", [parent modelName]];
+                NSString *key = [NSString stringWithFormat:@"%@_ids", [[parent class] modelName]];
                 NSMutableArray *ids = [paramDict objectForKey:key];
                 if (ids == nil) {
                     ids = [NSMutableArray arrayWithObject:parent.objectId];

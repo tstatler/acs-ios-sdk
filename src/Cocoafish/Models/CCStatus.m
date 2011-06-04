@@ -24,7 +24,7 @@
 {
 	if ((self = [super initWithJsonResponse:jsonResponse])) {
 		self.message = [jsonResponse objectForKey:CC_JSON_MESSAGE];
-        self.user = [[CCUser alloc] initWithJsonResponse:[jsonResponse objectForKey:CC_JSON_USER]];
+        _user = [[CCUser alloc] initWithJsonResponse:[jsonResponse objectForKey:CC_JSON_USER]];
 	}
 	
 	return self;
@@ -35,7 +35,7 @@
             self.message, [super description]];
 }
 
--(NSString *)modelName
++(NSString *)modelName
 {
     return @"status";
 }
