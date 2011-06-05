@@ -71,11 +71,11 @@
 	return self;
 }
 
-- (NSString *)description {
+/*- (NSString *)description {
     return [NSString stringWithFormat:@"CCPhoto:\n\tfilename: %@\n\tsize: %d\n\tmd5: %@\n\tprocessed: %d\n\tcontentType :%@\n\ttakenAt: %@\n\turls: %@\n\t%@",
             self.filename, self.size, self.md5, 
             self.processed, self.contentType, self.takenAt, [self.urls description], [super description]];
-}
+}*/
 
 +(NSString *)modelName
 {

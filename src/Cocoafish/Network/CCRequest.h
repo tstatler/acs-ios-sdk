@@ -47,3 +47,14 @@
 -(void)request:(CCRequest *)request didFailWithError:(NSError *)error;
 
 @end
+
+// used by joshua
+@interface  CCDeleteRequest  :  ASIHTTPRequest  {
+@private
+    Class _deleteClass;
+}
+
+@property (nonatomic, readonly) Class deleteClass;
+
+-(id)initWithURL:(NSURL *)newURL deleteClass:(Class)deleteClass;
+@end

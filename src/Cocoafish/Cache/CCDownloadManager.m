@@ -216,14 +216,16 @@
     if ([_processingPhotos count] > 0) {
         // there are still some photos are being processed on the server
         if (_autoUpdateTimer == nil) {
-            if (_timeInterval < 864000) {
+            // stop trying after 5 minutes
+            if (_timeInterval < 18000) {
                 _timeInterval = _timeInterval * 2;
-            }
-            self.autoUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:(_timeInterval)
+            
+                self.autoUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:(_timeInterval)
                                                                     target:self
                                                                   selector:@selector(updateProcessingPhotos)
                                                                   userInfo:nil
                                                                    repeats:NO];
+            }
         }
     }
 	if ([processedPhotos count] > 0) {

@@ -8,6 +8,7 @@
 
 #import "CCObject.h"
 
+@class ASIFormDataRequest;
 @class UIImage;
 @class CCRequest;
 @class CCUser;
@@ -60,11 +61,11 @@ typedef enum PhotoSize {
     // the following are used by CCNetworkManager
     SEL _didFinishSelector; // callback method once the request is finished
     NSString *_photoKey; 
-    CCRequest *_request;
+    ASIFormDataRequest *_request;
     NSString *_photoFileName;
 }
 
-@property (nonatomic, retain) CCRequest *request;
+@property (nonatomic, retain) ASIFormDataRequest *request;
 @property (nonatomic) SEL didFinishSelector;
 @property (nonatomic,retain) NSString *photoFileName;
 @property (nonatomic, retain) NSString *photoKey;

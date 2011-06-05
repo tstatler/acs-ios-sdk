@@ -207,7 +207,7 @@
         case STATUSES:
             return 2;
         case MESSAGES:
-            return 7;
+            return 8;
         case PHOTOS:
             return 6;
         case KEY_VALUES:
@@ -346,8 +346,11 @@
                     cell.textLabel.text = @"Show Message Threads";
                     break;
                 case 6:
-                default:
                     cell.textLabel.text = @"Show Messages in a Thread";
+                    break;
+                case 7:
+                default:
+                    cell.textLabel.text = @"Delete a message thread";
                     break;
             }
             
@@ -772,13 +775,19 @@
                     [controller.ccNetworkManager showMessageThreads:CC_FIRST_PAGE perPage:CC_DEFAULT_PER_PAGE];
                     break;
                 case 6:
-                default:
                     if (![self checkTestMessage]) {
                         [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
                         return;
                     }
-                    [controller.ccNetworkManager showThreadMessages:testMessage.threadId page:CC_FIRST_PAGE perPage:CC_DEFAULT_PER_PAGE];
-
+                    [controller.ccNetworkManager showThreadMessages:testMessage.threadId page:CC_FIRST_PAGE perPage:CC_DEFAULT_PER_PAGE startTime:[NSDate distantPast] order:@"asc"];
+                    
+                    break;
+                case 7:
+                    if (![self checkTestMessage]) {
+                        [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+                        return;
+                    }
+                    [controller.ccNetworkManager deleteThreadMessages:testMessage.threadId];
                     break;
             }
             
@@ -833,6 +842,7 @@
             break;
     }
     [request startAsynchronous];
+    
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
 }

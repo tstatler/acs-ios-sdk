@@ -90,6 +90,8 @@
 		B64B26DC138036200053E943 /* OAuth+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B26C5138036200053E943 /* OAuth+Additions.m */; };
 		B64B26DD138036200053E943 /* OAuthCore.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B26C7138036200053E943 /* OAuthCore.m */; };
 		B64B26DF13807A8F0053E943 /* sample.png in Resources */ = {isa = PBXBuildFile; fileRef = B64B26DE13807A8F0053E943 /* sample.png */; };
+		B685E430139B41AA001B50BD /* CCCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = B685E42F139B41AA001B50BD /* CCCollection.m */; };
+		B685E434139B41B9001B50BD /* CCShareRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B685E433139B41B9001B50BD /* CCShareRequest.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -248,6 +250,10 @@
 		B64B26C6138036200053E943 /* OAuthCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAuthCore.h; sourceTree = "<group>"; };
 		B64B26C7138036200053E943 /* OAuthCore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAuthCore.m; sourceTree = "<group>"; };
 		B64B26DE13807A8F0053E943 /* sample.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sample.png; sourceTree = "<group>"; };
+		B685E42E139B41AA001B50BD /* CCCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCCollection.h; sourceTree = "<group>"; };
+		B685E42F139B41AA001B50BD /* CCCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCCollection.m; sourceTree = "<group>"; };
+		B685E432139B41B9001B50BD /* CCShareRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCShareRequest.h; sourceTree = "<group>"; };
+		B685E433139B41B9001B50BD /* CCShareRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCShareRequest.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -515,6 +521,10 @@
 		B64B269F138036200053E943 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B685E432139B41B9001B50BD /* CCShareRequest.h */,
+				B685E433139B41B9001B50BD /* CCShareRequest.m */,
+				B685E42E139B41AA001B50BD /* CCCollection.h */,
+				B685E42F139B41AA001B50BD /* CCCollection.m */,
 				B63DBCFA139853F70068E556 /* CCAttachment.h */,
 				B63DBCFB139853F70068E556 /* CCAttachment.m */,
 				B64B26A0138036200053E943 /* CCCheckin.h */,
@@ -743,6 +753,8 @@
 				B64B26DC138036200053E943 /* OAuth+Additions.m in Sources */,
 				B64B26DD138036200053E943 /* OAuthCore.m in Sources */,
 				B63DBCFC139853F70068E556 /* CCAttachment.m in Sources */,
+				B685E430139B41AA001B50BD /* CCCollection.m in Sources */,
+				B685E434139B41B9001B50BD /* CCShareRequest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

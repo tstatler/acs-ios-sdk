@@ -203,3 +203,24 @@
     
 }
 @end
+
+
+// Used by Joshua
+@implementation CCDeleteRequest
+@synthesize deleteClass = _deleteClass;
+
+-(id)initWithURL:(NSURL *)newURL deleteClass:(Class)deleteClass
+{
+    self = [super initWithURL:newURL];
+    if (self) {
+        _deleteClass = deleteClass;
+        [self setRequestMethod:@"DELETE"];
+    }
+    return self;
+}
+
+-(void)dealloc
+{
+    [super dealloc];
+}
+@end

@@ -1,4 +1,4 @@
- //
+//
 //  CCNetworkManager.m
 //  Demo
 //
@@ -15,22 +15,32 @@
 #import "OAuthCore.h"
 #import "CCRequest.h"
 
+// Encode a string to embed in an URL.
+/*NSString* encodeToPercentEscapeString(NSString *string) {
+    return (NSString *)
+    CFURLCreateStringByAddingPercentEscapes(NULL,
+                                            (CFStringRef) string,
+                                            NULL,
+                                            (CFStringRef) @"!*'();:@&=+$,/?%#[]",
+                                            kCFStringEncodingUTF8);
+}*/
+
 # pragma -
 # pragma mark CCNetworkManager PrivateMethods
 @interface CCNetworkManager (PrivateMethods)
 -(void)setDelegate:(id)delegate;
--(void)addNewRequest:(CCRequest *)newRequest;
--(void)removeFinishedRequest:(CCRequest *)finishedRequest;
+-(void)addNewRequest:(ASIHTTPRequest *)newRequest;
+-(void)removeFinishedRequest:(ASIHTTPRequest *)finishedRequest;
 -(NSError *)serverErrorFromResponse:(CCResponse *)jsonResponse;
--(void)performAsyncRequest:(CCRequest *)request callback:(SEL)callback;
--(void)loginRequestDone:(CCRequest *)request;
--(void)logoutRequestDone:(CCRequest *)request;
--(void)createRequestDone:(CCRequest *)request;
--(void)getRequestDone:(CCRequest *)request;
--(void)updateRequestDone:(CCRequest *)request;
--(void)deleteRequestDone:(CCRequest *)request;
--(void)requestFailed:(CCRequest *)request;
--(void)addOauthHeaderToRequest:(CCRequest *)request;
+-(void)performAsyncRequest:(ASIHTTPRequest *)request callback:(SEL)callback;
+-(void)loginRequestDone:(ASIHTTPRequest *)request;
+-(void)logoutRequestDone:(ASIHTTPRequest *)request;
+-(void)createRequestDone:(ASIHTTPRequest *)request;
+-(void)getRequestDone:(ASIHTTPRequest *)request;
+-(void)updateRequestDone:(ASIHTTPRequest *)request;
+-(void)deleteRequestDone:(ASIHTTPRequest *)request;
+-(void)requestFailed:(ASIHTTPRequest *)request;
+-(void)addOauthHeaderToRequest:(ASIHTTPRequest *)request;
 -(Class)parseResultArray:(NSDictionary *)jsonResponse resultArray:(NSMutableArray **)resultArray;
 -(NSDictionary *)parseJsonResponse:(NSDictionary *)jsonResponse;
 -(NSString *)generateFullRequestUrl:(NSString *)partialUrl additionalParams:(NSArray *)additionalParams;
@@ -49,7 +59,7 @@
 		_operationQueue = [[NSOperationQueue alloc] init];
         _photoProcessingQueue = [[NSOperationQueue alloc] init];
 		_requestSet = [[NSMutableSet alloc] init];
-		
+        
 	}
 	return self;
 }
@@ -60,7 +70,7 @@
 		_operationQueue = [[NSOperationQueue alloc] init];
         _photoProcessingQueue = [[NSOperationQueue alloc] init];
 		_requestSet = [[NSMutableSet alloc] init];
-		
+        
 	}
 	return self;
 }
@@ -77,7 +87,7 @@
 
 # pragma -
 # pragma mark requests Management
--(void)addNewRequest:(CCRequest *)newRequest
+-(void)addNewRequest:(ASIHTTPRequest *)newRequest
 {
 	@synchronized(self) {
 		[_requestSet addObject:newRequest];
@@ -85,12 +95,11 @@
     [self retain];
 }
 
--(void)removeFinishedRequest:(CCRequest *)finishedRequest
-{ 
+-(void)removeFinishedRequest:(ASIHTTPRequest *)finishedRequest
+{
 	@synchronized(self) {
 		[_requestSet removeObject:finishedRequest];
 	}
-
     [self release];
 }
 
@@ -98,7 +107,7 @@
 {
 	@synchronized(self) {
 		NSArray *allRequests = [_requestSet allObjects];
-		for (CCRequest *request in allRequests) {
+		for (ASIHTTPRequest *request in allRequests) {
 			[request clearDelegatesAndCancel];
 		}
 		[_requestSet removeAllObjects];
@@ -119,25 +128,24 @@
 	return error;
 }
 
--(void)performAsyncRequest:(CCRequest *)request callback:(SEL)callback
+-(void)performAsyncRequest:(ASIHTTPRequest *)request callback:(SEL)callback
 {
 	[self addOauthHeaderToRequest:request];
-
+    
 	request.timeOutSeconds = CC_TIMEOUT;
-
+    
 	// set callbacks
 	[request setDelegate:self];
 	[request setDidFinishSelector:callback];
 	[request setDidFailSelector:@selector(requestFailed:)];
-	
+    
 	[_operationQueue addOperation:request];
-	
+    
 	[self addNewRequest:request];
- 
-	
+    
 }
 
--(void)addOauthHeaderToRequest:(CCRequest *)request
+-(void)addOauthHeaderToRequest:(ASIHTTPRequest *)request
 {
 	if (![[Cocoafish defaultCocoafish] getOauthConsumerKey] || ![[Cocoafish defaultCocoafish] getOauthConsumerSecret]) {
 		// nothing to add
@@ -148,12 +156,12 @@
 		postRequest = YES;
 	}
 	NSData *body = nil;
-
+    
 	if (postRequest) {
 		[request buildPostBody];
 		body = [request postBody];
 	}
-	
+    
 	NSString *header = OAuthorizationHeader([request url],
 											[request requestMethod],
 											body,
@@ -200,13 +208,13 @@
 #pragma mark Cocoafish API calls
 
 #pragma mark - Users related
--(CCRequest *)registerUser:(CCUser *)user password:(NSString *)password passwordConfirmation:(NSString *)passwordConfirmation image:(CCUploadImage *)image
+-(void)registerUser:(CCUser *)user password:(NSString *)password passwordConfirmation:(NSString *)passwordConfirmation image:(CCUploadImage *)image
 {
 	NSString *urlPath = [self generateFullRequestUrl:@"users/create.json" additionalParams:nil];
-
+    
 	NSURL *url = [NSURL URLWithString:urlPath];
-    CCRequest *request = [[[CCRequest alloc] initWithURL:url method:@"POST"] autorelease];
-
+	ASIFormDataRequest *request = [[[ASIFormDataRequest alloc] initWithURL:url] autorelease];
+    
 	// set the form
     if ([user.email length] > 0) {
         [request setPostValue:user.email forKey:@"email"];
@@ -222,53 +230,46 @@
     }
 	[request setPostValue:password forKey:@"password"];
 	[request setPostValue:passwordConfirmation forKey:@"password_confirmation"];
-	
+    
     if (image) {        
-        [request setDidStartSelector:@selector(processImageBeforeUpload)];
         image.request = request;
         image.didFinishSelector = @selector(createRequestDone:);
         NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithTarget:self
-                                                                        selector:@selector(processImageBeforeUpload:)
-                                                                        object:image];
+                                                                                selector:@selector(processImageBeforeUpload:)
+                                                                                  object:image];
         
         /* Add the operation to the photo processing queue */
         [_photoProcessingQueue addOperation:operation];
         [operation release];
+        return;
         
-	} else {
-        [self performAsyncRequest:request callback:@selector(createRequestDone:)];
-    }
-    return request;
+	}
+    
+	[self performAsyncRequest:request callback:@selector(createRequestDone:)];
 }
 
--(CCRequest *)showCurrentUser
+-(void)showCurrentUser
 {
 	NSString *urlPath = [self generateFullRequestUrl:@"users/show/me.json" additionalParams:nil];
-
+    
 	NSURL *url = [NSURL URLWithString:urlPath];
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url method:@"GET"] autorelease];
-	
+	ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
+    
 	[self performAsyncRequest:request callback:@selector(getRequestDone:)];
-    return request;
 }
 
--(CCRequest *)showUser:(NSString *)userId
+-(void)showUser:(NSString *)userId
 {
 	NSString *urlPath = [self generateFullRequestUrl:[NSString stringWithFormat:@"users/show/%@.json", userId] additionalParams:nil];
-
+    
 	NSURL *url = [NSURL URLWithString:urlPath];
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url method:@"GET"] autorelease];
-	
-    NSLog(@"showUser count before %d", [request retainCount]);
-
+	ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
+    
 	[self performAsyncRequest:request callback:@selector(getRequestDone:)];
-    NSLog(@"showUser count after %d", [request retainCount]);
-
-    return request;
-
+    
 }
 
--(CCRequest *)searchUsers:(NSString *)query page:(int)page perPage:(int)perPage
+-(void)searchUsers:(NSString *)query page:(int)page perPage:(int)perPage
 {
     NSMutableArray *additionalParams = [NSMutableArray arrayWithObjects:[NSString stringWithFormat:@"page=%d", page], [NSString stringWithFormat:@"per_page=%d", perPage], nil];
     if (query) {
@@ -276,52 +277,50 @@
     }
     
 	NSString *urlPath = [self generateFullRequestUrl:@"users/search.json" additionalParams:additionalParams];
-	
+    
 	NSURL *url = [NSURL URLWithString:urlPath];
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url method:@"GET"] autorelease];
+	ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
     
 	[self performAsyncRequest:request callback:@selector(getRequestDone:)];
-    return request;
 }
 
 
--(CCRequest *)login:(NSString *)login password:(NSString *)password
+-(void)login:(NSString *)login password:(NSString *)password
 {
 	NSString *urlPath = [self generateFullRequestUrl:@"users/login.json" additionalParams:nil];
     
 	NSURL *url = [NSURL URLWithString:urlPath];
-	
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url method:@"POST"] autorelease];
+    
+	ASIFormDataRequest *request = [[[ASIFormDataRequest alloc] initWithURL:url] autorelease];
     
 	// set the form
 	[request setPostValue:login forKey:@"login"];
 	[request setPostValue:password forKey:@"password"];
-	
+    
 	[self performAsyncRequest:request callback:@selector(loginRequestDone:)];
-    return request;
 }
 
--(CCRequest *)logout
+-(void)logout
 {
 	NSString *urlPath = [self generateFullRequestUrl:@"users/logout.json" additionalParams:nil];
     
 	NSURL *url = [NSURL URLWithString:urlPath];
-	
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url method:@"GET"] autorelease];
+    
+	ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
     
 	[self performAsyncRequest:request callback:@selector(logoutRequestDone:)];
-    return request;
-	
+    
 }
 
--(CCRequest *)updateUser:(CCUser *)updatedUser image:(CCUploadImage *)image
+-(void)updateUser:(CCUser *)updatedUser image:(CCUploadImage *)image
 {
     CCUser *currentUser = [[Cocoafish defaultCocoafish] getCurrentUser];
- 
+    
     NSString *urlPath = [self generateFullRequestUrl:@"users/update.json" additionalParams:nil];
     NSURL *url = [NSURL URLWithString:urlPath];
-	
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url method:@"PUT"] autorelease];
+    
+	ASIFormDataRequest *request = [[[ASIFormDataRequest alloc] initWithURL:url] autorelease];
+    [request setRequestMethod:@"PUT"];
     
     if ([currentUser.email caseInsensitiveCompare:updatedUser.email] != NSOrderedSame) {
         [request setPostValue:updatedUser.email forKey:@"email"];
@@ -345,26 +344,22 @@
         /* Add the operation to the photo processing queue */
         [_photoProcessingQueue addOperation:operation];
         [operation release];
+        return;
         
-	} else {
+	}
     
-        [self performAsyncRequest:request callback:@selector(updateRequestDone:)];
-    }
-    
-    return request;
+	[self performAsyncRequest:request callback:@selector(updateRequestDone:)];
     
 }
 
--(CCRequest *)deleteUser
+-(void)deleteUser
 {
     NSString *urlPath = [self generateFullRequestUrl:@"users/delete.json" additionalParams:nil];
 	NSURL *url = [NSURL URLWithString:urlPath];
-	
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url method:@"DELETE"] autorelease];
-    [request setUserInfo:[NSDictionary dictionaryWithObject:NSStringFromClass([CCUser class]) forKey:@"DeleteClass"]];
-	
+    
+	CCDeleteRequest *request = [[[CCDeleteRequest alloc] initWithURL:url deleteClass:[CCUser class]] autorelease];
+    
     [self performAsyncRequest:request callback:@selector(deleteRequestDone:)];
-    return request;
 }
 
 #pragma mark - Facebook related
@@ -376,16 +371,17 @@
 -(CCUser *)loginWithFacebook:(NSString *)fbAppId accessToken:(NSString *)accessToken error:(NSError **)error
 {
 	return [self facebookAuth:fbAppId accessToken:accessToken error:error isLogin:YES];
-
+    
 }
 
 -(void)unlinkFromFacebook:(NSError **)error
 {
 	NSString *urlPath = [self generateFullRequestUrl:@"social/facebook/unlink.json" additionalParams:nil];
 	NSURL *url = [NSURL URLWithString:urlPath];
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url method:@"DELETE"] autorelease];
+	ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
+    [request setRequestMethod:@"DELETE"];
 	[self addOauthHeaderToRequest:request];
-	
+    
 	[request startSynchronous];	
 	*error = [request error];
 	CCUser *currentUser = nil;
@@ -393,43 +389,42 @@
 		NSLog(@"%@", [request responseString]);
 		CCResponse *response = [[CCResponse alloc] initWithJsonData:[request responseData]];
 		if (response && [response.meta.status isEqualToString:CC_STATUS_OK]) {
-            NSDictionary *results = [self parseJsonResponse:response.response];
-            NSArray *users = [results objectForKey:NSStringFromClass([CCUser class])];       
-                        
-            if ([users count] == 1) {
-                currentUser = [users objectAtIndex:0];
-            }
+			NSMutableArray *users = nil;
+            Class class = [self parseResultArray:response.response resultArray:&users];
+			if (class == [CCUser class] && [users count] == 1) {
+				currentUser = [users objectAtIndex:0];
+			}
 			if (!currentUser) {
 				NSLog(@"Did not receive user info after facebookLogin");
 			} else {
 				[[Cocoafish defaultCocoafish] setCurrentUser:currentUser];
 			}
-			
+            
 		} else {
 			*error = [self serverErrorFromResponse:response];
 		}
 	} 
-	
+    
 }
 
 -(CCUser *)facebookAuth:(NSString *)fbAppId accessToken:(NSString *)accessToken error:(NSError **)error isLogin:(Boolean)isLogin
 {
 	NSString *urlPath = nil;
-
+    
 	if (isLogin) {
 		urlPath = [self generateFullRequestUrl:@"social/facebook/login.json" additionalParams:nil];
 	} else {
 		urlPath = [self generateFullRequestUrl:@"social/facebook/link.json" additionalParams:nil];
 	}
 	NSURL *url = [NSURL URLWithString:urlPath];
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url method:@"POST"] autorelease];
-
+	ASIFormDataRequest *request = [[[ASIFormDataRequest alloc] initWithURL:url] autorelease];
+    
 	// set the form
 	[request setPostValue:fbAppId forKey:@"facebook_app_id"];
 	[request setPostValue:accessToken forKey:@"access_token"];
-	
+    
 	[self addOauthHeaderToRequest:request];
-
+    
 	[request startSynchronous];	
 	*error = [request error];
 	CCUser *currentUser = nil;
@@ -437,19 +432,17 @@
 		NSLog(@"%@", [request responseString]);
 		CCResponse *response = [[CCResponse alloc] initWithJsonData:[request responseData]];
 		if (response && [response.meta.status isEqualToString:CC_STATUS_OK]) {
-            NSDictionary *results = [self parseJsonResponse:response.response];
-            NSArray *users = [results objectForKey:NSStringFromClass([CCUser class])];       
-                        
-            if ([users count] == 1) {
-                currentUser = [users objectAtIndex:0];
-            }
-
+			NSMutableArray *users = nil;
+            Class class = [self parseResultArray:response.response resultArray:&users];
+			if (class == [CCUser class] && [users count] == 1) {
+				currentUser = [users objectAtIndex:0];
+			}
 			if (!currentUser) {
 				NSLog(@"Did not receive user info after facebookLogin");
 			} else {
 				[[Cocoafish defaultCocoafish] setCurrentUser:currentUser];
 			}
-		
+            
 		} else {
 			*error = [self serverErrorFromResponse:response];
 		}
@@ -459,7 +452,7 @@
 
 
 #pragma mark - Facebook related
--(CCRequest *)searchCheckins:(CCObject *)belongTo page:(int)page perPage:(int)perPage
+-(void)searchCheckins:(CCObject *)belongTo page:(int)page perPage:(int)perPage
 {
     NSMutableArray *additionalParams = [NSMutableArray arrayWithObjects:[NSString stringWithFormat:@"page=%d", page], [NSString stringWithFormat:@"per_page=%d", perPage], nil];
     if ([belongTo isKindOfClass:[CCPlace class]]) {
@@ -474,24 +467,22 @@
     NSString *urlPath = [self generateFullRequestUrl:@"checkins/search.json" additionalParams:additionalParams];
     
 	NSURL *url = [NSURL URLWithString:urlPath];
-	
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url method:@"GET"] autorelease];
-	
+    
+	ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
+    
 	[self performAsyncRequest:request callback:@selector(getRequestDone:)];
     
-    return request;
-
 }
 
--(CCRequest *)createCheckin:(CCObject *)belongTo message:(NSString *)message image:(CCUploadImage *)image
+-(void)createCheckin:(CCObject *)belongTo message:(NSString *)message image:(CCUploadImage *)image
 {
-	
+    
 	NSString *urlPath = [self generateFullRequestUrl:@"checkins/create.json" additionalParams:nil];
-
+    
 	NSURL *url = [NSURL URLWithString:urlPath];
-	
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url method:@"POST"] autorelease];
-
+    
+	ASIFormDataRequest *request = [[[ASIFormDataRequest alloc] initWithURL:url] autorelease];
+    
     if ([belongTo isKindOfClass:[CCPlace class]]) {
         [request setPostValue:belongTo.objectId forKey:@"place_id"];
     } else if ([belongTo isKindOfClass:[CCEvent class]]) {
@@ -502,7 +493,7 @@
 	if (message && [message length] > 0) {
 		[request setPostValue:message forKey:@"message"];
 	}
-
+    
 	if (image) {
         image.request = request;
         image.didFinishSelector = @selector(createRequestDone:);
@@ -513,67 +504,60 @@
         /* Add the operation to the photo processing queue */
         [_photoProcessingQueue addOperation:operation];
         [operation release];
-
-	} else {
-		
-        [self performAsyncRequest:request callback:@selector(createRequestDone:)];
-    }
-    return request;
-
+        return;
+	}
+    
+	[self performAsyncRequest:request callback:@selector(createRequestDone:)];
+    
 }
 
--(CCRequest *)deleteCheckin:(NSString *)checkinId
+-(void)deleteCheckin:(NSString *)checkinId
 {
     NSString *urlPath = [self generateFullRequestUrl:[NSString stringWithFormat:@"checkins/delete/%@.json", checkinId] additionalParams:nil];
 	NSURL *url = [NSURL URLWithString:urlPath];
     
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url method:@"DELETE"] autorelease];
-    [request setUserInfo:[NSDictionary dictionaryWithObject:NSStringFromClass([CCCheckin class]) forKey:@"DeleteClass"]];
-	
+	CCDeleteRequest *request = [[[CCDeleteRequest alloc] initWithURL:url deleteClass:[CCCheckin class]] autorelease];
+    
     [self performAsyncRequest:request callback:@selector(deleteRequestDone:)];
-    return request;
 }
 
--(CCRequest *)showCheckin:(NSString *)checkinId
+-(void)showCheckin:(NSString *)checkinId
 {	
 	NSString *urlPath = [self generateFullRequestUrl:[NSString stringWithFormat:@"checkins/show/%@.json", checkinId] additionalParams:nil];
 	NSURL *url = [NSURL URLWithString:urlPath];
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url method:@"GET"] autorelease];
-	
-	[self performAsyncRequest:request callback:@selector(getRequestDone:)];
+	ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
     
-    return request;
+	[self performAsyncRequest:request callback:@selector(getRequestDone:)];
 }
 
 #pragma mark - Statuses
--(CCRequest *)createUserStatus:(NSString *)message image:(CCUploadImage *)image
+-(void)createUserStatus:(NSString *)message image:(CCUploadImage *)image
 {	
 	NSString *urlPath = [self generateFullRequestUrl:@"statuses/create.json" additionalParams:nil];
-
+    
 	NSURL *url = [NSURL URLWithString:urlPath];
-
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url method:@"POST"] autorelease];
-
+    
+	ASIFormDataRequest *request = [[[ASIFormDataRequest alloc] initWithURL:url] autorelease];
+    
 	[request setPostValue:message forKey:@"message"];
-
+    
     if (image) {
         image.request = request;
         image.didFinishSelector = @selector(createRequestDone:);
         NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithTarget:self
-                                        selector:@selector(processImageBeforeUpload:) object:image];
+                                                                                selector:@selector(processImageBeforeUpload:) object:image];
         
         /* Add the operation to the photo processing queue */
         [_photoProcessingQueue addOperation:operation];
         [operation release];
-	} else {
+        return;
+	}
     
-        [self performAsyncRequest:request callback:@selector(createRequestDone:)];
-    }
-    return request;
-
+	[self performAsyncRequest:request callback:@selector(createRequestDone:)];
+    
 }
 
--(CCRequest *)searchUserStatuses:(CCUser *)user startTime:(NSDate *)startTime page:(int)page perPage:(int)perPage
+-(void)searchUserStatuses:(CCUser *)user startTime:(NSDate *)startTime page:(int)page perPage:(int)perPage
 {
 	NSMutableArray *additionalParams = [NSMutableArray arrayWithObjects:[NSString stringWithFormat:@"page=%d", page], [NSString stringWithFormat:@"per_page=%d", perPage], nil];
     if (user != nil) {
@@ -583,34 +567,33 @@
         [additionalParams addObject:[NSString stringWithFormat:@"start_time=%.0f", [startTime timeIntervalSince1970]]];
     }
 	NSString *urlPath = [self generateFullRequestUrl:@"statuses/search.json" additionalParams:additionalParams];
-
+    
 	NSURL *url = [NSURL URLWithString:urlPath];
-	
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url method:@"GET"] autorelease];
-	
+    
+	ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
+    
 	[self performAsyncRequest:request callback:@selector(getRequestDone:)];
-    return request;
-
+    
 }
--(CCRequest *)deletePlace:(NSString *)placeId
+-(void)deletePlace:(NSString *)placeId
 {
     NSString *urlPath = [self generateFullRequestUrl:[NSString stringWithFormat:@"places/delete/%@.json", placeId] additionalParams:nil];
 	NSURL *url = [NSURL URLWithString:urlPath];
-	
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url method:@"DELETE"] autorelease];
-    [request setUserInfo:[NSDictionary dictionaryWithObject:NSStringFromClass([CCPlace class]) forKey:@"DeleteClass"]];
-	
+    
+    
+	CCDeleteRequest *request = [[[CCDeleteRequest alloc] initWithURL:url deleteClass:[CCPlace class]] autorelease];
+    
     [self performAsyncRequest:request callback:@selector(deleteRequestDone:)];
-    return request;
 }
 
--(CCRequest *)updatePlace:(CCPlace *)place image:(CCUploadImage *)image
+-(void)updatePlace:(CCPlace *)place image:(CCUploadImage *)image
 {
-
+    
     NSString *urlPath = [self generateFullRequestUrl:[NSString stringWithFormat:@"places/update/%@.json", place.objectId] additionalParams:nil];
     NSURL *url = [NSURL URLWithString:urlPath];
-	
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url method:@"PUT"] autorelease];
+    
+	ASIFormDataRequest *request = [[[ASIFormDataRequest alloc] initWithURL:url] autorelease];
+    [request setRequestMethod:@"PUT"];
     if (place.name) {
         [request setPostValue:place.name forKey:@"name"];
     }
@@ -655,21 +638,21 @@
         
         /* Add the operation to the photo processing queue */
         [_photoProcessingQueue addOperation:operation];
-        [operation release];        
-	} else {
+        [operation release];
+        return;
+        
+	}
     
-        [self performAsyncRequest:request callback:@selector(updateRequestDone:)];
-    }
-    return request;
+	[self performAsyncRequest:request callback:@selector(updateRequestDone:)];
     
 }
 
--(CCRequest *)createPlace:(CCPlace *)newPlace image:(CCUploadImage *)image
+-(void)createPlace:(CCPlace *)newPlace image:(CCUploadImage *)image
 {
     NSString *urlPath = [self generateFullRequestUrl:@"places/create.json" additionalParams:nil];
     
 	NSURL *url = [NSURL URLWithString:urlPath];
-    CCRequest *request = [[[CCRequest alloc] initWithURL:url method:@"POST"] autorelease];
+    ASIFormDataRequest *request = [[[ASIFormDataRequest alloc] initWithURL:url] autorelease];
     if (newPlace.name) {
         [request setPostValue:newPlace.name forKey:@"name"];
     }
@@ -713,14 +696,14 @@
         /* Add the operation to the photo processing queue */
         [_photoProcessingQueue addOperation:operation];
         [operation release];
-	} else {
-
-        [self performAsyncRequest:request callback:@selector(createRequestDone:)];
-    }
-    return request;
-
+        return;
+	}
+    
+    [self performAsyncRequest:request callback:@selector(createRequestDone:)];
+    
 }
--(CCRequest *)searchPlaces:(NSString *)query location:(CLLocation *)location distance:(NSNumber *)distance page:(int)page perPage:(int)perPage
+
+-(void)searchPlaces:(NSString *)query location:(CLLocation *)location distance:(NSNumber *)distance page:(int)page perPage:(int)perPage
 {
     NSMutableArray *additionalParams = [NSMutableArray arrayWithObjects:[NSString stringWithFormat:@"page=%d", page], [NSString stringWithFormat:@"per_page=%d", perPage], nil];
     if (query) {
@@ -735,33 +718,30 @@
     }
     
 	NSString *urlPath = [self generateFullRequestUrl:@"places/search.json" additionalParams:additionalParams];
-	
+    
 	NSURL *url = [NSURL URLWithString:urlPath];
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url method:@"GET"] autorelease];
+	ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
     
 	[self performAsyncRequest:request callback:@selector(getRequestDone:)];
-    
-    return request;
 }
 
--(CCRequest *)showPlace:(NSString *)placeId
+-(void)showPlace:(NSString *)placeId
 {	
 	NSString *urlPath = [self generateFullRequestUrl:[NSString stringWithFormat:@"places/show/%@.json", placeId] additionalParams:nil];
 	NSURL *url = [NSURL URLWithString:urlPath];
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url] autorelease];
-	
+	ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
+    
 	[self performAsyncRequest:request callback:@selector(getRequestDone:)];
-    return request;
 }
 
 // currently object only supports CCUser and CCPlace
--(CCRequest *)createPhoto:(CCObject *)photoHost collectionName:(NSString *)collectionName image:(CCUploadImage *)image
+-(void)createPhoto:(CCObject *)photoHost collectionName:(NSString *)collectionName image:(CCUploadImage *)image
 {
     NSString *urlPath = [self generateFullRequestUrl:@"photos/create.json" additionalParams:nil];
-
+    
     NSURL *url = [NSURL URLWithString:urlPath];
-	
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url method:@"POST"] autorelease];
+    
+	ASIFormDataRequest *request = [[[ASIFormDataRequest alloc] initWithURL:url] autorelease];
 	//[request setFile:photoPath forKey:@"file"];	
     
     if ([photoHost isKindOfClass:[CCPlace class]]) {
@@ -775,6 +755,13 @@
     if ([collectionName length]>0) {
         [request setPostValue:collectionName forKey:@"collection_name"];
     }
+    if ([photoHost isKindOfClass:[CCPlace class]]) {
+        [request setPostValue:photoHost.objectId forKey:@"place_id"];
+    } else if ([photoHost isKindOfClass:[CCUser class]]) {
+        [request setPostValue:photoHost.objectId forKey:@"user_id"];
+    } else {
+        [NSException raise:@"Object type is not supported in uploadPhoto" format:@"unknow object type"];
+    }
     
     if (image) {
         /* Create our NSInvocationOperation to call loadDataWithOperation, passing in nil */
@@ -789,52 +776,19 @@
         /* Add the operation to the photo processing queue */
         [_photoProcessingQueue addOperation:operation];
         [operation release];
-    } else {    	
-
-        [self performAsyncRequest:request callback:@selector(createRequestDone:)];
-    }
-    return request;
+        return;
+    }     	
+    
+	[self performAsyncRequest:request callback:@selector(createRequestDone:)];
 }
 
--(CCRequest *)updatePhoto:(NSString *)photoId collectionName:(NSString *)collectionName image:(CCUploadImage *)image
-{
-    NSString *urlPath = [self generateFullRequestUrl:[NSString stringWithFormat:@"photos/update/%@.json", photoId] additionalParams:nil];
-    
-    NSURL *url = [NSURL URLWithString:urlPath];
-	
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url method:@"PUT"] autorelease];
-	//[request setFile:photoPath forKey:@"file"];	
-    if ([collectionName length]>0) {
-        [request setPostValue:collectionName forKey:@"collection_name"];
-    }
-    
-    if (image) {
-        /* Create our NSInvocationOperation to call loadDataWithOperation, passing in nil */
-        
-        image.request = request;
-        image.didFinishSelector = @selector(updateRequestDone:);
-        image.photoKey = @"file";
-        NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithTarget:self
-                                                                                selector:@selector(processImageBeforeUpload:)
-                                                                                  object:image];
-        
-        /* Add the operation to the photo processing queue */
-        [_photoProcessingQueue addOperation:operation];
-        [operation release];
-    } else {    	
-        
-        [self performAsyncRequest:request callback:@selector(updateRequestDone:)];
-    }
-    return request;
-}
-
--(CCRequest *)searchPhotos:(CCObject *)object collectionName:(NSString *)collectionName page:(int)page perPage:(int)perPage
+-(void)searchPhotos:(CCObject *)object collectionName:(NSString *)collectionName page:(int)page perPage:(int)perPage
 {
     NSMutableArray *additionalParams = [NSMutableArray arrayWithObjects:[NSString stringWithFormat:@"page=%d", page], [NSString stringWithFormat:@"per_page=%d", perPage], nil];
     if ([collectionName length] > 0) {
         [additionalParams addObject:[NSString stringWithFormat:@"collection_name=%@", collectionName]];
     }
-
+    
     if ([object isKindOfClass:[CCPlace class]]) {
         [additionalParams addObject:[NSString stringWithFormat:@"place_id=%@", object.objectId]];
     } else if ([object isKindOfClass:[CCUser class]]) {
@@ -845,135 +799,156 @@
     
     NSString *urlPath = [self generateFullRequestUrl:@"photos/search.json" additionalParams:additionalParams];
 	NSURL *url = [NSURL URLWithString:urlPath];
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url] autorelease];
-	
+	ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
+    
 	[self performAsyncRequest:request callback:@selector(getRequestDone:)];	
-
-    return request;
+    
 }
 
--(CCRequest *)showPhoto:(NSString *)photoId
+-(void)showPhoto:(NSString *)photoId
 {
 	NSString *urlPath = [self generateFullRequestUrl:[NSString stringWithFormat:@"photos/show/%@.json", photoId] additionalParams:nil];
 	NSURL *url = [NSURL URLWithString:urlPath];
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url] autorelease];
-	
+	ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
+    
 	[self performAsyncRequest:request callback:@selector(getRequestDone:)];	
-    return request;
 }
 
--(CCRequest *)deletePhoto:(NSString *)photoId
+-(void)deletePhoto:(NSString *)photoId
 {
     NSString *urlPath = [self generateFullRequestUrl:[NSString stringWithFormat:@"photos/delete/%@.json", photoId] additionalParams:nil];
 	NSURL *url = [NSURL URLWithString:urlPath];
-	
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url method:@"DELETE"] autorelease];	
-    [request setUserInfo:[NSDictionary dictionaryWithObject:NSStringFromClass([CCPhoto class]) forKey:@"DeleteClass"]];
+    
+	CCDeleteRequest *request = [[[CCDeleteRequest alloc] initWithURL:url deleteClass:[CCPhoto class]] autorelease];	
     
 	[self performAsyncRequest:request callback:@selector(deleteRequestDone:)];
-    return request;
 }
 
--(CCRequest *)downloadPhoto:(id)sender photo:(CCPhoto *)photo size:(int)size
+// Get a list of photos by their ids
+-(void)getPhotosByIds:(NSArray *)photoIds
+{
+	if ([photoIds count] == 0) {
+		return;
+	} 
+	NSMutableString *photoIdsStr = [[[NSMutableString alloc] init] autorelease];;
+    
+	for (NSString *photoId in photoIds) {
+		[photoIdsStr appendFormat:@"%@,", photoId];
+	}
+	if ([photoIdsStr length] > 0) {
+		// remove the last ,
+		NSRange range;
+		range.location = [photoIdsStr length] - 1;
+		range.length = 1;
+		[photoIdsStr deleteCharactersInRange:range];
+        
+	}
+    
+	NSArray *additionalParams = [NSArray arrayWithObject:[NSString stringWithFormat:@"ids=%@", photoIdsStr]];
+    
+	NSString *urlPath = [self generateFullRequestUrl:@"photos/show.json" additionalParams:additionalParams];
+    
+	NSURL *url = [NSURL URLWithString:urlPath];
+	ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
+    
+	[self performAsyncRequest:request callback:@selector(getRequestDone:)];	
+}
+
+
+/*-(Boolean)downloadPhoto:(id)sender photo:(CCPhoto *)photo size:(int)size
 {
 	NSString *urlPath = [photo getImageUrl:size];
 	if (photo == nil || urlPath == nil) {
-		return nil;
+		return NO;
 	}
 	NSURL *url = [NSURL URLWithString:urlPath];
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url method:@"GET"] autorelease];
-    [request setUserInfo:[NSDictionary dictionaryWithObjectsAndKeys:photo, @"object", [NSNumber numberWithInt:size], @"size", nil]];
+	CCDownloadRequest *request = [[[CCDownloadRequest alloc] initWithURL:url object:photo size:[NSNumber numberWithInt:size]] autorelease];
 	[request setDownloadDestinationPath:[photo localPath:size]];
     
 	request.timeOutSeconds = CC_TIMEOUT;
-	
+    
 	// set callbacks
 	[request setDelegate:sender];
 	[request setDidFinishSelector:@selector(downloadDone:)];
 	[request setDidFailSelector:@selector(downloadFailed:)];
-	
+    
 	[_operationQueue addOperation:request];
-	
+    
 	[self addNewRequest:request];
-	return request;
-}
+	return YES;
+}*/
 
 #pragma mark - KeyValues related
 
--(CCRequest *)setValueForKey:(NSString *)key value:(NSString *)value
+-(void)setValueForKey:(NSString *)key value:(NSString *)value
 {
     NSArray *additionalParams = [NSArray arrayWithObjects:[NSString stringWithFormat:@"name=%@", key], [NSString stringWithFormat:@"value=%@", value], nil];
-
+    
     NSString *urlPath = [self generateFullRequestUrl:@"keyvalues/set.json" additionalParams:additionalParams];
-
+    
 	NSURL *url = [NSURL URLWithString:urlPath];
-	
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url method:@"PUT"] autorelease];
-	
+    
+	ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
+    [request setRequestMethod:@"PUT"];
+    
 	[self performAsyncRequest:request callback:@selector(createRequestDone:)];
-    return request;
 }
 
--(CCRequest *)getValueForKey:(NSString *)key
+-(void)getValueForKey:(NSString *)key
 {
 	NSArray *additionalParams = [NSArray arrayWithObject:[NSString stringWithFormat:@"name=%@", key]];
-	
+    
 	NSString *urlPath = [self generateFullRequestUrl:@"keyvalues/get.json" additionalParams:additionalParams];
-
+    
 	NSURL *url = [NSURL URLWithString:urlPath];
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url] autorelease];
-	
+	ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
+    
 	[self performAsyncRequest:request callback:@selector(getRequestDone:)];	
-    return request;
-	
+    
 }
 
--(CCRequest *)appendValueForKey:(NSString *)key appendValue:(NSString *)appendValue
+-(void)appendValueForKey:(NSString *)key appendValue:(NSString *)appendValue
 {
     NSArray *additionalParams = [NSArray arrayWithObjects:[NSString stringWithFormat:@"name=%@", key], [NSString stringWithFormat:@"value=%@", appendValue], nil];
     
     NSString *urlPath = [self generateFullRequestUrl:@"keyvalues/append.json" additionalParams:additionalParams];
     
 	NSURL *url = [NSURL URLWithString:urlPath];
-	
-	CCRequest  *request = [[[CCRequest alloc] initWithURL:url method:@"PUT"] autorelease];
-	
+    
+	ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
+    [request setRequestMethod:@"PUT"];
+    
 	[self performAsyncRequest:request callback:@selector(updateRequestDone:)];
     
-    return request;
-    
 }
 
--(CCRequest *)deleteKeyValue:(NSString *)key
+-(void)deleteKeyValue:(NSString *)key
 {
     NSArray *additionalParams = [NSArray arrayWithObject:[NSString stringWithFormat:@"name=%@", key]];
-
+    
     NSString *urlPath = [self generateFullRequestUrl:@"keyvalues/delete.json" additionalParams:additionalParams];
 	NSURL *url = [NSURL URLWithString:urlPath];
-	
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url method:@"DELETE"] autorelease];
-    [request setUserInfo:[NSDictionary dictionaryWithObject:NSStringFromClass([CCKeyValuePair class]) forKey:@"DeleteClass"]];
-
-	
+    
+	CCDeleteRequest *request = [[[CCDeleteRequest alloc] initWithURL:url deleteClass:[CCKeyValuePair class]] autorelease];
+    
 	[self performAsyncRequest:request callback:@selector(deleteRequestDone:)];
-    return request;
 }
 
--(CCRequest *)incrBy:(NSString *)name value:(NSInteger)value
+-(void)incrBy:(NSString *)name value:(NSInteger)value
 {
     NSArray *additionalParams = [NSArray arrayWithObjects:[NSString stringWithFormat:@"name=%@", name], [NSString stringWithFormat:@"value=%d", value], nil];
     NSString *urlPath = [self generateFullRequestUrl:@"keyvalues/incrby.json" additionalParams:additionalParams];
     
 	NSURL *url = [NSURL URLWithString:urlPath];
-	
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url method:@"PUT"] autorelease];
-	
+    
+	ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
+    [request setRequestMethod:@"PUT"];
+    
 	[self performAsyncRequest:request callback:@selector(updateRequestDone:)];
-    return request;
     
 }
 
--(CCRequest *)searchKeyValues:(NSString *)query page:(int)page per_page:(int)perPage
+-(void)searchKeyValues:(NSString *)query page:(int)page per_page:(int)perPage
 {
     NSMutableArray *additionalParams = [NSMutableArray arrayWithObjects:[NSString stringWithFormat:@"page=%d", page], [NSString stringWithFormat:@"per_page=%d", perPage], nil];
     if (query) {
@@ -981,65 +956,65 @@
     }
     NSString *urlPath = [self generateFullRequestUrl:@"keyvalues/search.json" additionalParams:additionalParams];
     NSURL *url = [NSURL URLWithString:urlPath];
-
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url] autorelease];
-	
+    
+	ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
+    
 	[self performAsyncRequest:request callback:@selector(getRequestDone:)];
-    return request;
 }
 
--(CCRequest *)setValuesForKey:(NSString *)key values:(NSArray *)values
+-(void)setValuesForKey:(NSString *)key values:(NSArray *)values
 {
     NSArray *additionalParams = [NSArray arrayWithObjects:[NSString stringWithFormat:@"name=%@", key], [NSString stringWithFormat:@"value=%@",  [values componentsJoinedByString:@"^"]], nil];
     
     NSString *urlPath = [self generateFullRequestUrl:@"keyvalues/set.json" additionalParams:additionalParams];
     
-	NSURL *url = [NSURL URLWithString:urlPath];
-	
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url method:@"PUT"] autorelease];
-	
-	[self performAsyncRequest:request callback:@selector(createRequestDone:)];
+    NSURL *url = [NSURL URLWithString:urlPath];
+    
+    ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
+    [request setRequestMethod:@"PUT"];
+    
+    [self performAsyncRequest:request callback:@selector(createRequestDone:)];
     return request;
     
 }
 
--(NSArray *)getValuesForKey:(NSString *)key 
+-(NSArray *)getValuesForKey:(NSString *)key
 {
     NSArray *additionalParams = [NSArray arrayWithObject:[NSString stringWithFormat:@"name=%@", key]];
-	
-	NSString *urlPath = [self generateFullRequestUrl:@"keyvalues/get.json" additionalParams:additionalParams];
     
-	NSURL *url = [NSURL URLWithString:urlPath];
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url] autorelease];
+    NSString *urlPath = [self generateFullRequestUrl:@"keyvalues/get.json" additionalParams:additionalParams];
+    
+    NSURL *url = [NSURL URLWithString:urlPath];
+    ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
     [self addOauthHeaderToRequest:request];
-    [request startSynchronous];	
-	NSError *error = [request error];
-	if (!error) {
-		NSLog(@"%@", [request responseString]);
-		CCResponse *response = [[CCResponse alloc] initWithJsonData:[request responseData]];
-		if (response && [response.meta.status isEqualToString:CC_STATUS_OK]) {
+    [request startSynchronous];
+    NSError *error = [request error];
+    if (!error) {
+        NSLog(@"%@", [request responseString]);
+        CCResponse *response = [[CCResponse alloc] initWithJsonData:[request responseData]];
+        if (response && [response.meta.status isEqualToString:CC_STATUS_OK]) {
             NSDictionary *results = [self parseJsonResponse:response.response];
-            NSArray *kvs = [results objectForKey:NSStringFromClass([CCKeyValuePair class])];       
+            NSArray *kvs = [results objectForKey:NSStringFromClass([CCKeyValuePair class])];
             CCKeyValuePair *kv = nil;
             if ([kvs count] == 1) {
                 kv = [kvs objectAtIndex:0];
                 return [kv.value componentsSeparatedByString:@"^"];
             }
         }
-	} 
+    }
     return nil;
-
+    
 }
 
 
 #pragma mark - Event related
--(CCRequest *)createEvent:(NSString *)name details:(NSString *)details placeId:(NSString *)placeId startTime:(NSDate *)startTime endTime:(NSDate *)endTime image:(CCUploadImage *)image
+-(void)createEvent:(NSString *)name details:(NSString *)details placeId:(NSString *)placeId startTime:(NSDate *)startTime endTime:(NSDate *)endTime image:(CCUploadImage *)image
 {    
     NSString *urlPath = [self generateFullRequestUrl:@"events/create.json" additionalParams:nil];
     
 	NSURL *url = [NSURL URLWithString:urlPath];
-	
-    CCRequest *request = [[[CCRequest alloc] initWithURL:url method:@"POST"] autorelease];
+    
+    ASIFormDataRequest *request = [[[ASIFormDataRequest alloc] initWithURL:url] autorelease];
     
     if (name) {
         [request setPostValue:name forKey:@"name"];
@@ -1056,7 +1031,7 @@
     if (endTime) {
         [request setPostValue:[endTime description] forKey:@"end_time"];
     }
-
+    
     if (image) {
         image.request = request;
         image.didFinishSelector = @selector(createRequestDone:);
@@ -1065,21 +1040,21 @@
         /* Add the operation to the photo processing queue */
         [_photoProcessingQueue addOperation:operation];
         [operation release];
-	} else {
+        return;
+	}
     
-        [self performAsyncRequest:request callback:@selector(createRequestDone:)];
-    }
-    return request;
+	[self performAsyncRequest:request callback:@selector(createRequestDone:)];
     
 }
 
--(CCRequest *)updateEvent:(NSString *)eventId name:(NSString *)name details:(NSString *)details placeId:(NSString *)placeId startTime:(NSDate *)startTime endTime:(NSDate *)endTime image:(CCUploadImage *)image
+-(void)updateEvent:(NSString *)eventId name:(NSString *)name details:(NSString *)details placeId:(NSString *)placeId startTime:(NSDate *)startTime endTime:(NSDate *)endTime image:(CCUploadImage *)image
 
 {
     NSString *urlPath = [self generateFullRequestUrl:[NSString stringWithFormat:@"events/update/%@.json", eventId] additionalParams:nil];
     NSURL *url = [NSURL URLWithString:urlPath];
-	
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url method:@"PUT"] autorelease];
+    
+	ASIFormDataRequest *request = [[[ASIFormDataRequest alloc] initWithURL:url] autorelease];
+    [request setRequestMethod:@"PUT"];
     
     if (name) {
         [request setPostValue:name forKey:@"name"];
@@ -1106,28 +1081,26 @@
         
         /* Add the operation to the photo processing queue */
         [_photoProcessingQueue addOperation:operation];
-        [operation release];        
-	} else {
+        [operation release];
+        return;
+        
+	}
     
-        [self performAsyncRequest:request callback:@selector(updateRequestDone:)];
-    }
-    return request;
+	[self performAsyncRequest:request callback:@selector(updateRequestDone:)];
     
 }
 
--(CCRequest *)showEvent:(NSString *)eventId
+-(void)showEvent:(NSString *)eventId
 {
     NSString *urlPath = [self generateFullRequestUrl:[NSString stringWithFormat:@"events/show/%@.json", eventId] additionalParams:nil];
     
 	NSURL *url = [NSURL URLWithString:urlPath];
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url] autorelease];
-	
+	ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
+    
 	[self performAsyncRequest:request callback:@selector(getRequestDone:)];
-    return request;
     
 }
-
--(CCRequest *)searchEvents:(CCObject *)belongTo page:(int)page perPage:(int)perPage
+-(void)searchEvents:(CCObject *)belongTo page:(int)page perPage:(int)perPage
 {
     NSMutableArray *additionalParams = [NSMutableArray arrayWithObjects:[NSString stringWithFormat:@"page=%d", page], [NSString stringWithFormat:@"per_page=%d", perPage], nil];
     
@@ -1142,34 +1115,31 @@
 	NSString *urlPath = [self generateFullRequestUrl:@"events/search.json" additionalParams:additionalParams];
     
 	NSURL *url = [NSURL URLWithString:urlPath];
-	
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url] autorelease];
-	
+    
+	ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
+    
 	[self performAsyncRequest:request callback:@selector(getRequestDone:)];
-    return request;
 }
 
--(CCRequest *)deleteEvent:(NSString *)eventId
+-(void)deleteEvent:(NSString *)eventId
 {
     NSString *urlPath = [self generateFullRequestUrl:[NSString stringWithFormat:@"events/delete/%@.json", eventId] additionalParams:nil];
 	NSURL *url = [NSURL URLWithString:urlPath];
-	
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url method:@"DELETE"] autorelease];
-    [request setUserInfo:[NSDictionary dictionaryWithObject:NSStringFromClass([CCEvent class]) forKey:@"DeleteClass"]];
-	
+    
+	CCDeleteRequest *request = [[[CCDeleteRequest alloc] initWithURL:url deleteClass:[CCEvent class]] autorelease];
+    
     [self performAsyncRequest:request callback:@selector(deleteRequestDone:)];    
-    return request;
 }
 
 #pragma - Messages related
 // Message related
--(CCRequest *)createMessage:(NSString *)subject body:(NSString *)body toUserIds:(NSArray *)toUserIds
+-(void)createMessage:(NSString *)subject body:(NSString *)body toUserIds:(NSArray *)toUserIds
 {
     NSString *urlPath = [self generateFullRequestUrl:@"messages/create.json" additionalParams:nil];
     
 	NSURL *url = [NSURL URLWithString:urlPath];
-	
-    CCRequest *request = [[[CCRequest alloc] initWithURL:url method:@"POST"] autorelease];
+    
+    ASIFormDataRequest *request = [[[ASIFormDataRequest alloc] initWithURL:url] autorelease];
     
     if (subject) {
         [request setPostValue:subject forKey:@"subject"];
@@ -1182,103 +1152,134 @@
     }
     
 	[self performAsyncRequest:request callback:@selector(createRequestDone:)];
-    return request;    
+    
 }
-
--(CCRequest *)replyMessage:(NSString *)messageId body:(NSString *)body
+-(void)replyMessage:(NSString *)messageId body:(NSString *)body
 {
     NSString *urlPath = [self generateFullRequestUrl:[NSString stringWithFormat:@"messages/reply/%@.json", messageId] additionalParams:nil];
     
 	NSURL *url = [NSURL URLWithString:urlPath];
-	
-    CCRequest *request = [[[CCRequest alloc] initWithURL:url method:@"POST"] autorelease];
+    
+    ASIFormDataRequest *request = [[[ASIFormDataRequest alloc] initWithURL:url] autorelease];
     
     if (body) {
         [request setPostValue:body forKey:@"body"];
     }
 	[self performAsyncRequest:request callback:@selector(createRequestDone:)];
-    return request;
 }
 
--(CCRequest *)showMessage:(NSString *)messageId
+-(void)showMessage:(NSString *)messageId
 {
     NSString *urlPath = [self generateFullRequestUrl:[NSString stringWithFormat:@"messages/show/%@.json", messageId] additionalParams:nil];
     
 	NSURL *url = [NSURL URLWithString:urlPath];
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url] autorelease];
-	
+	ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
+    
 	[self performAsyncRequest:request callback:@selector(getRequestDone:)];
-    return request;
 }
 
--(CCRequest *)showInboxMessages:(int)page perPage:(int)perPage
+-(void)showInboxMessages:(int)page perPage:(int)perPage
 {
     NSMutableArray *additionalParams = [NSMutableArray arrayWithObjects:[NSString stringWithFormat:@"page=%d", page], [NSString stringWithFormat:@"per_page=%d", perPage], nil];
     NSString *urlPath = [self generateFullRequestUrl:@"messages/show/inbox.json" additionalParams:additionalParams];
     
 	NSURL *url = [NSURL URLWithString:urlPath];
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url] autorelease];
-	
+	ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
+    
 	[self performAsyncRequest:request callback:@selector(getRequestDone:)];
-    return request;
 }
 
--(CCRequest *)showSentMessages:(int)page perPage:(int)perPage
+-(void)showSentMessages:(int)page perPage:(int)perPage
 {
     NSMutableArray *additionalParams = [NSMutableArray arrayWithObjects:[NSString stringWithFormat:@"page=%d", page], [NSString stringWithFormat:@"per_page=%d", perPage], nil];
     NSString *urlPath = [self generateFullRequestUrl:@"messages/show/sent.json" additionalParams:additionalParams];
     
 	NSURL *url = [NSURL URLWithString:urlPath];
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url] autorelease];
-	
+	ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
+    
 	[self performAsyncRequest:request callback:@selector(getRequestDone:)];
-    return request;
 }
 
--(CCRequest *)showMessageThreads:(int)page perPage:(int)perPage
+-(void)showMessageThreads:(int)page perPage:(int)perPage
 {
     NSMutableArray *additionalParams = [NSMutableArray arrayWithObjects:[NSString stringWithFormat:@"page=%d", page], [NSString stringWithFormat:@"per_page=%d", perPage], nil];
     NSString *urlPath = [self generateFullRequestUrl:@"messages/show/threads.json" additionalParams:additionalParams];
     
 	NSURL *url = [NSURL URLWithString:urlPath];
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url] autorelease];
-	
+	ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
+    
 	[self performAsyncRequest:request callback:@selector(getRequestDone:)];
-    return request;
     
 }
 
--(CCRequest *)showThreadMessages:(NSString *)threadId page:(int)page perPage:(int)perPage
+-(void)showThreadMessages:(NSString *)threadId page:(int)page perPage:(int)perPage startTime:(NSDate *)startTime order:(NSString *)order
 {
+
     NSMutableArray *additionalParams = [NSMutableArray arrayWithObjects:[NSString stringWithFormat:@"page=%d", page], [NSString stringWithFormat:@"per_page=%d", perPage], nil];
+    if (startTime != nil) {
+        [additionalParams addObject:[NSString stringWithFormat:@"start_time=%@", encodeToPercentEscapeString([startTime description])]];
+    }
+    if (order) {
+         [additionalParams addObject:[NSString stringWithFormat:@"order=%@", order]];
+    }
     NSString *urlPath = [self generateFullRequestUrl:[NSString stringWithFormat:@"messages/show/thread/%@.json", threadId] additionalParams:additionalParams];
     
 	NSURL *url = [NSURL URLWithString:urlPath];
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url] autorelease];
-	
+	ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
+    
 	[self performAsyncRequest:request callback:@selector(getRequestDone:)];
-    return request;
     
 }
 
--(CCRequest *)deleteMessage:(NSString *)messageId
+-(int)newMesssageCount:(NSString *)threadId
+{
+    
+    NSString *urlPath = [self generateFullRequestUrl:[NSString stringWithFormat:@"messages/show/thread_unread_count/%@.json", threadId] additionalParams:nil];
+    
+	NSURL *url = [NSURL URLWithString:urlPath];
+	ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
+    [self addOauthHeaderToRequest:request];
+    [request startSynchronous];
+    NSError *error = [request error];
+    if (!error) {
+        NSLog(@"%@", [request responseString]);
+        CCResponse *response = [[CCResponse alloc] initWithJsonData:[request responseData]];
+        if (response && [response.meta.status isEqualToString:CC_STATUS_OK] && response.meta.pagination) {
+            return response.meta.pagination.totalResults;
+        }
+    }
+    return 0;
+    
+
+}
+
+-(void)deleteMessage:(NSString *)messageId
 {
     NSString *urlPath = [self generateFullRequestUrl:[NSString stringWithFormat:@"messages/delete/%@.json", messageId] additionalParams:nil];
 	NSURL *url = [NSURL URLWithString:urlPath];
-	
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url method:@"DELETE"] autorelease];
-    [request setUserInfo:[NSDictionary dictionaryWithObject:NSStringFromClass([CCMessage class]) forKey:@"DeleteClass"]];
-	
+    
+	CCDeleteRequest *request = [[[CCDeleteRequest alloc] initWithURL:url deleteClass:[CCMessage class]] autorelease];
+    
     [self performAsyncRequest:request callback:@selector(deleteRequestDone:)]; 
-    return request;
+    
+}
+
+-(void)deleteThreadMessages:(NSString *)threadId
+{
+    NSString *urlPath = [self generateFullRequestUrl:[NSString stringWithFormat:@"messages/delete/thread/%@.json", threadId] additionalParams:nil];
+	NSURL *url = [NSURL URLWithString:urlPath];
+    
+	CCDeleteRequest *request = [[[CCDeleteRequest alloc] initWithURL:url deleteClass:[CCMessage class]] autorelease];
+    
+    [self performAsyncRequest:request callback:@selector(deleteRequestDone:)]; 
     
 }
 
 # pragma objects
--(CCRequest *)getObjectsByIds:(NSDictionary *)idsByType
+-(void)getObjectsByIds:(NSDictionary *)idsByType
 {
     if ([idsByType count] == 0) {
-		return nil;
+		return;
 	} 
     NSArray *types = [idsByType allKeys];
     NSMutableArray *additionalParams = [NSMutableArray arrayWithCapacity:1];
@@ -1287,14 +1288,13 @@
         NSString *idString = [ids componentsJoinedByString:@","];
         [additionalParams addObject:[NSString stringWithFormat:@"%@_ids=%@",[[type lowercaseString] substringFromIndex:2], idString]];
     }
-		
+    
 	NSString *urlPath = [self generateFullRequestUrl:@"objects/show.json" additionalParams:additionalParams];
     
 	NSURL *url = [NSURL URLWithString:urlPath];
-	CCRequest *request = [[[CCRequest alloc] initWithURL:url method:@"GET" ] autorelease];
-	
+	ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
+    
 	[self performAsyncRequest:request callback:@selector(getRequestDone:)];	
-    return request;
     
 }
 
@@ -1325,9 +1325,7 @@
         } else if ([jsonTag caseInsensitiveCompare:CC_JSON_MESSAGES] == NSOrderedSame) {
             class = [CCMessage class];
         } else  {
-            // We don't know how to handle this type of object yet
-            [NSException raise:@"ParseJsonResponse, unknown jsonTag" format:@"unknow jsonTag: %@", jsonTag];
-;
+            continue;
         }
         
         NSArray *jsonArray = [jsonResponse objectForKey:jsonTag];
@@ -1340,8 +1338,8 @@
                 CCObject *object = (CCObject *)[[class alloc] initWithJsonResponse:jsonObject];
                 if (object) {
                     [array addObject:object];
+                    [object release];
                 }
-                [object release];
             }
             if (resultDictionary == nil) {
                 resultDictionary = [NSMutableDictionary dictionaryWithCapacity:1];
@@ -1352,9 +1350,9 @@
     return (NSDictionary *)resultDictionary;
 }
 
--(CCResponse *)requestDoneCommon:(CCRequest *)request
+-(CCResponse *)requestDoneCommon:(ASIHTTPRequest *)request
 {
-
+    
     NSLog(@"Received %@", [request responseString]);
     CCResponse *response = [[CCResponse alloc] initWithJsonData:[request responseData]];
     if (response && [response.meta.status isEqualToString:CC_STATUS_OK]) {
@@ -1366,35 +1364,35 @@
             [_delegate networkManager:self didFailWithError:error];
         }
     }
-
+    [self removeFinishedRequest:request];
+    
     return nil;
 }
 
 // Create action finished
--(void)loginRequestDone:(CCRequest *)request
+-(void)loginRequestDone:(ASIHTTPRequest *)request
 {
     CCResponse *response = [self requestDoneCommon:request];
     if (response) {
         if ([_delegate respondsToSelector:@selector(networkManager:didLogin:)]) {
             NSDictionary *results = [self parseJsonResponse:response.response];
             NSArray *users = [results objectForKey:NSStringFromClass([CCUser class])];       
-
+            
             CCUser *user = nil;
-
+            
             if ([users count] == 1) {
                 user = [users objectAtIndex:0];
             }
-
+            
             [_delegate networkManager:self didLogin:user];
             [[Cocoafish defaultCocoafish] setCurrentUser:user];
             
         }
-    }
-    [self removeFinishedRequest:request];
+    } 
 }
 
 // Create action finished
--(void)logoutRequestDone:(CCRequest *)request
+-(void)logoutRequestDone:(ASIHTTPRequest *)request
 {
     CCResponse *response = [self requestDoneCommon:request];
     if (response) {
@@ -1404,12 +1402,10 @@
             [[Cocoafish defaultCocoafish] setCurrentUser:nil];
         }
     } 
-    [self removeFinishedRequest:request];
-
 }
 
 // Create action finished
--(void)createRequestDone:(CCRequest *)request
+-(void)createRequestDone:(ASIHTTPRequest *)request
 {
     CCResponse *response = [self requestDoneCommon:request];
     if (response) {
@@ -1420,54 +1416,50 @@
             [[Cocoafish defaultCocoafish] setCurrentUser:user];
         }
         
-        if ([results count] >0 && [_delegate respondsToSelector:@selector(networkManager:didCreate:objectType:)]) {
-
+        if ([_delegate respondsToSelector:@selector(networkManager:didCreate:objectType:)]) {
+            
             NSArray *classKeys = [results allKeys];
             for (NSString *classKey in classKeys) {
                 Class class = NSClassFromString(classKey);
                 NSArray *objects = [results objectForKey:classKey];
                 [_delegate networkManager:self didCreate:objects objectType:class];
             }
-        } else if ([_delegate respondsToSelector:@selector(networkManager:didSucceed:)]) {
+        } else if ([_delegate respondsToSelector:@selector(networkManager:meta:didSucceed:)]) {
             
             // Call the generic callback if we don't know how to process the returned objects or 
             // the didGet callback was not implemented
-            [_delegate networkManager:self didSucceed:response];
+            [_delegate networkManager:self meta:response.meta didSucceed:response.response];
         }
-            
+        
     } 
-    [self removeFinishedRequest:request];
-
 }
 
 // get action finished
--(void)getRequestDone:(CCRequest *)request
+-(void)getRequestDone:(ASIHTTPRequest *)request
 {
     CCResponse *response = [self requestDoneCommon:request];
     if (response) {
         NSDictionary *results = [self parseJsonResponse:response.response];
-        if ([results count] > 0 && [_delegate respondsToSelector:@selector(networkManager:didGet:objectType:pagination:)]) {
+        if ([_delegate respondsToSelector:@selector(networkManager:didGet:objectType:pagination:)]) {
             
             NSArray *classKeys = [results allKeys];
             for (NSString *classKey in classKeys) {
                 Class class = NSClassFromString(classKey);
                 NSArray *objects = [results objectForKey:classKey];
                 [_delegate networkManager:self didGet:objects objectType:class pagination:response.meta.pagination];
-            
+                
             }
-        } else if ([_delegate respondsToSelector:@selector(networkManager:didSucceed:)]) {
+        } else if ([_delegate respondsToSelector:@selector(networkManager:meta:didSucceed:)]) {
             
             // Call the generic callback if we don't know how to process the returned objects or 
             // the didGet callback was not implemented
-            [_delegate networkManager:self didSucceed:response];
+            [_delegate networkManager:self meta:response.meta didSucceed:response.response];
         }
     } 
-    [self removeFinishedRequest:request];
-
 }
 
 // update action finished
--(void)updateRequestDone:(CCRequest *)request
+-(void)updateRequestDone:(ASIHTTPRequest *)request
 {
     CCResponse *response = [self requestDoneCommon:request];
     if (response) {
@@ -1478,7 +1470,7 @@
             [[Cocoafish defaultCocoafish] setCurrentUser:user];
         }
         
-        if ([results count] >0 && [_delegate respondsToSelector:@selector(networkManager:didUpdate:objectType:)]) {
+        if ([_delegate respondsToSelector:@selector(networkManager:didUpdate:objectType:)]) {
             
             NSArray *classKeys = [results allKeys];
             for (NSString *classKey in classKeys) {
@@ -1486,41 +1478,38 @@
                 NSArray *objects = [results objectForKey:classKey];
                 [_delegate networkManager:self didUpdate:objects objectType:class];
             }
-        } else if ([_delegate respondsToSelector:@selector(networkManager:didSucceed:)]) {
+        } else if ([_delegate respondsToSelector:@selector(networkManager:meta:didSucceed:)]) {
             
             // Call the generic callback if we don't know how to process the returned objects or 
             // the didGet callback was not implemented
-            [_delegate networkManager:self didSucceed:response];
+            [_delegate networkManager:self meta:response.meta didSucceed:response.response];
         }
     } 
-    [self removeFinishedRequest:request];
-
 }
 
 // delete action finished
--(void)deleteRequestDone:(CCRequest *)request
+-(void)deleteRequestDone:(ASIHTTPRequest *)request
 {
     CCResponse *response = [self requestDoneCommon:request];
     if (response) {
-        Class deleteClass = NSClassFromString([request.userInfo objectForKey:@"DeleteClass"]);
+        CCDeleteRequest *deleteRequest = (CCDeleteRequest *)request;
+        Class deleteClass = deleteRequest.deleteClass;
         if (deleteClass == [CCUser class]) {
             [[Cocoafish defaultCocoafish] setCurrentUser:nil];
         }
         if ([_delegate respondsToSelector:@selector(networkManager:didDelete:)]) {
             [_delegate networkManager:self didDelete:deleteClass];
-        } else if ([_delegate respondsToSelector:@selector(networkManager:didSucceed:)]) {
+        } else if ([_delegate respondsToSelector:@selector(networkManager:meta:didSucceed:)]) {
             
             // Call the generic callback if we don't know how to process the returned objects or 
             // the didGet callback was not implemented
-            [_delegate networkManager:self didSucceed:response];
+            [_delegate networkManager:self meta:response.meta didSucceed:response.response];
         }
         
     } 
-    [self removeFinishedRequest:request];
-
 }
 
--(void)compoundRequestDone:(CCRequest *)request
+-(void)compoundRequestDone:(ASIHTTPRequest *)request
 {
     CCResponse *response = [self requestDoneCommon:request];
     if (response) {
@@ -1528,18 +1517,16 @@
             [_delegate networkManager:self meta:response.meta didSucceedWithCompound:response.responses];
         }
     }    
-    [self removeFinishedRequest:request];
-
 }
 
--(void)requestFailed:(CCRequest *)request
+-(void)requestFailed:(ASIHTTPRequest *)request
 {
 	NSError *error = [request error];
     if ([_delegate respondsToSelector:@selector(networkManager:didFailWithError:)]) {
         [_delegate networkManager:self didFailWithError:error];
     }
 	[self removeFinishedRequest:request];
-	
+    
 }
 
 # pragma -
