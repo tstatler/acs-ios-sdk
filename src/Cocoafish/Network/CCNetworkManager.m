@@ -269,7 +269,7 @@
     
 }
 
--(void)searchUsers:(NSString *)query page:(int)page perPage:(int)perPage
+-(void)searchUsers:(NSString *)query page:(int)page perPage:(int)perPage 
 {
     NSMutableArray *additionalParams = [NSMutableArray arrayWithObjects:[NSString stringWithFormat:@"page=%d", page], [NSString stringWithFormat:@"per_page=%d", perPage], nil];
     if (query) {
@@ -974,8 +974,7 @@
     [request setRequestMethod:@"PUT"];
     
     [self performAsyncRequest:request callback:@selector(createRequestDone:)];
-    return request;
-    
+
 }
 
 -(NSArray *)getValuesForKey:(NSString *)key
@@ -1203,6 +1202,7 @@
 -(void)showMessageThreads:(int)page perPage:(int)perPage
 {
     NSMutableArray *additionalParams = [NSMutableArray arrayWithObjects:[NSString stringWithFormat:@"page=%d", page], [NSString stringWithFormat:@"per_page=%d", perPage], nil];
+
     NSString *urlPath = [self generateFullRequestUrl:@"messages/show/threads.json" additionalParams:additionalParams];
     
 	NSURL *url = [NSURL URLWithString:urlPath];

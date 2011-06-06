@@ -13,6 +13,7 @@
 
 @interface CCRequest ()
 +(NSString *)generateRequestId;
+-(void)initCommon;
 @property (nonatomic, readwrite, retain) NSString *requestId;
 @property (nonatomic, readwrite, retain) CCAttachment *attachment;
 @end
@@ -28,12 +29,7 @@
     if (self) {
         // default is get request
         [self setRequestMethod:@"GET"];
-        self.requestId = [CCRequest generateRequestId];
-        self.timeOutSeconds = CC_TIMEOUT;
-        [self setDelegate:self];
-        [self setDidFinishSelector:@selector(requestDone:)];
-        [self setDidFailSelector:@selector(requestFailed:)];
-        [self addRequestHeader:@"Accepts-Encoding" value:@"gzip"];        
+        [self initCommon];
     }
     return self;
 }
@@ -44,13 +40,8 @@
     if (self) {
         
         [self setRequestMethod:method];
-        self.requestId = [CCRequest generateRequestId];
         self.timeOutSeconds = CC_TIMEOUT;
-        [self setDelegate:self];
-        [self setDidFinishSelector:@selector(requestDone:)];
-        [self setDidFailSelector:@selector(requestFailed:)];
-        [self addRequestHeader:@"Accepts-Encoding" value:@"gzip"];        
-        
+        [self initCommon];
     }
     return self;
 }
@@ -61,15 +52,21 @@
     if (self) {
         NSLog(@"CCRequest Url: %@", [newUrl absoluteString]);
         [self setRequestMethod:httpMethod];
-        self.requestId = [CCRequest generateRequestId];
-        self.requestDelegate = requestDelegate;  
-        self.timeOutSeconds = CC_TIMEOUT;
-        [self setDelegate:self];
-        [self setDidFinishSelector:@selector(requestDone:)];
-        [self setDidFailSelector:@selector(requestFailed:)];
-        [self addRequestHeader:@"Accepts-Encoding" value:@"gzip"];         
+        self.requestDelegate = requestDelegate;       
+        [self initCommon];
     }
     return self;
+    
+}
+
+-(void)initCommon
+{
+    self.requestId = [CCRequest generateRequestId];
+    self.timeOutSeconds = CC_TIMEOUT;
+    [self setDelegate:self];
+    [self setDidFinishSelector:@selector(requestDone:)];
+    [self setDidFailSelector:@selector(requestFailed:)];
+    [self addRequestHeader:@"Accepts-Encoding" value:@"gzip"];   
     
 }
 
@@ -98,9 +95,9 @@
 
 -(CCResponse *)startSynchronous
 {
-    [self setDelegate:nil];
+  /*  [self setDelegate:nil];
     [self setDidFailSelector:nil];
-    [self setDidFailSelector:nil];
+    [self setDidFailSelector:nil];*/
     [super startSynchronous];	
     CCResponse *response = nil;
 	if (![self error]) {

@@ -61,6 +61,18 @@
                     [sizes addObject:[NSNumber numberWithInt:size]];
                 }
             }
+            
+
+            // reset process autotimer
+            if (self.autoUpdateTimer == nil) {
+                
+                _timeInterval = DEFAULT_TIME_INTERVAL;
+                self.autoUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:(_timeInterval)
+                                                                    target:self
+                                                                  selector:@selector(updateProcessingPhotos)
+                                                                  userInfo:nil
+                                                                   repeats:NO];
+            }
             return;
         }
         NSString *downloadPath = [photo localPath:size];
@@ -216,8 +228,8 @@
     if ([_processingPhotos count] > 0) {
         // there are still some photos are being processed on the server
         if (_autoUpdateTimer == nil) {
-            // stop trying after 5 minutes
-            if (_timeInterval < 18000) {
+            // stop trying after 1 minutes
+            if (_timeInterval < 3600) {
                 _timeInterval = _timeInterval * 2;
             
                 self.autoUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:(_timeInterval)

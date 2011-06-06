@@ -14,18 +14,20 @@
 
 @property (nonatomic, retain, readwrite) NSString *name;
 @property (nonatomic, readwrite) NSInteger size;
-@property (nonatomic, retain, readwrite) CCPhoto *cover_photo;
+@property (nonatomic, retain, readwrite) CCPhoto *coverPhoto;
 @property (nonatomic, retain, readwrite) NSArray *photos;
 @property (nonatomic, retain, readwrite) CCUser *user;
+@property (nonatomic, retain, readwrite) NSArray *collections;
 @end
 
 @implementation CCCollection
 
 @synthesize name = _name;
 @synthesize size = _size;
-@synthesize cover_photo = _cover_photo;
+@synthesize coverPhoto = _coverPhoto;
 @synthesize photos = _photos;
 @synthesize user = _user;
+@synthesize collections = _subCollections;
 
 -(id)initWithJsonResponse:(NSDictionary *)jsonResponse
 {
@@ -34,9 +36,10 @@
         
 		self.name = [jsonResponse objectForKey:@"name"];
 		self.size = [[jsonResponse objectForKey:@"size"] intValue];
-		_cover_photo = [[CCPhoto alloc] initWithJsonResponse:[jsonResponse objectForKey:@"cover_photo"]];
+		_coverPhoto = [[CCPhoto alloc] initWithJsonResponse:[jsonResponse objectForKey:@"cover_photo"]];
         _user = [[CCUser alloc] initWithJsonResponse:[jsonResponse objectForKey:@"user"]];
         self.photos = [CCPhoto arrayWithJsonResponse:jsonResponse class:[CCPhoto class]];
+        self.collections = [CCCollection arrayWithJsonResponse:jsonResponse class:[CCCollection class]];
 	}
 	return self;
 }
@@ -51,9 +54,10 @@
 -(void)dealloc
 {
     self.name = nil;
-    self.cover_photo = nil;
+    self.coverPhoto = nil;
     self.user = nil;
     self.photos = nil;
+    self.collections = nil;
     [super dealloc];
 }
 @end

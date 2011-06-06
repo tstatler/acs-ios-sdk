@@ -407,7 +407,17 @@ NSString* encodeToPercentEscapeString(NSString *string) {
     
     if ([httpMethod isEqualToString:@"POST"] || [httpMethod isEqualToString:@"PUT"]) {
         for (NSString *key in keys) {
-            NSString *value = [paramtDict valueForKey:key];
+            id valueObject = [paramtDict valueForKey:key];
+            NSString *value = nil;
+            // URL encode string
+            if ([valueObject isKindOfClass:[NSArray class]]) {
+                // concatenate the array
+                value = [valueObject componentsJoinedByString:@","];
+            } else if (![valueObject isKindOfClass:[NSString class]]) {
+                value = [valueObject description];
+            } else {
+                value = (NSString *)valueObject;
+            }
             [request setPostValue:value forKey:key];
             
         }
