@@ -35,10 +35,10 @@
 
 #pragma mark -
 #pragma mark UIView Methods
-	
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
 	// init the array that contains our text fields
 	if (textFields == nil) {
 		textFields = [[NSMutableArray alloc] initWithCapacity:LOGIN_TABLE_SIZE];
@@ -57,12 +57,7 @@
 	// create the login button	
 	loginButton = [[UIBarButtonItem alloc] initWithTitle:@"Login" style:UIBarButtonItemStylePlain target:self action:@selector(startLogin)];
 	self.navigationItem.rightBarButtonItem = loginButton;
-	[loginButton release];
-	
-	if (_ccNetworkManager == nil) {
-		_ccNetworkManager = [[CCNetworkManager alloc] initWithDelegate:self];
-	}
-	
+	[loginButton release];	
 	
 }
 
@@ -73,14 +68,14 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 	
 	// Get the textField from our model
-//	UITextField *emailField = (UITextField *)[textFields objectAtIndex:EMAIL_ADDRESS];
+    //	UITextField *emailField = (UITextField *)[textFields objectAtIndex:EMAIL_ADDRESS];
 	//[emailField becomeFirstResponder];
 }
 
@@ -89,30 +84,44 @@
 }
 
 
-/*// don't login
--(void)cancelClicked:(id)sender {
-	
-	
-	UIBarButtonItem *loginButton;
-	
-	// create the login button	
-	loginButton = [[UIBarButtonItem alloc] initWithTitle:@"Login" style:UIBarButtonItemStylePlain target:self action:@selector(startLogin)];
-	self.navigationItem.rightBarButtonItem = loginButton;
-	[loginButton release];
-	
-	// resign the first responder
-	for (UITextField *textField in textFields) {
-		if ([textField isFirstResponder]) {
-			[textField resignFirstResponder];
-		}
-	}
-	
-	// cancel any pending logins
-	[_ccNetworkManager cancelAllRequests];
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    /*	if (isIPad()) {
+     return YES;
+     } else {
+     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+     }*/
+	return YES;
+}
 
-	// call the delegate's fail method
-	[self.delegate loginFailed];
-} */
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    
+}
+
+/*// don't login
+ -(void)cancelClicked:(id)sender {
+ 
+ 
+ UIBarButtonItem *loginButton;
+ 
+ // create the login button	
+ loginButton = [[UIBarButtonItem alloc] initWithTitle:@"Login" style:UIBarButtonItemStylePlain target:self action:@selector(startLogin)];
+ self.navigationItem.rightBarButtonItem = loginButton;
+ [loginButton release];
+ 
+ // resign the first responder
+ for (UITextField *textField in textFields) {
+ if ([textField isFirstResponder]) {
+ [textField resignFirstResponder];
+ }
+ }
+ 
+ // cancel any pending logins
+ [_ccNetworkManager cancelAllRequests];
+ 
+ // call the delegate's fail method
+ [self.delegate loginFailed];
+ } */
 
 #pragma mark -
 #pragma mark Table View Methods
@@ -147,7 +156,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	NSUInteger section = [indexPath section];
 	NSUInteger row = [indexPath row];
-
+    
 	// login form
 	if (section == SECTION_LOGIN) {
 		if (row == EMAIL_ADDRESS) {
@@ -155,8 +164,8 @@
 		} else {
 			return passwordTableCell;
 		}
-
-	// signup button
+        
+        // signup button
 	} else if (section == SECTION_SIGNUP) {
 		static NSString *CellIdentifier = @	"Cell";
 		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -198,7 +207,6 @@
 
 - (void)dealloc {
 	[textFields release];
-	[_ccNetworkManager release];
     [super dealloc];
 }
 
@@ -207,7 +215,7 @@
 
 // Add the cancel button when we start editing
 -(void)textFieldDidBeginEditing:(UITextField *)textField {
-
+    
 	UIBarButtonItem *cancelButton;
 	
 	// create the login button	
@@ -270,8 +278,8 @@
 			[alert show];
 			[alert release];
 			return;
-
-		// Clear off the whitespace			
+            
+            // Clear off the whitespace			
 		} else {
 			textField.text = [textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 		}
@@ -281,48 +289,18 @@
 	NSString *email_address = ((UITextField *)[textFields objectAtIndex:EMAIL_ADDRESS]).text;
 	NSString *password = ((UITextField *)[textFields objectAtIndex:PASSWORD]).text;
 	
-	[_ccNetworkManager login:email_address password:password];
-
+    NSDictionary *paramDict = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:email_address, password, nil] forKeys:[NSArray arrayWithObjects:@"login", @"password", nil]];
+    CCRequest *request = [Cocoafish restRequest:self httpMethod:@"POST" baseUrl:@"users/login.json" paramDict:paramDict attachment:nil];
+    
+    [request startAsynchronous];
+    
 	/*// add the cancel button
-	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc]
-											   initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-											   target:self action:@selector(cancelClicked:)] autorelease];*/
+     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc]
+     initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+     target:self action:@selector(cancelClicked:)] autorelease];*/
 	self.navigationItem.leftBarButtonItem = nil;
-
+    
 }
-
-#pragma mark -
-#pragma mark CCNetworkManager delegate methods
--(void)networkManager:(CCNetworkManager *)networkManager didLogin:(CCUser *)user
-{
-		
-	// Clear the textFields
-	for (UITextField *textField in textFields) {
-		textField.text = nil;
-	}
-	//self.loginButton.enabled = YES;
-	
-	[self.navigationController popViewControllerAnimated:NO];
-	
-	// call the delegate's method
-	[self.delegate loginSucceeded];
-
-}
-
-// unsuccessful login
-- (void)networkManager:(CCNetworkManager *)networkManager didFailWithError:(NSError *)error
-{
-	NSString *msg = [NSString stringWithFormat:@"%@",[error localizedDescription]];
-	UIAlertView *alert = [[UIAlertView alloc] 
-						  initWithTitle:@"Failed!" 
-						  message:msg
-						  delegate:self 
-						  cancelButtonTitle:@"Ok"
-						  otherButtonTitles:nil];
-	[alert show];
-	[alert release];
-}
-
 
 #pragma mark -
 #pragma mark RegisterDelegate methods
@@ -335,7 +313,7 @@
 	[self.delegate loginSucceeded];
 	
 	[self.navigationController popViewControllerAnimated:NO];
-
+    
 }
 
 -(void)registerFailed
@@ -350,7 +328,7 @@
 	NSLog(@"fbDidLogin");
 	// call the delegate's method
 	[self.navigationController popViewControllerAnimated:NO];
-
+    
 	[self.delegate loginSucceeded];
 	
 }
@@ -370,6 +348,36 @@
 						  otherButtonTitles:nil];
 	[alert show];
 	[alert release];
+}
+
+#pragma mark -
+#pragma mark CCRequest delegate methods
+-(void)request:(CCRequest *)request didSucceed:(CCResponse *)response
+{
+    // Clear the textFields
+	for (UITextField *textField in textFields) {
+		textField.text = nil;
+	}
+	//self.loginButton.enabled = YES;
+	
+	[self.navigationController popViewControllerAnimated:NO];
+	
+	// call the delegate's method
+	[self.delegate loginSucceeded];
+}
+
+-(void)request:(CCRequest *)request didFailWithError:(NSError *)error
+{
+    NSString *msg = [NSString stringWithFormat:@"%@",[error localizedDescription]];
+	UIAlertView *alert = [[UIAlertView alloc] 
+						  initWithTitle:@"Failed!" 
+						  message:msg
+						  delegate:self 
+						  cancelButtonTitle:@"Ok"
+						  otherButtonTitles:nil];
+	[alert show];
+	[alert release];
+    
 }
 @end
 

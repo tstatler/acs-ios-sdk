@@ -12,7 +12,7 @@
 
 @protocol RegisterDelegate;
 
-@interface RegisterViewController : UITableViewController <CCNetworkManagerDelegate> {
+@interface RegisterViewController : UITableViewController <CCRequestDelegate> {
 	NSOperationQueue *queue;
 	NSMutableArray *textFields;
 	IBOutlet UITableView *tableView;
@@ -20,8 +20,7 @@
 	
 	// init params
 	id <RegisterDelegate> delegate;
-	
-	CCNetworkManager *_ccNetworkManager;
+    CCRequest *pendingRequest;
 }
 
 @property (nonatomic, assign) id <RegisterDelegate> delegate;

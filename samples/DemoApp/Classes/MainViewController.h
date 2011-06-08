@@ -10,15 +10,14 @@
 #import "MapViewController.h"
 #import "MapKit/MapKit.h"
 #import "ListViewController.h"
-#import "CCNetworkManager.h"
+#import "Cocoafish.h"
 
-@interface MainViewController : UIViewController <CCNetworkManagerDelegate> {
+@interface MainViewController : UIViewController <CCRequestDelegate> {
 	UIBarButtonItem *viewSwitchButton;
 	MapViewController *mapViewController;
 	ListViewController *listViewController;
 	NSOperation *processingRequest;
 	UINavigationController *navController;
-	CCNetworkManager *ccNetworkManager;
 }
 
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *viewSwitchButton;

@@ -65,9 +65,9 @@
     
 }
 
-+(NSArray *)arrayWithJsonResponse:(NSDictionary *)jsonResponse class:(Class)class
++(NSArray *)arrayWithJsonResponse:(NSDictionary *)jsonResponse class:(Class)class jsonTag:(NSString *)jsonTag
 {
-    NSArray *jsonArray = [jsonResponse objectForKey:[NSString stringWithFormat:@"%@s", [class modelName]]];
+    NSArray *jsonArray = [jsonResponse objectForKey:[NSString stringWithFormat:@"%@s", jsonTag]];
     NSMutableArray *results = nil; 
     if ([jsonArray count] > 0) {
         results = [NSMutableArray arrayWithCapacity:[jsonArray count]];
@@ -80,6 +80,11 @@
         }
     }
     return results;
+}
+
++(NSArray *)arrayWithJsonResponse:(NSDictionary *)jsonResponse class:(Class)class
+{
+    return [class arrayWithJsonResponse:jsonResponse class:class jsonTag:[class modelName]];
 }
 
 -(id)copyWithZone:(NSZone *)zone  

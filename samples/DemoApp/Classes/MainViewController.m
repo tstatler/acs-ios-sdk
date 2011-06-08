@@ -36,10 +36,8 @@
 		listViewController = [[ListViewController alloc] initWithNibName:@"ListViewController" bundle:nil];
 	}
 	
-	if (ccNetworkManager == nil) {
-		ccNetworkManager = [[CCNetworkManager alloc] initWithDelegate:self];
-	}
-	[ccNetworkManager searchPlaces:nil location:nil distance:nil page:CC_FIRST_PAGE perPage:CC_DEFAULT_PER_PAGE];
+	CCRequest *request = [Cocoafish restRequest:self httpMethod:@"GET" baseUrl:@"places/search.json" paramDict:nil attachment:nil];
+    [request startAsynchronous];
 	
 }
 
@@ -74,7 +72,8 @@
 
 -(IBAction)getPlaces 
 {
-	[ccNetworkManager searchPlaces:nil location:nil distance:nil page:CC_FIRST_PAGE perPage:CC_DEFAULT_PER_PAGE];
+	CCRequest *request = [Cocoafish restRequest:self httpMethod:@"GET" baseUrl:@"places/search.json" paramDict:nil attachment:nil];
+    [request startAsynchronous];
 }
 
 -(IBAction)switchView {
@@ -114,16 +113,15 @@
 }
 
 #pragma mark -
-#pragma mark CCNetworkManager delegate methods
-- (void)networkManager:(CCNetworkManager *)networkManager didGet:(NSArray *)objectArray objectType:(Class)objectType pagination:(CCPagination *)pagination
+#pragma mark CCRequest delegate methods
+-(void)request:(CCRequest *)request didSucceed:(CCResponse *)response
 {
-    if (objectType == [CCPlace class]) {
-        [mapViewController showPlaces:objectArray];
-        [listViewController showPlaces:objectArray];
-    }
+    NSArray *places = [response getObjectsOfType:[CCPlace class]];
+     [mapViewController showPlaces:places];
+    [listViewController showPlaces:places];
 }
 
-- (void)networkManager:(CCNetworkManager *)networkManager didFailWithError:(NSError *)error
+-(void)request:(CCRequest *)request didFailWithError:(NSError *)error 
 {
 	
 }

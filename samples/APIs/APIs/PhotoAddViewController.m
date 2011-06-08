@@ -68,7 +68,7 @@
 
 
 - (void)dealloc {
-    [photoImage release];
+    [photoAttachment release];
     [object release];
     [super dealloc];
 }
@@ -113,9 +113,9 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {	
-    if (photoImage) {
-        [photoImage release];
-        photoImage = nil;
+    if (photoAttachment) {
+        [photoAttachment release];
+        photoAttachment = nil;
     }
 	
 	// get the image
@@ -144,8 +144,8 @@
 
 -(void)preparePhoto:(UIImage *)image
 {		
-    if (photoImage == nil) {
-        photoImage = [[CCUploadImage alloc] initWithImage:image];
+    if (photoAttachment == nil) {
+        photoAttachment = [[CCPhotoAttachment alloc] initWithImage:image];
     }
 }
 
@@ -180,7 +180,9 @@
     
     APIViewController *apiController = [[APIViewController alloc] initWithNibName:@"APIViewController" bundle:nil];  
     
-    [apiController.ccNetworkManager  createPhoto:object collectionName:collectionName.text image:photoImage];
+    NSDictionary *paramDict = [NSDictionary dictionaryWithObjectsAndKeys:collectionName.text, @"collection_name", object.objectId, [NSString stringWithFormat:@"%@_id", [[object class] modelName]], nil];
+    CCRequest *request = [Cocoafish restRequest:apiController httpMethod:@"POST" baseUrl:@"photos/create.json" paramDict:paramDict attachment:photoAttachment];
+    [request startAsynchronous];
     [self.navigationController pushViewController:apiController animated:YES];
     [apiController release];
     

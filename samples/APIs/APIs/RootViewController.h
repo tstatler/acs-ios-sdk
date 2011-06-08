@@ -22,10 +22,9 @@ typedef enum SECTIONS {
     NUM_SECTIONS
 } sections;
 
-@interface RootViewController : UITableViewController <UIAlertViewDelegate, CCNetworkManagerDelegate, CCFBSessionDelegate> {
+@interface RootViewController : UITableViewController <UIAlertViewDelegate, CCRequestDelegate, CCFBSessionDelegate> {
     CCPlace *testPlace;
     NSIndexPath *lastIndexPath;
-    CCNetworkManager *_ccNetworkManager;
     CCPhoto *testPhoto;
     CCEvent *testEvent;
     CCMessage *testMessage;

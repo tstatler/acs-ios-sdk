@@ -9,12 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "TapDetectingImageView.h"
 
-@class CCUploadImage;
+@class CCPhotoAttachment;
 @interface CheckinViewController : UIViewController<UITextViewDelegate, UINavigationControllerDelegate, TapDetectingImageViewDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate> {
 
 	IBOutlet UITextView *msgView;
 	IBOutlet TapDetectingImageView *photoView;
-    CCUploadImage *photoImage;
+    CCPhotoAttachment *photoAttachment;
 	IBOutlet UILabel *photoLabel;
 	IBOutlet UIButton *checkinButton;
 }

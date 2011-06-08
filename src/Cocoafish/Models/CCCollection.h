@@ -9,23 +9,39 @@
 #import <Foundation/Foundation.h>
 #import "CCObject.h"
 
-@class CCPhoto;
 @class CCUser;
+@class CCPhoto;
+@class CCCollectionCount;
 @interface CCCollection : CCObject {
 @private
     NSString *_name;
-    NSInteger _size;
     CCPhoto *_coverPhoto;
-    NSArray *_photos;
     CCUser *_user; // owner
-    NSArray *_collections; // sub collections
+    CCCollection *parentCollection;
+    CCCollectionCount *_count;
 }
 
 @property (nonatomic, retain, readonly) NSString *name;
-@property (nonatomic, readonly) NSInteger size;
 @property (nonatomic, retain, readonly) CCPhoto *coverPhoto;
-@property (nonatomic, retain, readonly) NSArray *photos;
 @property (nonatomic, retain, readonly) CCUser *user;
-@property (nonatomic, retain, readonly) NSArray *collections;
+@property (nonatomic, retain, readonly) CCCollection *parentCollection;
+@property (nonatomic, retain, readonly) CCCollectionCount *count;
+
+
+@end
+
+
+@interface CCCollectionCount : NSObject {
+@private
+    NSInteger _photos; // number of photos in this collection
+    NSInteger _totalPhotos; // total number photos in this collection including the ones under sub collections
+    NSInteger _subCollections; // number of sub collections in this collection
+}
+
+@property (nonatomic, readonly) NSInteger photos;
+@property (nonatomic, readonly) NSInteger totalPhotos;
+@property (nonatomic, readonly) NSInteger subCollections;
+
+-(id)initWithJsonResponse:(NSDictionary *)jsonResponse;
 
 @end

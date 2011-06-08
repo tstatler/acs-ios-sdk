@@ -11,12 +11,10 @@
 #import "CheckinViewController.h"
 
 @class CheckinViewController;
-@interface PlaceViewController : UITableViewController <CCNetworkManagerDelegate, CheckinViewControllerDelegate, CCRequestDelegate> {
+@interface PlaceViewController : UITableViewController <CheckinViewControllerDelegate, CCRequestDelegate> {
 	CCPlace *place;
 	NSMutableArray *placeCheckins;
-	
-	CCNetworkManager *_ccNetworkManager;
-	
+		
 	NSMutableDictionary *imageDownloadsInProgress;  // the set of IconDownloader objects for each checkin photo
 }
 

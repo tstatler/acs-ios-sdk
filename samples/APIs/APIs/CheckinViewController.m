@@ -68,7 +68,7 @@
 
 
 - (void)dealloc {
-    [photoImage release];
+    [photoAttachment release];
     [super dealloc];
 }
 
@@ -113,9 +113,9 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {	
 
-    if (photoImage) {
-        [photoImage release];
-        photoImage = nil;
+    if (photoAttachment) {
+        [photoAttachment release];
+        photoAttachment = nil;
     }
 	
 	// get the image
@@ -145,8 +145,8 @@
 
 -(void)preparePhoto:(UIImage *)image
 {		
-    if (photoImage == nil) {
-        photoImage = [[CCUploadImage alloc] initWithImage:image];
+    if (photoAttachment == nil) {
+        photoAttachment = [[CCPhotoAttachment alloc] initWithImage:image];
     }
 }
 
@@ -181,7 +181,11 @@
     
     APIViewController *apiController = [[APIViewController alloc] initWithNibName:@"APIViewController" bundle:nil];  
     
-    [apiController.ccNetworkManager createCheckin:((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testPlace message:msgView.text image:photoImage];
+    NSMutableDictionary *paramDict = [NSMutableDictionary dictionaryWithCapacity:2];
+    [paramDict setObject:((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testPlace.objectId forKey:@"place_id"];
+    [paramDict setObject:msgView.text forKey:@"message"];
+    CCRequest *request = [Cocoafish restRequest:apiController httpMethod:@"POST" baseUrl:@"checkins/create.json" paramDict:paramDict attachment:photoAttachment];
+    [request startAsynchronous];
     [self.navigationController pushViewController:apiController animated:YES];
     [apiController release];
 

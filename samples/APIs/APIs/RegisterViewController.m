@@ -28,14 +28,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
 	
 	// hide the back arrow
 	self.navigationItem.hidesBackButton = YES;
-
+    
 	// Add the cancel button
 	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(cancelClicked:)] autorelease];
-
+    
 	// init the array that contains our text fields
 	if (textFields == nil) {
 		textFields = [[NSMutableArray alloc] initWithCapacity:TABLE_SIZE];
@@ -46,12 +46,7 @@
 			[textField release];
 		}
 	}
-	
-	if (_ccNetworkManager == nil) {
-		_ccNetworkManager = [[CCNetworkManager alloc] initWithDelegate:self];
-	}
-	
-	// init the operation queue
+    // init the operation queue
 	if (queue == nil) {
 		queue = [[NSOperationQueue alloc] init];
 	}
@@ -72,7 +67,6 @@
 	[textFields release];
 	[tableView release];
 	[registerProgress release];
-	[_ccNetworkManager release];
     [super dealloc];
 }
 
@@ -82,6 +76,7 @@
 // don't register
 -(void) cancelClicked:(id)sender {
 	
+    [pendingRequest cancel];
 	// resign the first responder
 	for (UITextField *textField in textFields) {
 		if ([textField isFirstResponder]) {
@@ -89,11 +84,7 @@
 		}
 	}
 	
-	// cancel any pending logins
-	[_ccNetworkManager cancelAllRequests];
-	[queue cancelAllOperations];
-	
-	// remove this view
+    // remove this view
 	[self dismissModalViewControllerAnimated:YES];
 	//[self.navigationController popViewControllerAnimated:YES];
 }
@@ -124,10 +115,10 @@
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
 	}
-
+    
 	// Setup cells for the first section
 	if (section == 0) {
-
+        
 		// Get the textField from our model
 		UITextField *textField = (UITextField *)[textFields objectAtIndex:row];
 		
@@ -176,12 +167,12 @@
 		[cell setSelectionStyle:UITableViewCellSelectionStyleNone];
 		[cell.contentView addSubview:textField];
 		
-	// Setup the signup button
+        // Setup the signup button
 	} else {
 		cell.textLabel.text = @"Sign Up!";
 		cell.textLabel.textAlignment = UITextAlignmentCenter;
 	}
-		
+    
     return cell;
 }
 
@@ -238,7 +229,7 @@
 			[textField resignFirstResponder];
 		}
 	}
-
+    
 	// Verify that all fields have been completed
 	for (UITextField *textField in textFields) {
 		if (textField.text == nil || [textField.text compare:@""] == NSOrderedSame) {
@@ -259,22 +250,22 @@
 	newUser.firstName = ((UITextField *)[textFields objectAtIndex:FIRST_NAME]).text;
 	newUser.lastName = ((UITextField *)[textFields objectAtIndex:LAST_NAME]).text;
 	newUser.email = ((UITextField *)[textFields objectAtIndex:EMAIL_ADDRESS]).text;
-
+    
 	NSString *password = ((UITextField *)[textFields objectAtIndex:PASSWORD]).text;
 	NSString *password_verify = ((UITextField *)[textFields objectAtIndex:PASSWORD_VERIFY]).text;
 	
-/*	// Make sure we have a valid email address
-	if (!validateEmail(email_address)) {
-		UIAlertView *alert = [[UIAlertView alloc] 
-							  initWithTitle:@"Invalid Email Address!" 
-							  message:@"Please enter a valid email address"
-							  delegate:self 
-							  cancelButtonTitle:@"Ok"
-							  otherButtonTitles:nil];
-		[alert show];
-		[alert release];
-		return;
-	}*/
+    /*	// Make sure we have a valid email address
+     if (!validateEmail(email_address)) {
+     UIAlertView *alert = [[UIAlertView alloc] 
+     initWithTitle:@"Invalid Email Address!" 
+     message:@"Please enter a valid email address"
+     delegate:self 
+     cancelButtonTitle:@"Ok"
+     otherButtonTitles:nil];
+     [alert show];
+     [alert release];
+     return;
+     }*/
 	
 	// Make sure the passwords match
 	if ([password compare:password_verify] != NSOrderedSame) {
@@ -311,27 +302,45 @@
 		registerProgress.view.backgroundColor = [UIColor blackColor];
 	}
 	[self.view addSubview:registerProgress.view];
-	
-	[_ccNetworkManager registerUser:newUser password:password passwordConfirmation:password_verify image:[[[CCUploadImage alloc] initWithImage:[UIImage imageNamed:@"sample.png"]] autorelease]];
-	
+    
+    NSMutableDictionary *paramDict = [NSMutableDictionary dictionaryWithCapacity:1];
+    if ([newUser.email length] > 0) {
+        [paramDict setObject:newUser.email forKey:@"email"];   
+    }
+    if ([newUser.firstName length] > 0) {
+        [paramDict setObject:newUser.firstName forKey:@"first_name"];   
+    }
+    if ([newUser.lastName length] > 0) {
+        [paramDict setObject:newUser.lastName forKey:@"last_name"];   
+    }
+    if ([newUser.username length] > 0) {
+        [paramDict setObject:newUser.username forKey:@"username"];   
+    }
+    [paramDict setObject:password forKey:@"password"];   
+    [paramDict setObject:password forKey:@"password_confirmation"];   
+    
+    pendingRequest = [[Cocoafish restRequest:self httpMethod:@"POST" baseUrl:@"users/create.json" paramDict:paramDict attachment:[[[CCPhotoAttachment alloc] initWithImage:[UIImage imageNamed:@"sample.png"]] autorelease]] retain];
+    [pendingRequest startAsynchronous];
+    
 	// Debug
-	 NSLog(@"Registering new user: %@, password: %@", newUser, password); 
+    NSLog(@"Registering new user: %@, password: %@", newUser, password); 
 }
 
 #pragma mark -
-#pragma mark CCNetworkManager Delegate methods
+#pragma mark CCRequest Delegate methods
 /* Sucessful registration */
-- (void)networkManager:(CCNetworkManager *)networkManager didCreate:(NSArray *)objectArray objectType:(Class)objectType
+-(void)request:(CCRequest *)request didSucceed:(CCResponse *)response
 {
-    if (objectType == [CCUser class]) {
+    if ([request isEqual:pendingRequest]) {
         // Remove the modal view
         [self dismissModalViewControllerAnimated:NO];
-        [delegate registerSucceeded];
+        [delegate registerSucceeded]; 
+        [pendingRequest release];
     }
 }
 
 
-- (void)networkManager:(CCNetworkManager *)networkManager didFailWithError:(NSError *)error
+-(void)request:(CCRequest *)request didFailWithError:(NSError *)error
 {
 	UIAlertView *alert = [[UIAlertView alloc] 
 						  initWithTitle:@"Register Failed!" 
@@ -345,7 +354,9 @@
 	// Remove the modal view
 	[self dismissModalViewControllerAnimated:NO];
 	[self.delegate registerFailed];
+    [pendingRequest release];
+    
 }
-	
+
 @end
 

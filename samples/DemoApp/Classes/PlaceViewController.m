@@ -25,10 +25,11 @@
 	if (placeCheckins == nil) {
 		placeCheckins = [[NSMutableArray alloc] init];
 	}
-	if (_ccNetworkManager == nil) {
-		_ccNetworkManager = [[CCNetworkManager alloc] initWithDelegate:self];
-	}
-	[_ccNetworkManager searchCheckins:place page:CC_FIRST_PAGE perPage:CC_DEFAULT_PER_PAGE];
+    
+    NSDictionary *paramDict = [NSDictionary dictionaryWithObjectsAndKeys:place.objectId, @"place_id", [NSNumber numberWithInt:20], @"per_page", nil];
+	
+    CCRequest *request = [Cocoafish restRequest:self httpMethod:@"GET" baseUrl:@"checkins/search.json" paramDict:paramDict attachment:nil];
+    [request startAsynchronous];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDownloaded:) name:@"DownloadFinished" object:[Cocoafish defaultCocoafish]];
 
@@ -41,21 +42,6 @@
 -(void)handleDownloaded:(NSNotification *)notification
 {
 	[self.tableView reloadData];
-}
-
-#pragma mark -
-#pragma mark CCNetworkManager Delegate Methods
--(void)networkManager:(CCNetworkManager *)networkManager didGet:(NSArray *)objectArray objectType:(Class)objectType pagination:(CCPagination *)pagination
-{
-    if (objectType == [CCCheckin class]) {
-
-        @synchronized(self) {
-            self.placeCheckins = nil;
-            placeCheckins = [[NSMutableArray alloc] initWithArray:objectArray];
-        }
-        [self.tableView reloadData];
-    }
-	
 }
 
 -(void)showCheckin
@@ -72,7 +58,6 @@
     NSDictionary *paramDict = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:message, place.objectId, nil] forKeys:[NSArray arrayWithObjects:@"message", @"place_id", nil]];
     CCRequest *request = [Cocoafish restRequest:self httpMethod:@"POST" baseUrl:@"checkins/create.json" paramDict:paramDict attachment:image];
     [request startAsynchronous];
-	//[_ccNetworkManager createCheckin:place message:message image:image];
 }
 
 #pragma CCRequestDelegate Methods
@@ -86,7 +71,10 @@
         }
         // update user score
         NSString *score_key = [NSString stringWithFormat:@"%@_score",[[Cocoafish defaultCocoafish] getCurrentUser].email];
-        [_ccNetworkManager incrBy:score_key value:5];
+        
+        NSDictionary *paramDict = [NSDictionary dictionaryWithObjectsAndKeys:score_key, @"name", [NSNumber numberWithInt:5], @"value", nil];
+        CCRequest *request = [Cocoafish restRequest:self httpMethod:@"PUT" baseUrl:@"keyvalues/incrby.json" paramDict:paramDict attachment:nil];
+        [request startAsynchronous];
         
         if (checkin) {
             @synchronized(self) {
@@ -96,48 +84,30 @@
             [self.tableView reloadData];
         }
         
+    } else if ([response.meta.method isEqualToString:@"searchCheckins"]) {
+        @synchronized(self) {
+            self.placeCheckins = nil;
+            placeCheckins = [[response getObjectsOfType:[CCCheckin class]] mutableCopy];
+        }
+        [self.tableView reloadData];
+    } else {
+        NSArray *kvs = [response getObjectsOfType:[CCKeyValuePair class]];
+        if ([kvs count] == 1) {
+            CCKeyValuePair *kv = [kvs objectAtIndex:0];
+        
+            UIAlertView *alert = [[UIAlertView alloc] 
+                              initWithTitle:@"Yay!" 
+                              message:[NSString stringWithFormat:@"You just earned 5 points and your total score is %@", kv.value]
+                              delegate:self 
+                              cancelButtonTitle:@"Ok"
+                              otherButtonTitles:nil];
+            [alert show];
+            [alert release];
+        }
     }
 }
--(void)networkManager:(CCNetworkManager *)networkManager didUpdate:(NSArray *)objectArray objectType:(Class)objectType
-{
-    CCKeyValuePair *keyval;
-    if (objectType == [CCKeyValuePair class]) {
-        keyval = [objectArray objectAtIndex:0];
-    }
-    UIAlertView *alert = [[UIAlertView alloc] 
-						  initWithTitle:@"Yay!" 
-						  message:[NSString stringWithFormat:@"You just earned 5 points and your total score is %@", keyval.value]
-						  delegate:self 
-						  cancelButtonTitle:@"Ok"
-						  otherButtonTitles:nil];
-	[alert show];
-	[alert release];
-    
-}
 
--(void)networkManager:(CCNetworkManager *)networkManager didCreate:(NSArray *)objectArray objectType:(Class)objectType
-{
-    CCCheckin *checkin;
-    if (objectType == [CCCheckin class]) {
-        checkin = [objectArray objectAtIndex:0];;
-    }
-    // update user score
-    NSString *score_key = [NSString stringWithFormat:@"%@_score",[[Cocoafish defaultCocoafish] getCurrentUser].email];
-    [_ccNetworkManager incrBy:score_key value:5];
-     
-	if (checkin) {
-		@synchronized(self) {
-			[placeCheckins insertObject:checkin atIndex:0];
-		}
-	
-		[self.tableView reloadData];
-	}
-   
-	
-}
-
-
-- (void)networkManager:(CCNetworkManager *)networkManager didFailWithError:(NSError *)error
+-(void)request:(CCRequest *)request didFailWithError:(NSError *)error
 {
 	UIAlertView *alert = [[UIAlertView alloc] 
 						  initWithTitle:@"Error!" 
@@ -300,7 +270,6 @@
 
 
 - (void)dealloc {
-    [_ccNetworkManager release];
     [super dealloc];
 }
 

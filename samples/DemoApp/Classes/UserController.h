@@ -9,10 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "Cocoafish.h"
 
-@interface UserController : UITableViewController <CCNetworkManagerDelegate, CCFBSessionDelegate> {
+@interface UserController : UITableViewController <CCRequestDelegate, CCFBSessionDelegate> {
 
 	NSArray *userCheckins; // list of places checked in
-	CCNetworkManager *_ccNetworkManager;
 }
 
 -(void)getUserCheckins;

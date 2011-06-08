@@ -10,11 +10,9 @@
 #import "RegisterViewController.h"
 #import "FBLoginButton.h"
 
-@class CCNetworkManager;
-
 @protocol LoginDelegate;
 
-@interface LoginViewController : UITableViewController <UITextFieldDelegate, RegisterDelegate, CCNetworkManagerDelegate, CCFBSessionDelegate> {
+@interface LoginViewController : UITableViewController <UITextFieldDelegate, RegisterDelegate, CCFBSessionDelegate, CCRequestDelegate> {
 	//UITableView *table;
 	NSMutableArray *textFields;
 	
@@ -26,13 +24,11 @@
 	UITextField *passwordTextField;
 	IBOutlet FBLoginButton *fbLoginButton;
 	
-	CCNetworkManager *_ccNetworkManager;
 }
 
 -(IBAction)fbLoginButtonPressed:(id)sender;
 
 @property (nonatomic, assign) id <LoginDelegate> delegate;
-//@property (nonatomic, retain) IBOutlet UITableView *table;
 @property (nonatomic, retain) IBOutlet UITableViewCell *emailTableCell;
 @property (nonatomic, retain) IBOutlet UITableViewCell *passwordTableCell;
 @property (nonatomic, retain) IBOutlet UITextField *emailTextField;

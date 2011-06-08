@@ -16,23 +16,16 @@
 
 @implementation APIViewController
 
-@synthesize ccNetworkManager = _ccNetworkManager;
-
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-        _ccNetworkManager = [[CCNetworkManager alloc] initWithDelegate:self];
-    }
+
     return self;
 }
 
 - (void)dealloc
 {
-    [_ccNetworkManager cancelAllRequests];
-    [_ccNetworkManager release];
     [super dealloc];
 }
 
@@ -70,73 +63,35 @@
     return [NSString stringWithFormat:@"{\n%@\n}", [array componentsJoinedByString:@"\n"]];
 }
 
-#pragma mark - CCNetworkManager delegate on failure
--(void)networkManager:(CCNetworkManager *)networkManager didFailWithError:(NSError *)error
-{
-    statusLabel.text = @"Failed";
-    body.text = [error localizedDescription];
-}
-
-#pragma mark - get callback
--(void)networkManager:(CCNetworkManager *)networkManager didGet:(NSArray *)objectArray objectType:(Class)objectType pagination:(CCPagination *)pagination
-{
-    statusLabel.text = @"Success";
-    if (pagination) {
-        body.text = [NSString stringWithFormat:@"%@\n%@", [pagination description], [self arrayDescription:objectArray]];
-    } else {
-        body.text = [self arrayDescription:objectArray];
-    }
-}
-
-#pragma mark - update callback
--(void)networkManager:(CCNetworkManager *)networkManager didUpdate:(NSArray *)objectArray objectType:(Class)objectType
-{
-    statusLabel.text = @"Success";
-    body.text = [self arrayDescription:objectArray];
-}
-
-#pragma mark - create callback
--(void)networkManager:(CCNetworkManager *)networkManager didCreate:(NSArray *)objectArray objectType:(Class)objectType
-{
-    statusLabel.text = @"Success";
-    body.text = [self arrayDescription:objectArray];
-    if (objectType == [CCPlace class]) {
-        CCPlace *place = [objectArray objectAtIndex:0];
-        ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testPlace = place;
-        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-        [prefs setObject:place.objectId forKey:@"test_place_id"];
-    } else if (objectType == [CCPhoto class] && ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testPhoto == nil) {
-        CCPhoto *photo = [objectArray objectAtIndex:0];
-        ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testPhoto = photo;
-    } else if (objectType == [CCEvent class]) {
-        CCEvent *event = [objectArray objectAtIndex:0];
-        ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testEvent = event;
-    } else if (objectType == [CCMessage class] && ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testMessage == nil ) {
-        CCMessage *message = [objectArray objectAtIndex:0];
-        ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testMessage = message;
-    }
-}
-
-#pragma mark - delete callback
--(void)networkManager:(CCNetworkManager *)networkManager didDelete:(Class)objectType
-{
-    statusLabel.text = @"Success";
-    if (objectType == [CCPlace class]) {
-        ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testPlace = nil;
-    } else if (objectType == [CCPhoto class]) {
-        ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testPhoto = nil;
-    } else if (objectType == [CCEvent class]) {
-        ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testEvent = nil;
-    } else if (objectType == [CCMessage class]) {
-        ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testMessage = nil;
-    }
-}
-
 #pragma CCRequestDelegate callback
 -(void)request:(CCRequest *)request didSucceed:(CCResponse *)response
 {
     statusLabel.text = @"Success";
-    body.text = [response.response description];
+    body.text = [NSString stringWithFormat:@"%@\n%@", [response.meta description], [response.response description]];
+    if ([response.meta.method isEqualToString:@"createPlace"]) {
+        CCPlace *place = [[response getObjectsOfType:[CCPlace class]] objectAtIndex:0];
+        ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testPlace = place;
+        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+        [prefs setObject:place.objectId forKey:@"test_place_id"];
+    } else if ([response.meta.method isEqualToString:@"createPhoto"] && ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testPhoto == nil) {
+        CCPhoto *photo = [[response getObjectsOfType:[CCPhoto class]] objectAtIndex:0];
+        ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testPhoto = photo;
+    } else if ([response.meta.method isEqualToString:@"createEvent"] && ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testEvent == nil) {
+        CCEvent *event = [[response getObjectsOfType:[CCEvent class]] objectAtIndex:0];
+        ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testEvent = event;
+    } else if ([response.meta.method isEqualToString:@"createMessage"] && ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testMessage == nil) {
+        CCMessage *message = [[response getObjectsOfType:[CCMessage class]] objectAtIndex:0];
+        ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testMessage = message;
+    } else if ([response.meta.method isEqualToString:@"deletePlace"]) {
+        ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testPlace = nil;
+    } else if ([response.meta.method isEqualToString:@"deletePhoto"]) {
+        ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testPhoto = nil;
+    } else if ([response.meta.method isEqualToString:@"deleteEvent"]) {
+        ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testEvent = nil;
+    } else if ([response.meta.method isEqualToString:@"deleteMessageThread"]) {
+        ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testMessage = nil;
+    }
+       
 }
 
 -(void)request:(CCRequest *)request didFailWithError:(NSError *)error

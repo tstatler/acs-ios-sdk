@@ -29,6 +29,7 @@
 -(id)initWithId:(NSString *)objectId;
 
 +(NSArray *)arrayWithJsonResponse:(NSDictionary *)jsonResponse class:(Class)class;
++(NSArray *)arrayWithJsonResponse:(NSDictionary *)jsonResponse class:(Class)class jsonTag:(NSString *)jsonTag;
 
 -(NSString *)arrayDescription:(NSArray *)array;
 

@@ -227,17 +227,19 @@
 	}
     if ([_processingPhotos count] > 0) {
         // there are still some photos are being processed on the server
-        if (_autoUpdateTimer == nil) {
-            // stop trying after 1 minutes
-            if (_timeInterval < 3600) {
-                _timeInterval = _timeInterval * 2;
-            
-                self.autoUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:(_timeInterval)
-                                                                    target:self
-                                                                  selector:@selector(updateProcessingPhotos)
-                                                                  userInfo:nil
-                                                                   repeats:NO];
-            }
+        if (_autoUpdateTimer != nil) {
+            [self.autoUpdateTimer invalidate];
+            self.autoUpdateTimer = nil;
+        }
+        // stop trying after 1 minutes
+        if (_timeInterval < 3600) {
+            _timeInterval = _timeInterval * 2;
+        
+            self.autoUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:(_timeInterval)
+                                                                target:self
+                                                                selector:@selector(updateProcessingPhotos)
+                                                                userInfo:nil
+                                                                repeats:NO];               
         }
     }
 	if ([processedPhotos count] > 0) {

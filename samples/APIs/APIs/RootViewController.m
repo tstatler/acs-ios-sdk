@@ -27,9 +27,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    if (!_ccNetworkManager) {
-        _ccNetworkManager = [[CCNetworkManager alloc] initWithDelegate:self];
-    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -62,7 +59,8 @@
         NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
         NSString *test_place_id = [prefs stringForKey:@"test_place_id"];
         if (test_place_id) {
-            [_ccNetworkManager deletePlace:test_place_id];
+            CCRequest *request = [Cocoafish restRequest:self httpMethod:@"DELETE" baseUrl:[NSString stringWithFormat:@"places/delete/%@.json",test_place_id] paramDict:nil attachment:nil];
+            [request startAsynchronous];
             [prefs removeObjectForKey:@"test_place_id"];
         }
     }
@@ -73,21 +71,25 @@
 -(void)startLogout
 {
     if (testPlace) {
-        [_ccNetworkManager deletePlace:testPlace.objectId];
+        CCRequest *request = [Cocoafish restRequest:self httpMethod:@"DELETE" baseUrl:[NSString stringWithFormat:@"places/delete/%@.json",testPlace.objectId] paramDict:nil attachment:nil];
+        [request startAsynchronous];
         NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
         [prefs removeObjectForKey:@"test_place_id"];
     }
-    [_ccNetworkManager logout];
+    CCRequest *request = [Cocoafish restRequest:self httpMethod:@"GET" baseUrl:@"users/logout.json" paramDict:nil attachment:nil];
+    [request startAsynchronous];
 }
 
 -(void)deleteAccount
 {
     if (testPlace) {
-        [_ccNetworkManager deletePlace:testPlace.objectId];
+        CCRequest *request = [Cocoafish restRequest:self httpMethod:@"DELETE" baseUrl:[NSString stringWithFormat:@"places/delete/%@.json", testPlace.objectId] paramDict:nil attachment:nil];
+        [request startAsynchronous];
         NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
         [prefs removeObjectForKey:@"test_place_id"];
     }
-    [_ccNetworkManager deleteUser];
+    CCRequest *request = [Cocoafish restRequest:self httpMethod:@"DELETE" baseUrl:@"users/delete.json" paramDict:nil attachment:nil];
+    [request startAsynchronous];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -478,19 +480,21 @@
 
     AlertPrompt *prompt;
     APIViewController *controller = [[APIViewController alloc] initWithNibName:@"APIViewController" bundle:nil];  
-    CCPlace *newPlace;
     CheckinViewController *checkinController;
     PhotoAddViewController *photoController;
     UIAlertView *alert;
     CCRequest *request = nil;
+    NSDictionary *paramDict = nil;
+    CCUser *currentUser = [[Cocoafish defaultCocoafish] getCurrentUser];
+    CCPhotoAttachment *photoAttachment = [[[CCPhotoAttachment alloc] initWithImage:[UIImage imageNamed:@"sample.png"]] autorelease];;
     switch (indexPath.section) {
         case USERS:
             if (indexPath.row == 0) {
                 // show user profile
-                [controller.ccNetworkManager showUser:[[Cocoafish defaultCocoafish] getCurrentUser].objectId];
+                request = [Cocoafish restRequest:controller httpMethod:@"GET" baseUrl:[NSString stringWithFormat:@"users/show/%@.json", currentUser.objectId] paramDict:nil attachment:nil];
             } else if (indexPath.row == 1) {
                 // show current user profile
-                [controller.ccNetworkManager showCurrentUser];
+                request = [Cocoafish restRequest:controller httpMethod:@"GET" baseUrl:@"users/show/me.json" paramDict:nil attachment:nil];
             } else if (indexPath.row == 2) {
                 // update user
                 prompt = [AlertPrompt alloc];
@@ -503,7 +507,8 @@
                 return;
 
             } else if (indexPath.row == 3) {
-                [controller.ccNetworkManager searchUsers:[[Cocoafish defaultCocoafish] getCurrentUser].firstName page:CC_FIRST_PAGE perPage:CC_DEFAULT_PER_PAGE];
+                paramDict = [NSDictionary dictionaryWithObjectsAndKeys:currentUser.firstName, @"q", nil];
+                request = [Cocoafish restRequest:controller httpMethod:@"GET" baseUrl:@"users/search.json" paramDict:paramDict attachment:nil];
             } else {
                 if ([[Cocoafish defaultCocoafish] getFacebook] == nil) {
                     // check if a facebook id is provided
@@ -531,12 +536,10 @@
             break;
         case PLACES:
             switch (indexPath.row) {
-
                 case 0:
                     // show all places
-                    [controller.ccNetworkManager searchPlaces:@"Cocoafish"
-                        location:[[[CLLocation alloc] initWithLatitude:37.743961 longitude:-122.42202] autorelease] 
-                        distance:[NSNumber numberWithDouble:5.0] page:CC_FIRST_PAGE perPage:CC_DEFAULT_PER_PAGE];
+                    paramDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithDouble:37.743961], @"latitude", [NSNumber numberWithDouble:-122.42202], @"longitude", [NSNumber numberWithDouble:5.0], @"distance", nil];
+                    request = [Cocoafish restRequest:controller httpMethod:@"GET" baseUrl:@"places/search.json" paramDict:paramDict attachment:nil];
                     break;
                 case 1:
                     // show the test place
@@ -544,25 +547,20 @@
                         [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
                         return;
                     }
-                    [controller.ccNetworkManager showPlace:testPlace.objectId];
+                    
+                    request = [Cocoafish restRequest:controller httpMethod:@"GET" baseUrl:[NSString stringWithFormat:@"places/show/%@.json", testPlace.objectId] paramDict:nil attachment:nil];
                     break;
                 case 2:
                     if (testPlace) {
                         // delete the test place
-                        [controller.ccNetworkManager deletePlace:testPlace.objectId];
+                        request = [Cocoafish restRequest:controller httpMethod:@"DELETE" baseUrl:[NSString stringWithFormat:@"places/delete/%@.json", testPlace.objectId] paramDict:nil attachment:nil];
                     } else {
                         // create a test place
-                        newPlace = [[CCPlace alloc] init];
-                        newPlace.name = @"Cocoafish";
-                        newPlace.address = @"58 South Park Ave.";
-                        newPlace.city = @"San Francisco";
-                        newPlace.state = @"California";
-                        newPlace.postalCode = @"94107-1807";
-                        newPlace.country = @"United States";
-                        newPlace.website = @"http://cocoafish.com";
-                        newPlace.twitter = @"cocoafish";
-                        newPlace.location = [[CLLocation alloc] initWithLatitude:37.782227 longitude:-122.393159];
-                        [controller.ccNetworkManager createPlace:newPlace image:[[[CCUploadImage alloc] initWithImage:[UIImage imageNamed:@"sample.png"]] autorelease]];
+                        
+                        // show all places
+                        paramDict = [NSDictionary dictionaryWithObjectsAndKeys:@"Cocoafish", @"name", @"58 South Park Ave.", @"address", @"San Francisco", @"city", @"California", @"state", @"94107-1807", @"postal_code", @"United States", @"country", @"http://cocoafish.com", @"website", @"cocoafish", @"twitter", [NSNumber numberWithDouble:37.743961], @"latitude", [NSNumber numberWithDouble:-122.42202], @"longitude", nil];
+                       
+                        request = [Cocoafish restRequest:controller httpMethod:@"POST" baseUrl:@"places/create.json" paramDict:paramDict attachment:photoAttachment];
                         
                     }
                     break;
@@ -606,12 +604,13 @@
                         return;
                     }
                     // get checkins of a place
-                    [controller.ccNetworkManager searchCheckins:testPlace page:CC_FIRST_PAGE perPage:CC_DEFAULT_PER_PAGE];
+                    request = [Cocoafish restRequest:controller httpMethod:@"GET" baseUrl:@"checkins/search.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:testPlace.objectId, @"place_id", nil] attachment:nil];
                     break;
                 case 2:
                 default:
                     // show a user's checkins
-                     [controller.ccNetworkManager searchCheckins:[[Cocoafish defaultCocoafish] getCurrentUser] page:CC_FIRST_PAGE perPage:CC_DEFAULT_PER_PAGE];
+                    request = [Cocoafish restRequest:controller httpMethod:@"GET" baseUrl:@"checkins/search.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:currentUser.objectId, @"user_id", nil] attachment:nil];
+                
                     break;
             }
             break;
@@ -658,7 +657,7 @@
                         return;
                     }
                     // get Photos of a place
-                    [controller.ccNetworkManager searchPhotos:testPlace collectionName:nil page:CC_FIRST_PAGE perPage:CC_DEFAULT_PER_PAGE];
+                    request = [Cocoafish restRequest:controller httpMethod:@"GET" baseUrl:@"photos/search.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:testPlace.objectId, @"place_id", nil] attachment:nil];
                     break;
                 case 2:
                     // add a photo to a user
@@ -674,11 +673,11 @@
                         [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
                         return;
                     }
-                    [controller.ccNetworkManager showPhoto:testPhoto.objectId];
+                    request = [Cocoafish restRequest:controller httpMethod:@"GET" baseUrl:[NSString stringWithFormat:@"photos/show/%@.json", testPhoto.objectId] paramDict:nil attachment:nil];
                     break;
                 case 4:
                     // show photos of a user
-                    [controller.ccNetworkManager searchPhotos:[[Cocoafish defaultCocoafish] getCurrentUser] collectionName:nil page:CC_FIRST_PAGE perPage:CC_DEFAULT_PER_PAGE];
+                    request = [Cocoafish restRequest:controller httpMethod:@"GET" baseUrl:@"photos/search.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:currentUser.objectId, @"user_id", nil] attachment:nil];
                     break;
                 case 5:
                 default:
@@ -687,7 +686,7 @@
                         [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
                         return;
                     }
-                    [controller.ccNetworkManager deletePhoto:testPhoto.objectId];
+                    request = [Cocoafish restRequest:controller httpMethod:@"DELETE" baseUrl:[NSString stringWithFormat:@"photos/delete/%@.json", testPhoto.objectId] paramDict:nil attachment:nil];
                     break;
             }
             break;
@@ -705,9 +704,11 @@
                     return;
                     break;
                 case 1:
-                    [controller.ccNetworkManager getValueForKey:@"Test"];
+                    // get keyvalue
+                    request = [Cocoafish restRequest:controller httpMethod:@"GET" baseUrl:@"keyvalues/get.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:@"Test", @"name", nil] attachment:nil];
                     break;
                 case 2:
+                    // append keyvalue
                     prompt = [AlertPrompt alloc];
                     prompt = [prompt initWithTitle:@"Enter a value to append for key 'Test'" message:@"Please enter a Value to append for Key 'Test'" delegate:self cancelButtonTitle:@"Cancel" okButtonTitle:@"Okay" defaultInput:@"More awesomeness!"];
                     lastIndexPath = [indexPath copy];
@@ -720,13 +721,15 @@
                     break;
                 case 3:
                 default:
-                    [controller.ccNetworkManager deleteKeyValue:@"Test"];
+                    // delete keyvalue
+                    request = [Cocoafish restRequest:controller httpMethod:@"DELETE" baseUrl:@"keyvalues/delete.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:@"Test", @"name", nil] attachment:nil];
                     break;
             }
             break;
         case MESSAGES:
             switch (indexPath.row) {
                 case 0:
+                    // create a mesage
                     if (!testMessage) {
                         prompt = [AlertPrompt alloc];
                         prompt = [prompt initWithTitle:@"Enter a subject for Message 'Test'" message:@"Please enter a Subject for Message 'Test'" delegate:self cancelButtonTitle:@"Cancel" okButtonTitle:@"Okay" defaultInput:@"Hello from Cocoafish"];
@@ -739,10 +742,11 @@
                         return;
 
                     } else {
-                        [controller.ccNetworkManager deleteMessage:testMessage.objectId];
+                        request = [Cocoafish restRequest:controller httpMethod:@"DELETE" baseUrl:[NSString stringWithFormat:@"messages/delete/%@.json", testMessage.objectId] paramDict:nil attachment:nil];
                     }
                     break;
                 case 1:
+                    // reply a message
                     if (![self checkTestMessage]) {
                         [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
                         return;
@@ -758,36 +762,45 @@
                     return;
                     break;
                 case 2:
+                    // show a message
                     if (![self checkTestMessage]) {
                         [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
                         return;
                     }
-                    [controller.ccNetworkManager showMessage:testMessage.objectId];
+                    request = [Cocoafish restRequest:controller httpMethod:@"GET" baseUrl:[NSString stringWithFormat:@"messages/show/%@.json", testMessage.objectId] paramDict:nil attachment:nil];
                     break;
                 case 3:
-                    [controller.ccNetworkManager showInboxMessages:CC_FIRST_PAGE perPage:CC_DEFAULT_PER_PAGE];
+                    // show inbox messages
+                    request = [Cocoafish restRequest:controller httpMethod:@"GET" baseUrl:@"messages/show/inbox.json" paramDict:nil attachment:nil];
 
                     break;
                 case 4:
-                    [controller.ccNetworkManager showSentMessages:CC_FIRST_PAGE perPage:CC_DEFAULT_PER_PAGE];
+                    // show sent messages
+                    request = [Cocoafish restRequest:controller httpMethod:@"GET" baseUrl:@"messages/show/sent.json" paramDict:nil attachment:nil];
+
                     break;
                 case 5:
-                    [controller.ccNetworkManager showMessageThreads:CC_FIRST_PAGE perPage:CC_DEFAULT_PER_PAGE];
+                    // show  message threads
+                    request = [Cocoafish restRequest:controller httpMethod:@"GET" baseUrl:@"messages/show/threads.json" paramDict:nil attachment:nil];
+
                     break;
                 case 6:
+                    // show message in a message thread
                     if (![self checkTestMessage]) {
                         [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
                         return;
                     }
-                    [controller.ccNetworkManager showThreadMessages:testMessage.threadId page:CC_FIRST_PAGE perPage:CC_DEFAULT_PER_PAGE startTime:[NSDate distantPast] order:@"asc"];
+                    request = [Cocoafish restRequest:controller httpMethod:@"GET" baseUrl:[NSString stringWithFormat:@"messages/show/thread/%@.json", testMessage.threadId] paramDict:nil attachment:nil];
                     
                     break;
                 case 7:
+                    // delete a message threads
                     if (![self checkTestMessage]) {
                         [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
                         return;
                     }
-                    [controller.ccNetworkManager deleteThreadMessages:testMessage.threadId];
+                    request = [Cocoafish restRequest:controller httpMethod:@"DELETE" baseUrl:[NSString stringWithFormat:@"messages/delete/thread/%@.json", testMessage.threadId] paramDict:nil attachment:nil];
+
                     break;
             }
             
@@ -800,9 +813,11 @@
                             [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
                             return;
                         }
-                        [controller.ccNetworkManager createEvent:@"Cocoafish Happy Hour" details:@"Bring your own drink" placeId:testPlace.objectId startTime:[NSDate date] endTime:[NSDate dateWithTimeIntervalSinceNow:7200] image:[[[CCUploadImage alloc] initWithImage:[UIImage imageNamed:@"sample.png"]] autorelease]];
+                        paramDict =[NSDictionary dictionaryWithObjectsAndKeys:@"Cocoafish Happy Hour", @"name", @"Bring your own drink", @"details", testPlace.objectId, @"place_id", [NSDate date], @"start_time", [NSDate distantFuture], @"end_time", nil];
+                        request = [Cocoafish restRequest:controller httpMethod:@"POST" baseUrl:@"events/create.json" paramDict:paramDict attachment:photoAttachment];
+
                     } else {
-                        [controller.ccNetworkManager deleteEvent:testEvent.objectId];
+                        request = [Cocoafish restRequest:controller httpMethod:@"DELETE" baseUrl:[NSString stringWithFormat:@"events/delete/%@.json", testEvent.objectId] paramDict:nil attachment:nil];
                     }
                     break;
                 case 1:
@@ -810,7 +825,7 @@
                         [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
                         return;
                     }
-                    [controller.ccNetworkManager showEvent:testEvent.objectId];
+                    request = [Cocoafish restRequest:controller httpMethod:@"GET" baseUrl:[NSString stringWithFormat:@"events/show/%@.json", testEvent.objectId] paramDict:nil attachment:nil];
                     break;
                 case 2:
                     if (![self checkTestEvent]) {
@@ -833,7 +848,7 @@
                         [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
                         return;
                     }
-                    [controller.ccNetworkManager searchEvents:testPlace page:CC_FIRST_PAGE perPage:CC_DEFAULT_PER_PAGE];
+                    request = [Cocoafish restRequest:controller httpMethod:@"GET" baseUrl:@"events/search.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:testPlace.objectId, @"place_id", nil] attachment:nil];
                     break;
             }
             
@@ -865,7 +880,6 @@
 
 - (void)dealloc
 {
-    [_ccNetworkManager release];
     [lastIndexPath release];
     [super dealloc];
 }
@@ -876,34 +890,38 @@
     {
         NSString *entered = [(AlertPrompt *)alertView enteredText];
         APIViewController *controller = [[APIViewController alloc] initWithNibName:@"APIViewController" bundle:nil];  
+        CCRequest *request = nil;
+        CCPhotoAttachment *photoAttachment = [[[CCPhotoAttachment alloc] initWithImage:[UIImage imageNamed:@"sample.png"]] autorelease];;
+
         if (lastIndexPath.section == USERS) {
-            CCUser *updatedUser = [[[Cocoafish defaultCocoafish] getCurrentUser] copy];
-            updatedUser.email = entered;
-            [controller.ccNetworkManager updateUser:updatedUser image:[[[CCUploadImage alloc] initWithImage:[UIImage imageNamed:@"sample.png"]] autorelease]];
+            request = [Cocoafish restRequest:controller httpMethod:@"PUT" baseUrl:@"users/update.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"email", nil] attachment:photoAttachment];
         } else if (lastIndexPath.section == STATUSES) {
-            [controller.ccNetworkManager createUserStatus:entered image:[[[CCUploadImage alloc] initWithImage:[UIImage imageNamed:@"sample.png"]] autorelease]];
+            request = [Cocoafish restRequest:controller httpMethod:@"POST" baseUrl:@"statuses/create.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"message", nil] attachment:photoAttachment];
         } else if (lastIndexPath.section == KEY_VALUES){
             if (lastIndexPath.row == 0) {
                 // set key value
-                [controller.ccNetworkManager setValueForKey:@"Test" value:entered];
+                request = [Cocoafish restRequest:controller httpMethod:@"PUT" baseUrl:@"keyvalues/set.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"value", @"Test", @"name", nil] attachment:nil];
             } else {
                 // append key value
-                [controller.ccNetworkManager appendValueForKey:@"Test" appendValue:entered];
+                request = [Cocoafish restRequest:controller httpMethod:@"PUT" baseUrl:@"keyvalues/append.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"value", @"Test", @"name", nil] attachment:nil];
             }
         } else if (lastIndexPath.section == EVENTS) {
-            [controller.ccNetworkManager updateEvent:testEvent.objectId name:entered details:nil placeId:nil startTime:nil endTime:nil image:[[[CCUploadImage alloc] initWithImage:[UIImage imageNamed:@"sample.png"]] autorelease]];
+            request = [Cocoafish restRequest:controller httpMethod:@"PUT" baseUrl:[NSString stringWithFormat:@"events/update/%@.json", testEvent.objectId] paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"name", nil] attachment:photoAttachment];
         } else if (lastIndexPath.section == MESSAGES) {
             if (lastIndexPath.row == 0) {
-                [controller.ccNetworkManager createMessage:entered body:@"Thanks for using Cocoafish" toUserIds:[NSArray arrayWithObject:[[Cocoafish defaultCocoafish] getCurrentUser].objectId]];
+                request = [Cocoafish restRequest:controller httpMethod:@"POST" baseUrl:@"messages/create.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"subject", @"Thanks for using Cocoafish", @"body", [NSArray arrayWithObject:[[Cocoafish defaultCocoafish] getCurrentUser].objectId], @"to_ids", nil] attachment:nil];
             } else {
-                [controller.ccNetworkManager replyMessage:testMessage.objectId body:entered];
+                request = [Cocoafish restRequest:controller httpMethod:@"POST" baseUrl:[NSString stringWithFormat:@"messages/reply/%@.json", testMessage.objectId]  paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"body", nil] attachment:nil];
 
             }
         } else {
             CCPlace *updatedPlace = [testPlace copy];
             updatedPlace.name = entered;
-            [controller.ccNetworkManager updatePlace:updatedPlace image:[[[CCUploadImage alloc] initWithImage:[UIImage imageNamed:@"sample.png"]] autorelease]];
+            
+            request = [Cocoafish restRequest:controller httpMethod:@"PUT" baseUrl:[NSString stringWithFormat:@"places/update/%@.json", testPlace.objectId] paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"name", nil] attachment:photoAttachment];
+
         }
+        [request startAsynchronous];
         [self.navigationController pushViewController:controller animated:YES];
         [controller release];
         [lastIndexPath release];
@@ -911,34 +929,11 @@
     } 
 }
 
-#pragma - CCNetworkManager delegate
--(void)networkManager:(CCNetworkManager *)networkManager didFailWithError:(NSError *)error
-{
-
-}
-
-// successful logout
-- (void)didLogout:(CCNetworkManager *)networkManager
+// successful
+-(void)request:(CCRequest *)request didSucceed:(CCResponse *)response
 {	
-    ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testPlace = nil;
-    ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testEvent = nil;
-    ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testPhoto = nil;
-    ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testMessage = nil;
-    testPlace = nil;
-    testEvent = nil;
-    testPhoto = nil;
-    testMessage = nil;
-    
-	// show login window
-	LoginViewController *loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil];
-	[self.navigationController pushViewController:loginViewController animated:NO];
-	[loginViewController release];
-	
-}
-
--(void)networkManager:(CCNetworkManager *)networkManager didDelete:(Class)objectType
-{
-    if (objectType == [CCUser class]) {
+    if ([response.meta.method isEqualToString:@"logoutUser"] ||
+        [response.meta.method isEqualToString:@"deleteUser"]) {
         ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testPlace = nil;
         ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testEvent = nil;
         ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testPhoto = nil;
@@ -947,12 +942,12 @@
         testEvent = nil;
         testPhoto = nil;
         testMessage = nil;
-        
+    
         // show login window
         LoginViewController *loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil];
         [self.navigationController pushViewController:loginViewController animated:NO];
         [loginViewController release];
-    }
+    } 
 }
 
 #pragma -

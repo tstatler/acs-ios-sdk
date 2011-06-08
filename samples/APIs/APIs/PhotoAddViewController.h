@@ -9,12 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "TapDetectingImageView.h"
 @class CCObject;
-@class CCUploadImage;
+@class CCPhotoAttachment;
 
 @interface PhotoAddViewController : UIViewController<UITextFieldDelegate, UINavigationControllerDelegate, TapDetectingImageViewDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate> {
     IBOutlet UITextField *collectionName;
 	IBOutlet TapDetectingImageView *photoView;
-    CCUploadImage *photoImage;
+    CCPhotoAttachment *photoAttachment;
     IBOutlet UILabel *photoLabel;
 	IBOutlet UIButton *addButton;
     CCObject *object; // either a ccuser or a ccplace to add the photo to

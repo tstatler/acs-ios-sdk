@@ -13,21 +13,26 @@
 @interface CCCollection ()
 
 @property (nonatomic, retain, readwrite) NSString *name;
-@property (nonatomic, readwrite) NSInteger size;
 @property (nonatomic, retain, readwrite) CCPhoto *coverPhoto;
-@property (nonatomic, retain, readwrite) NSArray *photos;
 @property (nonatomic, retain, readwrite) CCUser *user;
-@property (nonatomic, retain, readwrite) NSArray *collections;
+@property (nonatomic, retain, readwrite) CCCollection *parentCollection;
+@property (nonatomic, retain, readwrite) CCCollectionCount *count;
+
+@end
+
+@interface CCCollectionCount()
+@property (nonatomic, readwrite) NSInteger photos;
+@property (nonatomic, readwrite) NSInteger totalPhotos;
+@property (nonatomic, readwrite) NSInteger subCollections;
 @end
 
 @implementation CCCollection
 
 @synthesize name = _name;
-@synthesize size = _size;
 @synthesize coverPhoto = _coverPhoto;
-@synthesize photos = _photos;
 @synthesize user = _user;
-@synthesize collections = _subCollections;
+@synthesize parentCollection = _parentCollection;
+@synthesize count = _count;
 
 -(id)initWithJsonResponse:(NSDictionary *)jsonResponse
 {
@@ -35,11 +40,13 @@
 	if (self) {
         
 		self.name = [jsonResponse objectForKey:@"name"];
-		self.size = [[jsonResponse objectForKey:@"size"] intValue];
 		_coverPhoto = [[CCPhoto alloc] initWithJsonResponse:[jsonResponse objectForKey:@"cover_photo"]];
         _user = [[CCUser alloc] initWithJsonResponse:[jsonResponse objectForKey:@"user"]];
-        self.photos = [CCPhoto arrayWithJsonResponse:jsonResponse class:[CCPhoto class]];
-        self.collections = [CCCollection arrayWithJsonResponse:jsonResponse class:[CCCollection class]];
+
+		_parentCollection = [[CCCollection alloc] initWithJsonResponse:[jsonResponse objectForKey:@"parent_collection"]];
+        
+        _count = [[CCCollectionCount alloc] initWithJsonResponse:[jsonResponse objectForKey:@"counts"]];
+
 	}
 	return self;
 }
@@ -56,8 +63,29 @@
     self.name = nil;
     self.coverPhoto = nil;
     self.user = nil;
-    self.photos = nil;
-    self.collections = nil;
+    self.parentCollection = nil;
+    self.count = nil;
     [super dealloc];
+}
+@end
+
+@implementation CCCollectionCount
+
+@synthesize photos = _photos;
+@synthesize totalPhotos = _totalPhotos;
+@synthesize subCollections = _subCollections;
+
+-(id)initWithJsonResponse:(NSDictionary *)jsonResponse
+{
+    if (!jsonResponse) {
+        return nil;
+    }
+    self = [super init];
+    if (self) {
+        self.photos = [[jsonResponse objectForKey:@"photos"] intValue];
+        self.totalPhotos = [[jsonResponse objectForKey:@"total_photos"] intValue];
+        self.subCollections = [[jsonResponse objectForKey:@"subcollections"] intValue];
+    }
+    return self;
 }
 @end

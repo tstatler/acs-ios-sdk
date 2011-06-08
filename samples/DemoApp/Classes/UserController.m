@@ -18,10 +18,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	
-	if (_ccNetworkManager == nil) {
-		_ccNetworkManager = [[CCNetworkManager alloc] initWithDelegate:self];
-	}
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDownloaded:) name:@"DownloadFinished" object:[Cocoafish defaultCocoafish]];
 
@@ -99,19 +95,10 @@
 
 -(void)getUserCheckins
 {
-	[_ccNetworkManager searchCheckins:[[Cocoafish defaultCocoafish] getCurrentUser] page:CC_FIRST_PAGE perPage:CC_DEFAULT_PER_PAGE];
-}
-
-// successful 
-- (void)networkManager:(CCNetworkManager *)networkManager didGet:(NSArray *)objectArray objectType:(Class)objectType pagination:(CCPagination *)pagination
-{
-    if (objectType == [CCCheckin class]) {
-        @synchronized (self) {
-            userCheckins = [objectArray retain];
-        }
-        [self.tableView reloadData];
-    }
+    NSDictionary *paramDict = [NSDictionary dictionaryWithObjectsAndKeys:[[Cocoafish defaultCocoafish] getCurrentUser].objectId, @"user_id", nil];
 	
+    CCRequest *request = [Cocoafish restRequest:self httpMethod:@"GET" baseUrl:@"checkins/search.json" paramDict:paramDict attachment:nil];
+    [request startAsynchronous];
 }
 
 
@@ -121,7 +108,8 @@
 // start the login process
 - (void)startLogout
 {	
-	[_ccNetworkManager logout];
+    CCRequest *request = [Cocoafish restRequest:self httpMethod:@"GET" baseUrl:@"users/logout.json" paramDict:nil attachment:nil];
+    [request startAsynchronous];
 }
 
 // unlink from facebook
@@ -151,25 +139,34 @@
         [alert release];
         return;
     }
-	[[Cocoafish defaultCocoafish] facebookAuth:[NSArray arrayWithObjects:@"publish_stream", @"email", @"offline_access", nil] delegate:self];
+	[[Cocoafish defaultCocoafish] facebookAuth:[NSArray arrayWithObjects:@"publish_stream", @"email", @"offline_access", @"user_photos", nil] delegate:self];
 }
 
 #pragma mark -
-#pragma mark CCNetworkManager delegate methods
+#pragma mark CCRequest delegate methods
 // successful logout
-- (void)didLogout:(CCNetworkManager *)networkManager
+-(void)request:(CCRequest *)request didSucceed:(CCResponse *)response
 {	
-	// show login window
-	LoginViewController *loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil];
-	[self.navigationController pushViewController:loginViewController animated:NO];
-    [userCheckins release];
-    userCheckins = nil;
-	[loginViewController release];
+    if ([response.meta.method isEqualToString:@"logoutUser"]) {
+        // show login window
+        LoginViewController *loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil];
+        [self.navigationController pushViewController:loginViewController animated:NO];
+        [userCheckins release];
+        userCheckins = nil;
+        [loginViewController release];
+    } else if ([response.meta.method isEqualToString:@"searchCheckins"]) {
+        @synchronized (self) {
+            [userCheckins release];
+            userCheckins = [[response getObjectsOfType:[CCCheckin class]] retain];
+            [self.tableView reloadData];
+        }
+    }
 	
 }
 
-- (void)networkManager:(CCNetworkManager *)networkManager didFailWithError:(NSError *)error
+-(void)request:(CCRequest *)request didFailWithError:(NSError *)error
 {
+
 	NSString *msg = [NSString stringWithFormat:@"%@.",[error localizedDescription]];
 	UIAlertView *alert = [[UIAlertView alloc] 
 						  initWithTitle:@"Error" 
@@ -293,7 +290,6 @@
 
 - (void)dealloc {
 	[userCheckins release];
-	[_ccNetworkManager release];
     [super dealloc];
 }
 
