@@ -10,7 +10,6 @@
 #import "CCCheckin.h"
 #import "CCPlace.h"
 #import "CCStatus.h"
-#import "CCNetworkManager.h"
 #import "FBConnect.h"
 #import "CCPhoto.h"
 #import "CCKeyValuePair.h"

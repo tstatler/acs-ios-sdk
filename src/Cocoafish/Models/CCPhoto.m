@@ -21,11 +21,22 @@
 @property (nonatomic, readwrite) BOOL processed;
 @property (nonatomic, retain, readwrite) NSString *contentType;
 @property (nonatomic, retain, readwrite) NSDictionary *urls;
-@property (nonatomic, retain, readwrite) NSDate *takenAt;
+@property (nonatomic, retain, readwrite) NSDate *customDate;
 @property (nonatomic, retain, readwrite) CCUser *user;
+@property (nonatomic, retain, readwrite) CCExif *exif;
+
 
 -(void)handlePhotoProcessed:(NSNotification *)notification;
 
+@end
+
+@interface CCExif ()
+@property (nonatomic, retain, readwrite) NSString *model;
+@property (nonatomic, retain, readwrite) NSDate *createDate;
+@property (nonatomic, retain, readwrite) NSString *make;
+@property (nonatomic, readwrite) NSInteger height;
+@property (nonatomic, readwrite) NSInteger width;
+@property (nonatomic, retain, readwrite) NSString *shutterSpeed;
 @end
 
 @implementation CCPhoto
@@ -36,8 +47,9 @@
 @synthesize processed = _processed;
 @synthesize contentType = _contentType;
 @synthesize urls = _urls;
-@synthesize takenAt = _takenAt;
+@synthesize customDate = _customDate;
 @synthesize user = _user;
+@synthesize exif = _exif;
 
 -(id)initWithJsonResponse:(NSDictionary *)jsonResponse
 {
@@ -54,11 +66,13 @@
 		NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
 		dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZ";
 		
-		NSString *dateString = [jsonResponse objectForKey:CC_JSON_TAKEN_AT];
+        NSString *dateString = [jsonResponse objectForKey:@"custom_date"];
 		if (dateString) {
-			self.takenAt = [dateFormatter dateFromString:dateString];
+			self.customDate = [dateFormatter dateFromString:dateString];
 		}
-		
+        
+        _exif = [[CCExif alloc] initWithJsonResponse:[jsonResponse objectForKey:@"exif"]];
+        
 		if (self.processed == NO) {
 			// Photo hasn't been processed on the server, add to the download manager queue 
 			// it will pull for its status periodically.
@@ -90,8 +104,8 @@
 	self.md5 = nil;
 	self.contentType = nil;
 	self.urls = nil;
-	self.takenAt = nil;
     self.user = nil;
+    self.exif = nil;
 	[super dealloc];
 }
 
@@ -157,6 +171,49 @@
 
 @end
 
+@implementation CCExif
+@synthesize model = _model;
+@synthesize createDate = _createDate;
+@synthesize make = _make;
+@synthesize height = _height;
+@synthesize width = _width;
+@synthesize shutterSpeed = _shutterSpeed;
+
+-(id)initWithJsonResponse:(NSDictionary *)jsonResponse
+{
+    if (!jsonResponse) {
+        return nil;
+    }
+    self = [super init];
+    if (self) {
+        self.model = [jsonResponse objectForKey:@"model"];
+
+        NSString *dateString = [jsonResponse objectForKey:@"create_date"];
+		if (dateString) {
+            NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
+			self.createDate = [dateFormatter dateFromString:dateString];
+		}
+        
+        self.make = [jsonResponse objectForKey:@"make"];
+        self.height = [[jsonResponse objectForKey:@"height"] intValue];
+        self.width = [[jsonResponse objectForKey:@"width"] intValue];
+        self.shutterSpeed = [jsonResponse objectForKey:@"shutter_speed"];
+
+    }
+    return self;
+                            
+}
+
+-(void)dealloc
+{
+    self.model = nil;
+    self.createDate = nil;
+    self.make = nil;
+    self.shutterSpeed = nil;
+    [super dealloc];
+}
+
+@end
 
 #define DEFAULT_PHOTO_MAX_SIZE  0 // original photo size 
 #define DEFAULT_JPEG_COMPRESSION   1 // best photo quality

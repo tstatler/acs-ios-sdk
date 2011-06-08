@@ -12,6 +12,7 @@
 @class UIImage;
 @class CCRequest;
 @class CCUser;
+@class CCExif;
 typedef enum PhotoSize {
 	CC_SQUARE_75,
 	CC_THUMB_100,
@@ -30,9 +31,10 @@ typedef enum PhotoSize {
 	BOOL _processed;
 	NSString  *_contentType;
 	NSDictionary *_urls;
-	NSDate *_takenAt;
+    NSDate *_customDate; // custom set date for sorting photos in different orders
     NSArray *_collections;
     CCUser *_user;
+    CCExif *_exif;
     
 }
 
@@ -42,13 +44,36 @@ typedef enum PhotoSize {
 @property (nonatomic, retain, readonly) NSString *md5;
 @property (nonatomic, readonly) BOOL processed;
 @property (nonatomic, retain, readonly) NSString *contentType;
-@property (nonatomic, retain, readonly) NSDate *takenAt;
+@property (nonatomic, retain, readonly) NSDate *customDate;
 @property (nonatomic, retain, readonly) NSDictionary *urls;
 @property (nonatomic, retain, readonly) CCUser *user;
+@property (nonatomic, retain, readonly) CCExif *exif;
+
 
 -(NSString *)getImageUrl:(PhotoSize)photoSize;
 -(UIImage *)getImage:(PhotoSize)photoSize;
 -(NSString *)localPath:(PhotoSize)photoSize;
+@end
+
+@interface CCExif : NSObject {
+@private
+    NSString *_model;
+    NSDate *_createDate;
+    NSString *_make;
+    NSInteger _height;
+    NSInteger _width;
+    NSString *shutterSpeed;
+}
+
+@property (nonatomic, retain, readonly) NSString *model;
+@property (nonatomic, retain, readonly) NSDate *createDate;
+@property (nonatomic, retain, readonly) NSString *make;
+@property (nonatomic, readonly) NSInteger height;
+@property (nonatomic, readonly) NSInteger width;
+@property (nonatomic, retain, readonly) NSString *shutterSpeed;
+
+-(id)initWithJsonResponse:(NSDictionary *)jsonResponse;
+
 @end
 
 @interface CCUploadImage :  NSObject  {

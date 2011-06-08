@@ -33,7 +33,7 @@
             self.key, self.value, [super description]];
 }
 
--(NSString *)modelName
++(NSString *)modelName
 {
     return @"keyvalue";
 }
