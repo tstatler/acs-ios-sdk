@@ -63,11 +63,11 @@
 	return self;
 }
 
-- (NSString *)description {
+/*- (NSString *)description {
     return [NSString stringWithFormat:@"CCEvent:\n\tname=%@\n\tdetails=%@\n\tstartTime=%@\n\tendTime=%@\n\tuser=[\n\t%@\n\t]\n\tplace=[\n\t%@\n\t]\n\t%@",
             self.name, self.details, [self.startTime description], [self.endTime description], [self.user description],
             [self.place description], [super description]];
-}
+}*/
 
 +(NSString *)modelName
 {

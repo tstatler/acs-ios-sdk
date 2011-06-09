@@ -60,11 +60,11 @@
 	return self;
 }
 
-- (NSString *)description {
+/*- (NSString *)description {
     return [NSString stringWithFormat:@"CCMessage:\n\tthreadId=%@\n\tstatus=%@\n\tsubject=%@\n\tbody=%@\n\tfrom=[\n\t%@\n\t]\n\tto={\n\t%@\n\t}\n\t%@",
             self.threadId, self.status, self.subject, self.body, [self.from description],
             [self arrayDescription:self.to], [super description]];
-}
+}*/
 
 +(NSString *)modelName
 {

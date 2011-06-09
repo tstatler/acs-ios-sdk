@@ -33,9 +33,9 @@
 	return self;
 }
 
-- (NSString *)description {
+/*- (NSString *)description {
     return [NSString stringWithFormat:@"\t%@\n\tphoto=[\n\t%@\n\t]\n\t", [super description], [self.photo description]];
-}
+}*/
 
 -(void)dealloc
 {

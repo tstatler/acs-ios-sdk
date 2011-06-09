@@ -915,9 +915,6 @@
 
             }
         } else {
-            CCPlace *updatedPlace = [testPlace copy];
-            updatedPlace.name = entered;
-            
             request = [Cocoafish restRequest:controller httpMethod:@"PUT" baseUrl:[NSString stringWithFormat:@"places/update/%@.json", testPlace.objectId] paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"name", nil] attachment:photoAttachment];
 
         }

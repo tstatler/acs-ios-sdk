@@ -11,7 +11,7 @@
 #import "Cocoafish.h"
 #import "CCDownloadManager.h"
 
-/*@interface CCUser ()
+@interface CCUser ()
 
 @property (nonatomic, retain, readwrite) NSString *email;
 @property (nonatomic, retain, readwrite) NSString *username;
@@ -19,9 +19,8 @@
 @property (nonatomic, retain, readwrite) NSString *lastName;
 //@property (nonatomic, readwrite) Boolean facebookAuthorized;
 @property (nonatomic, retain, readwrite) NSString *facebookAccessToken;
-@property (nonatomic, retain, readwrite) CCPhoto *photo;
 
-@end*/
+@end
 
 @implementation CCUser
 
@@ -67,10 +66,10 @@
 	return self;
 }
 
-- (NSString *)description {
+/*- (NSString *)description {
     return [NSString stringWithFormat:@"CCUser:\n\temail: %@\n\tuserName: %@\n\tfirst: %@\n\tlast: %@\n\tfacebookAccessToken :%@\n%@",
             self.email, self.username, self.firstName, self.lastName, self.facebookAccessToken, [super description]];
-}
+}*/
 
 -(id)copyWithZone:(NSZone *)zone  
 {

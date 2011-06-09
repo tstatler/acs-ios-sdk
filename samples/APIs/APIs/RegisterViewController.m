@@ -246,10 +246,9 @@
 	}
 	
 	// Get the text strings
-	CCUser *newUser = [[[CCUser alloc] init] autorelease];
-	newUser.firstName = ((UITextField *)[textFields objectAtIndex:FIRST_NAME]).text;
-	newUser.lastName = ((UITextField *)[textFields objectAtIndex:LAST_NAME]).text;
-	newUser.email = ((UITextField *)[textFields objectAtIndex:EMAIL_ADDRESS]).text;
+	NSString *firstName = ((UITextField *)[textFields objectAtIndex:FIRST_NAME]).text;
+	NSString *lastName = ((UITextField *)[textFields objectAtIndex:LAST_NAME]).text;
+	NSString *email = ((UITextField *)[textFields objectAtIndex:EMAIL_ADDRESS]).text;
     
 	NSString *password = ((UITextField *)[textFields objectAtIndex:PASSWORD]).text;
 	NSString *password_verify = ((UITextField *)[textFields objectAtIndex:PASSWORD_VERIFY]).text;
@@ -304,17 +303,14 @@
 	[self.view addSubview:registerProgress.view];
     
     NSMutableDictionary *paramDict = [NSMutableDictionary dictionaryWithCapacity:1];
-    if ([newUser.email length] > 0) {
-        [paramDict setObject:newUser.email forKey:@"email"];   
+    if ([email length] > 0) {
+        [paramDict setObject:email forKey:@"email"];   
     }
-    if ([newUser.firstName length] > 0) {
-        [paramDict setObject:newUser.firstName forKey:@"first_name"];   
+    if ([firstName length] > 0) {
+        [paramDict setObject:firstName forKey:@"first_name"];   
     }
-    if ([newUser.lastName length] > 0) {
-        [paramDict setObject:newUser.lastName forKey:@"last_name"];   
-    }
-    if ([newUser.username length] > 0) {
-        [paramDict setObject:newUser.username forKey:@"username"];   
+    if ([lastName length] > 0) {
+        [paramDict setObject:lastName forKey:@"last_name"];   
     }
     [paramDict setObject:password forKey:@"password"];   
     [paramDict setObject:password forKey:@"password_confirmation"];   
@@ -322,8 +318,6 @@
     pendingRequest = [[Cocoafish restRequest:self httpMethod:@"POST" baseUrl:@"users/create.json" paramDict:paramDict attachment:[[[CCPhotoAttachment alloc] initWithImage:[UIImage imageNamed:@"sample.png"]] autorelease]] retain];
     [pendingRequest startAsynchronous];
     
-	// Debug
-    NSLog(@"Registering new user: %@, password: %@", newUser, password); 
 }
 
 #pragma mark -

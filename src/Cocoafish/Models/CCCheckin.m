@@ -48,11 +48,11 @@
 	return self;
 }
 
-- (NSString *)description {
+/*- (NSString *)description {
     return [NSString stringWithFormat:@"CCCheckin:\n\tmessage=%@\n\tuser=[\n\t%@\n\t]\n\tplace=[\n\t%@\n\t]\n\t%@",
                                     self.message, [self.user description],
                                     [self.place description], [super description]];
-}
+}*/
 
 +(NSString *)modelName
 {

@@ -28,10 +28,10 @@
 	return self;
 }
 
-- (NSString *)description {
+/*- (NSString *)description {
     return [NSString stringWithFormat:@"CCKeyValuePair\n\tkey: %@\n\tvalue: %@\n\t%@", 
             self.key, self.value, [super description]];
-}
+}*/
 
 +(NSString *)modelName
 {

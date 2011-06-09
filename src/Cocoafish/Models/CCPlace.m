@@ -8,6 +8,20 @@
 
 #import "CCPlace.h"
 
+@interface CCPlace ()
+@property (nonatomic, retain, readwrite) NSString *name;
+@property (nonatomic, retain, readwrite) NSString *address;
+@property (nonatomic, retain, readwrite) NSString *crossStreet;
+@property (nonatomic, retain, readwrite) NSString *city;
+@property (nonatomic, retain, readwrite) NSString *state;
+@property (nonatomic, retain, readwrite) NSString *postalCode;
+@property (nonatomic, retain, readwrite) NSString *country;
+@property (nonatomic, retain, readwrite) NSString *phone;
+@property (nonatomic, retain, readwrite) NSString *website;
+@property (nonatomic, retain, readwrite) NSString *twitter;
+@property (nonatomic, retain, readwrite) CLLocation *location;
+@end
+
 @implementation CCPlace
 
 @synthesize name = _name;
@@ -50,11 +64,11 @@
 	
 }
 
-- (NSString *)description {
+/*- (NSString *)description {
     return [NSString stringWithFormat:@"CCPlace:\n\tname: %@\n\taddress: %@\n\tcrossStreet: %@\n\tcity: %@\n\tstate: %@\n\tpostalCode: %@\n\tcountry :%@\n\tphone: %@\n\twebsite: %@\n\ttwitter: %@\n\tlocation: %@\n\t%@",
             self.name, self.address, self.crossStreet, self.city, self.state, self.postalCode,
             self.country, self.phone, self.website, self.twitter, [self.location description], [super description]];
-}
+}*/
 
 -(id)copyWithZone:(NSZone *)zone  
 {

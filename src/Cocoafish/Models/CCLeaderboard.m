@@ -40,10 +40,10 @@
 	return self;
 }
 
-- (NSString *)description {
+/*- (NSString *)description {
     return [NSString stringWithFormat:@"CCLeaderboard\n\tname: %@\n\tscore: %d\n\t%@", 
             self.name, self.score, [super description]];
-}
+}*/
 
 +(NSString *)modelName
 {

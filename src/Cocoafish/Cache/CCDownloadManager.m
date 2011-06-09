@@ -127,6 +127,9 @@
         parent = photo;
     }
 	@synchronized(self) {
+        if ([_processingPhotos objectForKey:photo.objectId]) {
+            return;
+        }
         [_processingPhotos setObject:parent forKey:photo.objectId];
 		
 		if (self.autoUpdateTimer != nil) {
@@ -257,7 +260,7 @@
 	// restart the timer
 	@synchronized(self) {
 		if (_autoUpdateTimer == nil) {
-			if (_timeInterval < 864000) {
+			if (_timeInterval < 3600) {
 				_timeInterval = _timeInterval * 2;
 			}
 			self.autoUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:(_timeInterval)
