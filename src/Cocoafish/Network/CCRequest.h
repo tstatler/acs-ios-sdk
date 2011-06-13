@@ -13,6 +13,7 @@
 @class CCResponse;
 @class CCUploadImage;
 @class CCAttachment;
+@class CCPhotoAttachment;
 
 @protocol CCRequestDelegate;
 
@@ -23,13 +24,10 @@
     CCAttachment *_attachment;
 }
 
--(id)initWithURL:(NSURL *)url;
--(id)initWithURL:(NSURL *)url method:(NSString *)method; 
--(id)initWithURL:(NSURL *)newUrl httpMethod:(NSString *)httpMethod requestDelegate:(id)requestDelegate attachment:(CCAttachment *)attachment;
+-(id)initWithDelegate:(id)requestDelegate  httpMethod:(NSString *)httpMethod baseUrl:(NSString *)baseUrl paramDict:(NSDictionary *)paramDict;
 -(CCResponse *)startSynchronous;
-
--(void)addOauthHeaderToRequest;
-+(NSString *)generateFullRequestUrl:(NSString *)partialUrl additionalParams:(NSArray *)additionalParams;
+-(void)main;
+-(void)addPhoto:(CCPhotoAttachment *)photoAttachment;
 
 @property(nonatomic, assign) id<CCRequestDelegate> requestDelegate;
 @property (nonatomic, retain, readonly) NSString *requestId;

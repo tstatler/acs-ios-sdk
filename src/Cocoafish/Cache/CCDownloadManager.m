@@ -82,7 +82,7 @@
 		}
         
         NSURL *url = [NSURL URLWithString:urlPath];
-        CCRequest *request = [[[CCRequest alloc] initWithURL:url method:@"GET"] autorelease];
+        ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
         [request setUserInfo:[NSDictionary dictionaryWithObjectsAndKeys:photo, @"object", [NSNumber numberWithInt:size], @"size", nil]];
         [request setDownloadDestinationPath:[photo localPath:size]];
         // set callbacks
@@ -127,7 +127,8 @@
         parent = photo;
     }
 	@synchronized(self) {
-        if ([_processingPhotos objectForKey:photo.objectId]) {
+        CCObject *existingParent = [_processingPhotos objectForKey:photo.objectId];
+        if (existingParent && [existingParent.objectId isEqualToString:parent.objectId]) {
             return;
         }
         [_processingPhotos setObject:parent forKey:photo.objectId];
@@ -182,7 +183,8 @@
                 }
             }
             
-            CCRequest *request = [Cocoafish restRequest:self httpMethod:@"GET" baseUrl:@"objects/show.json" paramDict:paramDict attachment:nil];
+            CCRequest *request = [[[CCRequest alloc] initWithDelegate:self httpMethod:@"GET" baseUrl:@"objects/show.json" paramDict:paramDict] autorelease];
+
             [request startAsynchronous];
 		}
 		

@@ -59,7 +59,7 @@
         NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
         NSString *test_place_id = [prefs stringForKey:@"test_place_id"];
         if (test_place_id) {
-            CCRequest *request = [Cocoafish restRequest:self httpMethod:@"DELETE" baseUrl:[NSString stringWithFormat:@"places/delete/%@.json",test_place_id] paramDict:nil attachment:nil];
+            CCRequest *request = [[CCRequest alloc] initWithDelegate:self httpMethod:@"DELETE" baseUrl:[NSString stringWithFormat:@"places/delete/%@.json",test_place_id] paramDict:nil];
             [request startAsynchronous];
             [prefs removeObjectForKey:@"test_place_id"];
         }
@@ -71,24 +71,28 @@
 -(void)startLogout
 {
     if (testPlace) {
-        CCRequest *request = [Cocoafish restRequest:self httpMethod:@"DELETE" baseUrl:[NSString stringWithFormat:@"places/delete/%@.json",testPlace.objectId] paramDict:nil attachment:nil];
+        CCRequest *request = [[CCRequest alloc] initWithDelegate:self httpMethod:@"DELETE" baseUrl:[NSString stringWithFormat:@"places/delete/%@.json",testPlace.objectId] paramDict:nil];
+
         [request startAsynchronous];
         NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
         [prefs removeObjectForKey:@"test_place_id"];
     }
-    CCRequest *request = [Cocoafish restRequest:self httpMethod:@"GET" baseUrl:@"users/logout.json" paramDict:nil attachment:nil];
+    CCRequest *request = [[CCRequest alloc] initWithDelegate:self httpMethod:@"GET" baseUrl:@"users/logout.json" paramDict:nil];
+
     [request startAsynchronous];
 }
 
 -(void)deleteAccount
 {
     if (testPlace) {
-        CCRequest *request = [Cocoafish restRequest:self httpMethod:@"DELETE" baseUrl:[NSString stringWithFormat:@"places/delete/%@.json", testPlace.objectId] paramDict:nil attachment:nil];
+        CCRequest *request = [[CCRequest alloc] initWithDelegate:self httpMethod:@"DELETE" baseUrl:[NSString stringWithFormat:@"places/delete/%@.json",testPlace.objectId] paramDict:nil];
+
         [request startAsynchronous];
         NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
         [prefs removeObjectForKey:@"test_place_id"];
     }
-    CCRequest *request = [Cocoafish restRequest:self httpMethod:@"DELETE" baseUrl:@"users/delete.json" paramDict:nil attachment:nil];
+    CCRequest *request = [[CCRequest alloc] initWithDelegate:self httpMethod:@"DELETE" baseUrl:@"users/delete.json" paramDict:nil];
+
     [request startAsynchronous];
 }
 
@@ -491,10 +495,11 @@
         case USERS:
             if (indexPath.row == 0) {
                 // show user profile
-                request = [Cocoafish restRequest:controller httpMethod:@"GET" baseUrl:[NSString stringWithFormat:@"users/show/%@.json", currentUser.objectId] paramDict:nil attachment:nil];
+                request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:[NSString stringWithFormat:@"users/show/%@.json", currentUser.objectId] paramDict:nil] autorelease];
             } else if (indexPath.row == 1) {
                 // show current user profile
-                request = [Cocoafish restRequest:controller httpMethod:@"GET" baseUrl:@"users/show/me.json" paramDict:nil attachment:nil];
+                request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:@"users/show/me.json" paramDict:nil] autorelease];
+
             } else if (indexPath.row == 2) {
                 // update user
                 prompt = [AlertPrompt alloc];
@@ -508,7 +513,8 @@
 
             } else if (indexPath.row == 3) {
                 paramDict = [NSDictionary dictionaryWithObjectsAndKeys:currentUser.firstName, @"q", nil];
-                request = [Cocoafish restRequest:controller httpMethod:@"GET" baseUrl:@"users/search.json" paramDict:paramDict attachment:nil];
+                request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:@"users/search.json" paramDict:nil] autorelease];
+
             } else {
                 if ([[Cocoafish defaultCocoafish] getFacebook] == nil) {
                     // check if a facebook id is provided
@@ -539,7 +545,8 @@
                 case 0:
                     // show all places
                     paramDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithDouble:37.743961], @"latitude", [NSNumber numberWithDouble:-122.42202], @"longitude", [NSNumber numberWithDouble:5.0], @"distance", nil];
-                    request = [Cocoafish restRequest:controller httpMethod:@"GET" baseUrl:@"places/search.json" paramDict:paramDict attachment:nil];
+                    request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:@"places/search.json" paramDict:nil] autorelease];
+
                     break;
                 case 1:
                     // show the test place
@@ -548,19 +555,24 @@
                         return;
                     }
                     
-                    request = [Cocoafish restRequest:controller httpMethod:@"GET" baseUrl:[NSString stringWithFormat:@"places/show/%@.json", testPlace.objectId] paramDict:nil attachment:nil];
+                    request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:[NSString stringWithFormat:@"places/show/%@.json", testPlace.objectId] paramDict:nil] autorelease];
+
                     break;
                 case 2:
                     if (testPlace) {
                         // delete the test place
-                        request = [Cocoafish restRequest:controller httpMethod:@"DELETE" baseUrl:[NSString stringWithFormat:@"places/delete/%@.json", testPlace.objectId] paramDict:nil attachment:nil];
+                        request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:[NSString stringWithFormat:@"places/delete/%@.json", testPlace.objectId] paramDict:nil] autorelease];
+
+                        
                     } else {
                         // create a test place
                         
                         // show all places
                         paramDict = [NSDictionary dictionaryWithObjectsAndKeys:@"Cocoafish", @"name", @"58 South Park Ave.", @"address", @"San Francisco", @"city", @"California", @"state", @"94107-1807", @"postal_code", @"United States", @"country", @"http://cocoafish.com", @"website", @"cocoafish", @"twitter", [NSNumber numberWithDouble:37.743961], @"latitude", [NSNumber numberWithDouble:-122.42202], @"longitude", nil];
                        
-                        request = [Cocoafish restRequest:controller httpMethod:@"POST" baseUrl:@"places/create.json" paramDict:paramDict attachment:photoAttachment];
+                        request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"POST" baseUrl:@"places/create.json" paramDict:paramDict] autorelease];
+                        [request addPhoto:photoAttachment];
+
                         
                     }
                     break;
@@ -604,12 +616,14 @@
                         return;
                     }
                     // get checkins of a place
-                    request = [Cocoafish restRequest:controller httpMethod:@"GET" baseUrl:@"checkins/search.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:testPlace.objectId, @"place_id", nil] attachment:nil];
+                    request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:@"checkins/search.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:testPlace.objectId, @"place_id", nil]] autorelease];
+
                     break;
                 case 2:
                 default:
                     // show a user's checkins
-                    request = [Cocoafish restRequest:controller httpMethod:@"GET" baseUrl:@"checkins/search.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:currentUser.objectId, @"user_id", nil] attachment:nil];
+                    request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:@"checkins/search.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:currentUser.objectId, @"user_id", nil]] autorelease];
+
                 
                     break;
             }
@@ -632,7 +646,9 @@
                 case 1:
                 default:
                     // get a user's statuses
-                    request = [Cocoafish restRequest:controller httpMethod:@"GET" baseUrl:@"statuses/search.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:[[Cocoafish defaultCocoafish] getCurrentUser].objectId, @"user_id", [NSDate distantPast], @"start_time", nil]  attachment:nil];
+                    request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:@"statuses/search.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:[[Cocoafish defaultCocoafish] getCurrentUser].objectId, @"user_id", [NSDate distantPast], @"start_time", nil]] autorelease];
+
+                    
                     break;
             }
             break;
@@ -657,7 +673,8 @@
                         return;
                     }
                     // get Photos of a place
-                    request = [Cocoafish restRequest:controller httpMethod:@"GET" baseUrl:@"photos/search.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:testPlace.objectId, @"place_id", nil] attachment:nil];
+                    request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:@"photos/search.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:testPlace.objectId, @"place_id", nil]] autorelease];
+
                     break;
                 case 2:
                     // add a photo to a user
@@ -673,11 +690,14 @@
                         [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
                         return;
                     }
-                    request = [Cocoafish restRequest:controller httpMethod:@"GET" baseUrl:[NSString stringWithFormat:@"photos/show/%@.json", testPhoto.objectId] paramDict:nil attachment:nil];
+                    request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:[NSString stringWithFormat:@"photos/show/%@.json", testPhoto.objectId]  paramDict:nil] autorelease];
+
+                    
                     break;
                 case 4:
                     // show photos of a user
-                    request = [Cocoafish restRequest:controller httpMethod:@"GET" baseUrl:@"photos/search.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:currentUser.objectId, @"user_id", nil] attachment:nil];
+                    request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:@"photos/search.json"  paramDict:[NSDictionary dictionaryWithObjectsAndKeys:currentUser.objectId, @"user_id", nil]] autorelease];
+
                     break;
                 case 5:
                 default:
@@ -686,7 +706,8 @@
                         [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
                         return;
                     }
-                    request = [Cocoafish restRequest:controller httpMethod:@"DELETE" baseUrl:[NSString stringWithFormat:@"photos/delete/%@.json", testPhoto.objectId] paramDict:nil attachment:nil];
+                    request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"DELETE" baseUrl:[NSString stringWithFormat:@"photos/delete/%@.json", testPhoto.objectId]  paramDict:nil] autorelease];
+
                     break;
             }
             break;
@@ -705,7 +726,8 @@
                     break;
                 case 1:
                     // get keyvalue
-                    request = [Cocoafish restRequest:controller httpMethod:@"GET" baseUrl:@"keyvalues/get.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:@"Test", @"name", nil] attachment:nil];
+                    request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:@"keyvalues/get.json"  paramDict:[NSDictionary dictionaryWithObjectsAndKeys:@"Test", @"name", nil]] autorelease];
+
                     break;
                 case 2:
                     // append keyvalue
@@ -722,7 +744,8 @@
                 case 3:
                 default:
                     // delete keyvalue
-                    request = [Cocoafish restRequest:controller httpMethod:@"DELETE" baseUrl:@"keyvalues/delete.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:@"Test", @"name", nil] attachment:nil];
+                    request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:@"keyvalues/delete.json"  paramDict:[NSDictionary dictionaryWithObjectsAndKeys:@"Test", @"name", nil]] autorelease];
+
                     break;
             }
             break;
@@ -742,7 +765,8 @@
                         return;
 
                     } else {
-                        request = [Cocoafish restRequest:controller httpMethod:@"DELETE" baseUrl:[NSString stringWithFormat:@"messages/delete/%@.json", testMessage.objectId] paramDict:nil attachment:nil];
+                        request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"DELETE" baseUrl:[NSString stringWithFormat:@"messages/delete/%@.json", testMessage.objectId] paramDict:nil] autorelease];
+
                     }
                     break;
                 case 1:
@@ -767,21 +791,23 @@
                         [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
                         return;
                     }
-                    request = [Cocoafish restRequest:controller httpMethod:@"GET" baseUrl:[NSString stringWithFormat:@"messages/show/%@.json", testMessage.objectId] paramDict:nil attachment:nil];
+                    request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:[NSString stringWithFormat:@"messages/show/%@.json", testMessage.objectId] paramDict:nil] autorelease];
+
                     break;
                 case 3:
                     // show inbox messages
-                    request = [Cocoafish restRequest:controller httpMethod:@"GET" baseUrl:@"messages/show/inbox.json" paramDict:nil attachment:nil];
+                    request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:@"messages/show/inbox.json" paramDict:nil] autorelease];
 
                     break;
                 case 4:
                     // show sent messages
-                    request = [Cocoafish restRequest:controller httpMethod:@"GET" baseUrl:@"messages/show/sent.json" paramDict:nil attachment:nil];
+                    request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:@"messages/show/sent.json" paramDict:nil] autorelease];
+
 
                     break;
                 case 5:
                     // show  message threads
-                    request = [Cocoafish restRequest:controller httpMethod:@"GET" baseUrl:@"messages/show/threads.json" paramDict:nil attachment:nil];
+                    request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:@"messages/show/sent.json" paramDict:nil] autorelease];
 
                     break;
                 case 6:
@@ -790,7 +816,8 @@
                         [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
                         return;
                     }
-                    request = [Cocoafish restRequest:controller httpMethod:@"GET" baseUrl:[NSString stringWithFormat:@"messages/show/thread/%@.json", testMessage.threadId] paramDict:nil attachment:nil];
+                    request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:[NSString stringWithFormat:@"messages/show/thread/%@.json", testMessage.threadId] paramDict:nil] autorelease];
+
                     
                     break;
                 case 7:
@@ -799,7 +826,7 @@
                         [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
                         return;
                     }
-                    request = [Cocoafish restRequest:controller httpMethod:@"DELETE" baseUrl:[NSString stringWithFormat:@"messages/delete/thread/%@.json", testMessage.threadId] paramDict:nil attachment:nil];
+                    request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"DELETE" baseUrl:[NSString stringWithFormat:@"messages/delete/thread/%@.json", testMessage.threadId] paramDict:nil] autorelease];
 
                     break;
             }
@@ -814,10 +841,11 @@
                             return;
                         }
                         paramDict =[NSDictionary dictionaryWithObjectsAndKeys:@"Cocoafish Happy Hour", @"name", @"Bring your own drink", @"details", testPlace.objectId, @"place_id", [NSDate date], @"start_time", [NSDate distantFuture], @"end_time", nil];
-                        request = [Cocoafish restRequest:controller httpMethod:@"POST" baseUrl:@"events/create.json" paramDict:paramDict attachment:photoAttachment];
+                        request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"POST" baseUrl:@"events/create.json" paramDict:nil] autorelease];
+
 
                     } else {
-                        request = [Cocoafish restRequest:controller httpMethod:@"DELETE" baseUrl:[NSString stringWithFormat:@"events/delete/%@.json", testEvent.objectId] paramDict:nil attachment:nil];
+                        request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"DELETE" baseUrl:[NSString stringWithFormat:@"events/delete/%@.json", testEvent.objectId] paramDict:nil] autorelease];
                     }
                     break;
                 case 1:
@@ -825,7 +853,8 @@
                         [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
                         return;
                     }
-                    request = [Cocoafish restRequest:controller httpMethod:@"GET" baseUrl:[NSString stringWithFormat:@"events/show/%@.json", testEvent.objectId] paramDict:nil attachment:nil];
+                    request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:[NSString stringWithFormat:@"events/show/%@.json", testEvent.objectId] paramDict:nil] autorelease];
+
                     break;
                 case 2:
                     if (![self checkTestEvent]) {
@@ -848,7 +877,9 @@
                         [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
                         return;
                     }
-                    request = [Cocoafish restRequest:controller httpMethod:@"GET" baseUrl:@"events/search.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:testPlace.objectId, @"place_id", nil] attachment:nil];
+                    request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:@"events/search.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:testPlace.objectId, @"place_id", nil]] autorelease];
+
+                    
                     break;
             }
             
@@ -894,28 +925,39 @@
         CCPhotoAttachment *photoAttachment = [[[CCPhotoAttachment alloc] initWithImage:[UIImage imageNamed:@"sample.png"]] autorelease];;
 
         if (lastIndexPath.section == USERS) {
-            request = [Cocoafish restRequest:controller httpMethod:@"PUT" baseUrl:@"users/update.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"email", nil] attachment:photoAttachment];
+            request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"PUT" baseUrl:@"users/update.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"email", nil]] autorelease];
+
         } else if (lastIndexPath.section == STATUSES) {
-            request = [Cocoafish restRequest:controller httpMethod:@"POST" baseUrl:@"statuses/create.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"message", nil] attachment:photoAttachment];
+            request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"POST" baseUrl:@"statuses/create.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"message", nil]] autorelease];
+
         } else if (lastIndexPath.section == KEY_VALUES){
             if (lastIndexPath.row == 0) {
                 // set key value
-                request = [Cocoafish restRequest:controller httpMethod:@"PUT" baseUrl:@"keyvalues/set.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"value", @"Test", @"name", nil] attachment:nil];
+                request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"PUT" baseUrl:@"keyvalues/set.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"value", @"Test", @"name", nil]] autorelease];
+
             } else {
                 // append key value
-                request = [Cocoafish restRequest:controller httpMethod:@"PUT" baseUrl:@"keyvalues/append.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"value", @"Test", @"name", nil] attachment:nil];
+                request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"PUT" baseUrl:@"keyvalues/append.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"value", @"Test", @"name", nil]] autorelease];
+
+                
             }
         } else if (lastIndexPath.section == EVENTS) {
-            request = [Cocoafish restRequest:controller httpMethod:@"PUT" baseUrl:[NSString stringWithFormat:@"events/update/%@.json", testEvent.objectId] paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"name", nil] attachment:photoAttachment];
+            request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"PUT" baseUrl:[NSString stringWithFormat:@"events/update/%@.json", testEvent.objectId] paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"name", nil]] autorelease];
+            [request addPhoto:photoAttachment];
+
         } else if (lastIndexPath.section == MESSAGES) {
             if (lastIndexPath.row == 0) {
-                request = [Cocoafish restRequest:controller httpMethod:@"POST" baseUrl:@"messages/create.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"subject", @"Thanks for using Cocoafish", @"body", [NSArray arrayWithObject:[[Cocoafish defaultCocoafish] getCurrentUser].objectId], @"to_ids", nil] attachment:nil];
+                request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"POST" baseUrl:@"messages/create.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"subject", @"Thanks for using Cocoafish", @"body", [NSArray arrayWithObject:[[Cocoafish defaultCocoafish] getCurrentUser].objectId], @"to_ids", nil]] autorelease];
+
             } else {
-                request = [Cocoafish restRequest:controller httpMethod:@"POST" baseUrl:[NSString stringWithFormat:@"messages/reply/%@.json", testMessage.objectId]  paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"body", nil] attachment:nil];
+                request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"POST" baseUrl:[NSString stringWithFormat:@"messages/reply/%@.json", testMessage.objectId] paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"body", nil]] autorelease];
+
 
             }
         } else {
-            request = [Cocoafish restRequest:controller httpMethod:@"PUT" baseUrl:[NSString stringWithFormat:@"places/update/%@.json", testPlace.objectId] paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"name", nil] attachment:photoAttachment];
+            request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"PUT" baseUrl:[NSString stringWithFormat:@"places/update/%@.json", testPlace.objectId] paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"name", nil]] autorelease];
+            [request addPhoto:photoAttachment];
+
 
         }
         [request startAsynchronous];

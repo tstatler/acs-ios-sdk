@@ -34,11 +34,13 @@
 	Facebook *_facebook; // handles facebook authentication
 	NSString *_cocoafishDir;
 	CCDownloadManager *_downloadManager;
+    NSString *_deviceToken; // For push notificaiton
 }
 
 @property(nonatomic, assign) id<CCFBSessionDelegate> _fbSessionDelegate;
 @property(nonatomic, retain, readonly) CCDownloadManager *downloadManager;
 @property(nonatomic, retain, readonly) NSString *cocoafishDir;
+@property(nonatomic, retain, readwrite) NSString *deviceToken;
 
 +(void)initializeWithAppKey:(NSString *)appKey customAppIds:(NSDictionary *)customAppIds;;
 +(void)initializeWithOauthConsumerKey:(NSString *)consumerKey consumerSecret:(NSString *)consumerSecret customAppIds:(NSDictionary *)customAppIds;;
@@ -50,12 +52,11 @@
 -(CCUser *)getCurrentUser;
 -(Facebook *)getFacebook;
 -(void)setCurrentUser:(CCUser *)user;
+- (NSString*)udid; // get device id
 
 -(void)facebookAuth:(NSArray *)permissions delegate:(id<CCFBSessionDelegate>)delegate;
 -(void)unlinkFromFacebook:(NSError **)error;
 -(BOOL)handleOpenURL:(NSURL *)url;
-
-+(CCRequest *)restRequest:(id)delegate httpMethod:(NSString *)httpMethod baseUrl:(NSString *)baseUrl paramDict:(NSDictionary *)paramtDict attachment:(CCAttachment *)attachment;
 
 @end
 

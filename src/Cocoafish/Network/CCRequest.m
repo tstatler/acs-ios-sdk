@@ -14,6 +14,8 @@
 @interface CCRequest ()
 +(NSString *)generateRequestId;
 -(void)initCommon;
+-(void)addOauthHeaderToRequest;
++(NSString *)generateFullRequestUrl:(NSString *)partialUrl additionalParams:(NSArray *)additionalParams;
 @property (nonatomic, readwrite, retain) NSString *requestId;
 @property (nonatomic, readwrite, retain) CCAttachment *attachment;
 @end
@@ -23,36 +25,59 @@
 @synthesize attachment = _attachment;
 @synthesize requestDelegate = _requestDelegate;
 
--(id)initWithURL:(NSURL *)newUrl
+-(id)initWithDelegate:(id)requestDelegate httpMethod:(NSString *)httpMethod baseUrl:(NSString *)baseUrl paramDict:(NSDictionary *)paramDict;
 {
-    self = [super initWithURL:newUrl];
-    if (self) {
-        // default is get request
-        [self setRequestMethod:@"GET"];
-        [self initCommon];
+    NSMutableArray *paramArray = nil;
+    NSArray *keys = [paramDict allKeys];
+    if ([httpMethod isEqualToString:@"GET"] || [httpMethod isEqualToString:@"DELETE"]) {
+        // construct the url
+        if ([paramDict count] > 0) {
+            paramArray = [NSMutableArray arrayWithCapacity:[paramDict count]];
+            for (NSString *key in keys) {
+                id valueObject = [paramDict valueForKey:key];
+                NSString *value = nil;
+                // URL encode string
+                if ([valueObject isKindOfClass:[NSArray class]]) {
+                    // concatenate the array
+                    value = [valueObject componentsJoinedByString:@","];
+                } else if (![valueObject isKindOfClass:[NSString class]]) {
+                    value = [valueObject description];
+                } else {
+                    value = (NSString *)valueObject;
+                }
+                value = encodeToPercentEscapeString(value);
+                [paramArray addObject:[NSString stringWithFormat:@"%@=%@", key, value]];
+            }
+        }
     }
-    return self;
-}
-
--(id)initWithURL:(NSURL *)newUrl method:(NSString *)method
-{
-    self = [super initWithURL:newUrl];
-    if (self) {
-        
-        [self setRequestMethod:method];
-        self.timeOutSeconds = CC_TIMEOUT;
-        [self initCommon];
-    }
-    return self;
-}
-
--(id)initWithURL:(NSURL *)newUrl httpMethod:(NSString *)httpMethod requestDelegate:(id)requestDelegate attachment:(CCAttachment *)attachment
-{
+    
+    NSString *urlPath = [CCRequest generateFullRequestUrl:baseUrl additionalParams:paramArray];
+    
+	NSURL *newUrl = [NSURL URLWithString:urlPath];
     self = [super initWithURL:newUrl];
     if (self) {
         NSLog(@"CCRequest Url: %@", [newUrl absoluteString]);
         [self setRequestMethod:httpMethod];
         self.requestDelegate = requestDelegate;       
+        if ([httpMethod isEqualToString:@"POST"] || [httpMethod isEqualToString:@"PUT"]) {
+            // add post body
+            for (NSString *key in keys) {
+                id valueObject = [paramDict valueForKey:key];
+                NSString *value = nil;
+                // URL encode string
+                if ([valueObject isKindOfClass:[NSArray class]]) {
+                    // concatenate the array
+                    value = [valueObject componentsJoinedByString:@","];
+                } else if (![valueObject isKindOfClass:[NSString class]]) {
+                    value = [valueObject description];
+                } else {
+                    value = (NSString *)valueObject;
+                }
+                [self setPostValue:value forKey:key];
+                
+            }
+            
+        }
         [self initCommon];
     }
     return self;
@@ -93,6 +118,12 @@
     return uuidStr;
 }
 
+-(void)main
+{
+    [self addOauthHeaderToRequest];
+    [super main];
+}
+
 -(CCResponse *)startSynchronous
 {
   /*  [self setDelegate:nil];
@@ -107,6 +138,18 @@
     return response;
 }
 
+-(void)addPhoto:(CCPhotoAttachment *)photoAttachment
+{
+    if (!photoAttachment) {
+        return;
+    }
+    if (![self.requestMethod isEqualToString:@"PUT"] && ![self.requestMethod isEqualToString:@"POST"]) {
+        NSLog(@"addPhotoAttachment only works with PUT or POST");
+        return;
+    }
+    [self setData:[photoAttachment attachmentData] withFileName:photoAttachment.fileName andContentType:photoAttachment.contentType forKey:photoAttachment.postKey];
+    
+}
 #pragma mark - REST Call support
 -(void)addOauthHeaderToRequest
 {

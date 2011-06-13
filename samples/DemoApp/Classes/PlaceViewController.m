@@ -28,7 +28,7 @@
     
     NSDictionary *paramDict = [NSDictionary dictionaryWithObjectsAndKeys:place.objectId, @"place_id", [NSNumber numberWithInt:20], @"per_page", nil];
 	
-    CCRequest *request = [Cocoafish restRequest:self httpMethod:@"GET" baseUrl:@"checkins/search.json" paramDict:paramDict attachment:nil];
+    CCRequest *request = [[[CCRequest alloc] initWithDelegate:self httpMethod:@"GET" baseUrl:@"checkins/search.json" paramDict:paramDict] autorelease];
     [request startAsynchronous];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDownloaded:) name:@"DownloadFinished" object:[Cocoafish defaultCocoafish]];
@@ -56,7 +56,10 @@
 -(void)startCheckin:(CheckinViewController *)controller message:(NSString *)message image:(CCPhotoAttachment *)image
 {
     NSDictionary *paramDict = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:message, place.objectId, nil] forKeys:[NSArray arrayWithObjects:@"message", @"place_id", nil]];
-    CCRequest *request = [Cocoafish restRequest:self httpMethod:@"POST" baseUrl:@"checkins/create.json" paramDict:paramDict attachment:image];
+    CCRequest *request = [[[CCRequest alloc] initWithDelegate:self httpMethod:@"POST" baseUrl:@"checkins/create.json" paramDict:paramDict] autorelease];
+
+    [request addPhoto:image];
+                          
     [request startAsynchronous];
 }
 
@@ -73,7 +76,8 @@
         NSString *score_key = [NSString stringWithFormat:@"%@_score",[[Cocoafish defaultCocoafish] getCurrentUser].email];
         
         NSDictionary *paramDict = [NSDictionary dictionaryWithObjectsAndKeys:score_key, @"name", [NSNumber numberWithInt:5], @"value", nil];
-        CCRequest *request = [Cocoafish restRequest:self httpMethod:@"PUT" baseUrl:@"keyvalues/incrby.json" paramDict:paramDict attachment:nil];
+        CCRequest *request = [[[CCRequest alloc] initWithDelegate:self httpMethod:@"PUT" baseUrl:@"keyvalues/incrby.json" paramDict:paramDict] autorelease];
+
         [request startAsynchronous];
         
         if (checkin) {

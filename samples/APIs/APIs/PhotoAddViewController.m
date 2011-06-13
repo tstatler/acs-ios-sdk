@@ -181,7 +181,9 @@
     APIViewController *apiController = [[APIViewController alloc] initWithNibName:@"APIViewController" bundle:nil];  
     
     NSDictionary *paramDict = [NSDictionary dictionaryWithObjectsAndKeys:collectionName.text, @"collection_name", object.objectId, [NSString stringWithFormat:@"%@_id", [[object class] modelName]], nil];
-    CCRequest *request = [Cocoafish restRequest:apiController httpMethod:@"POST" baseUrl:@"photos/create.json" paramDict:paramDict attachment:photoAttachment];
+        CCRequest *request = [[[CCRequest alloc] initWithDelegate:apiController httpMethod:@"POST" baseUrl:@"photos/create.json" paramDict:paramDict] autorelease];
+    [request addPhoto:photoAttachment];
+
     [request startAsynchronous];
     [self.navigationController pushViewController:apiController animated:YES];
     [apiController release];

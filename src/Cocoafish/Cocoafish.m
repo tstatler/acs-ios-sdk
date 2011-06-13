@@ -36,6 +36,7 @@ NSString* encodeToPercentEscapeString(NSString *string) {
 @synthesize _fbSessionDelegate;
 @synthesize downloadManager = _downloadManager;
 @synthesize cocoafishDir = _cocoafishDir;
+@synthesize deviceToken = _deviceToken;
 
 -(id)initWithAppKey:(NSString *)appKey customAppIds:(NSDictionary *)customAppIds
 {
@@ -95,7 +96,8 @@ NSString* encodeToPercentEscapeString(NSString *string) {
 	_currentUser = [[[CCUser alloc] initWithId:[prefs stringForKey:@"cc_user_id"] first:[prefs stringForKey:@"cc_user_first_name"] last:[prefs stringForKey:@"cc_user_last_name"] email:[prefs stringForKey:@"cc_user_email"] username:[prefs stringForKey:@"cc_username"]] retain];
 	if (_currentUser) {
 		[self restoreUserSession];
-        CCRequest *request = [Cocoafish restRequest:self httpMethod:@"GET" baseUrl:@"users/show/me.json" paramDict:nil attachment:nil];
+        CCRequest *request = [[[CCRequest alloc] initWithDelegate:self httpMethod:@"GET" baseUrl:@"users/show/me.json" paramDict:nil] autorelease];
+
         [request startAsynchronous];
 	}
 	
@@ -179,7 +181,8 @@ NSString* encodeToPercentEscapeString(NSString *string) {
 
 -(void)unlinkFromFacebook:(NSError **)error
 {
-    CCRequest *request = [Cocoafish restRequest:nil httpMethod:@"DELETE" baseUrl:@"social/facebook/unlink.json" paramDict:nil attachment:nil];
+    CCRequest *request = [[[CCRequest alloc] initWithDelegate:self httpMethod:@"DELETE" baseUrl:@"social/facebook/unlink.json" paramDict:nil] autorelease];
+
     CCResponse *response = [request startSynchronous];
     if (response && [response.meta.status isEqualToString:CC_STATUS_OK]) {
         NSArray *users = [response getObjectsOfType:[CCUser class]];
@@ -202,10 +205,11 @@ NSString* encodeToPercentEscapeString(NSString *string) {
     CCRequest *request = nil;
 	if ([[Cocoafish defaultCocoafish] getCurrentUser] != nil) {
 		// This is for linking facebook with the existing user
-        request = [Cocoafish restRequest:nil httpMethod:@"POST" baseUrl:@"social/facebook/link.json" paramDict:paramDict attachment:nil];
+        request = [[[CCRequest alloc] initWithDelegate:self httpMethod:@"POST" baseUrl:@"social/facebook/link.json" paramDict:paramDict] autorelease];
 
     } else {
-        request = [Cocoafish restRequest:nil httpMethod:@"POST" baseUrl:@"social/facebook/login.json" paramDict:paramDict attachment:nil];
+        request = [[[CCRequest alloc] initWithDelegate:self httpMethod:@"POST" baseUrl:@"social/facebook/login.json" paramDict:paramDict] autorelease];
+
     }
 
     CCResponse *response = [request startSynchronous];
@@ -311,6 +315,12 @@ NSString* encodeToPercentEscapeString(NSString *string) {
 }
 
 
+- (NSString*)udid
+{
+	UIDevice* device = [UIDevice currentDevice];
+	return [device.uniqueIdentifier stringByReplacingOccurrencesOfString:@"-" withString:@""];
+}
+
 /*-(void)cleanupCacheDir
 {
 	[[NSFileManager defaultManager] removeItemAtPath:_cocoafishDir error:nil];
@@ -368,67 +378,5 @@ NSString* encodeToPercentEscapeString(NSString *string) {
         return theDefaultCocoafish;
     }
 }
-
-#pragma Rest Request
-
-+(CCRequest *)restRequest:(id)delegate httpMethod:(NSString *)httpMethod baseUrl:(NSString *)baseUrl paramDict:(NSDictionary *)paramtDict attachment:(CCAttachment *)attachment
-{
-    if (!([httpMethod isEqualToString:@"DELETE"] || [httpMethod isEqualToString:@"GET"] || [httpMethod isEqualToString:@"POST"] || [httpMethod isEqualToString:@"PUT"])) {
-        [NSException raise:@"request Type not supported. Supported types are 'DELETE', 'POST', 'GET', 'PUT'" format:@"unknown request Type: %@", httpMethod];
-    }
-    
-    NSMutableArray *paramArray = [NSMutableArray arrayWithCapacity:1];
-    NSArray *keys = [paramtDict allKeys];
-    if ([httpMethod isEqualToString:@"GET"] || [httpMethod isEqualToString:@"DELETE"]) {
-        if ([paramtDict count] > 0) {
-            for (NSString *key in keys) {
-                id valueObject = [paramtDict valueForKey:key];
-                NSString *value = nil;
-                // URL encode string
-                if ([valueObject isKindOfClass:[NSArray class]]) {
-                    // concatenate the array
-                    value = [valueObject componentsJoinedByString:@","];
-                } else if (![valueObject isKindOfClass:[NSString class]]) {
-                    value = [valueObject description];
-                } else {
-                    value = (NSString *)valueObject;
-                }
-                value = encodeToPercentEscapeString(value);
-                [paramArray addObject:[NSString stringWithFormat:@"%@=%@", key, value]];
-            }
-        }
-    }
-    
-    NSString *urlPath = [CCRequest generateFullRequestUrl:baseUrl additionalParams:paramArray];
-    
-	NSURL *url = [NSURL URLWithString:urlPath];
-    
-    CCRequest *request =[ [[CCRequest alloc] initWithURL:url httpMethod:httpMethod requestDelegate:delegate attachment:attachment] autorelease];
-    
-    if ([httpMethod isEqualToString:@"POST"] || [httpMethod isEqualToString:@"PUT"]) {
-        for (NSString *key in keys) {
-            id valueObject = [paramtDict valueForKey:key];
-            NSString *value = nil;
-            // URL encode string
-            if ([valueObject isKindOfClass:[NSArray class]]) {
-                // concatenate the array
-                value = [valueObject componentsJoinedByString:@","];
-            } else if (![valueObject isKindOfClass:[NSString class]]) {
-                value = [valueObject description];
-            } else {
-                value = (NSString *)valueObject;
-            }
-            [request setPostValue:value forKey:key];
-            
-        }
-        if (attachment) {
-            [request setData:[attachment attachmentData] withFileName:attachment.fileName andContentType:attachment.contentType forKey:attachment.postKey];
-        }
-    }
-    [request addOauthHeaderToRequest];
-    return request;
-
-}
-
 
 @end

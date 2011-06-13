@@ -97,7 +97,8 @@
 {
     NSDictionary *paramDict = [NSDictionary dictionaryWithObjectsAndKeys:[[Cocoafish defaultCocoafish] getCurrentUser].objectId, @"user_id", nil];
 	
-    CCRequest *request = [Cocoafish restRequest:self httpMethod:@"GET" baseUrl:@"checkins/search.json" paramDict:paramDict attachment:nil];
+    CCRequest *request = [[[CCRequest alloc] initWithDelegate:self httpMethod:@"GET" baseUrl:@"checkins/search.json" paramDict:paramDict] autorelease];
+
     [request startAsynchronous];
 }
 
@@ -108,7 +109,8 @@
 // start the login process
 - (void)startLogout
 {	
-    CCRequest *request = [Cocoafish restRequest:self httpMethod:@"GET" baseUrl:@"users/logout.json" paramDict:nil attachment:nil];
+    CCRequest *request = [[[CCRequest alloc] initWithDelegate:self httpMethod:@"GET" baseUrl:@"users/logout.json" paramDict:nil] autorelease];
+
     [request startAsynchronous];
 }
 

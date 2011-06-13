@@ -315,7 +315,9 @@
     [paramDict setObject:password forKey:@"password"];   
     [paramDict setObject:password forKey:@"password_confirmation"];   
     
-    pendingRequest = [[Cocoafish restRequest:self httpMethod:@"POST" baseUrl:@"users/create.json" paramDict:paramDict attachment:[[[CCPhotoAttachment alloc] initWithImage:[UIImage imageNamed:@"sample.png"]] autorelease]] retain];
+    pendingRequest = [[[CCRequest alloc] initWithDelegate:self httpMethod:@"POST" baseUrl:@"users/create.json" paramDict:paramDict] autorelease];
+    [pendingRequest addPhoto:[[[CCPhotoAttachment alloc] initWithImage:[UIImage imageNamed:@"sample.png"]] autorelease]];
+
     [pendingRequest startAsynchronous];
     
 }

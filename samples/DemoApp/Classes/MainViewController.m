@@ -36,7 +36,7 @@
 		listViewController = [[ListViewController alloc] initWithNibName:@"ListViewController" bundle:nil];
 	}
 	
-	CCRequest *request = [Cocoafish restRequest:self httpMethod:@"GET" baseUrl:@"places/search.json" paramDict:nil attachment:nil];
+    CCRequest *request = [[[CCRequest alloc] initWithDelegate:self httpMethod:@"GET" baseUrl:@"places/search.json" paramDict:nil] autorelease];
     [request startAsynchronous];
 	
 }
@@ -72,7 +72,7 @@
 
 -(IBAction)getPlaces 
 {
-	CCRequest *request = [Cocoafish restRequest:self httpMethod:@"GET" baseUrl:@"places/search.json" paramDict:nil attachment:nil];
+    CCRequest *request = [[[CCRequest alloc] initWithDelegate:self httpMethod:@"GET" baseUrl:@"places/search.json" paramDict:nil] autorelease];
     [request startAsynchronous];
 }
 

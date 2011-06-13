@@ -184,7 +184,8 @@
     NSMutableDictionary *paramDict = [NSMutableDictionary dictionaryWithCapacity:2];
     [paramDict setObject:((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testPlace.objectId forKey:@"place_id"];
     [paramDict setObject:msgView.text forKey:@"message"];
-    CCRequest *request = [Cocoafish restRequest:apiController httpMethod:@"POST" baseUrl:@"checkins/create.json" paramDict:paramDict attachment:photoAttachment];
+    CCRequest *request = [[[CCRequest alloc] initWithDelegate:apiController httpMethod:@"POST" baseUrl:@"checkins/create.json" paramDict:paramDict] autorelease];
+    [request addPhoto:photoAttachment];
     [request startAsynchronous];
     [self.navigationController pushViewController:apiController animated:YES];
     [apiController release];
