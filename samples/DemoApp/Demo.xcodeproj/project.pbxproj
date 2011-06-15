@@ -17,7 +17,8 @@
 		B613B684126BAC4300EC9ABA /* ProgressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B613B682126BAC4300EC9ABA /* ProgressViewController.m */; };
 		B613B685126BAC4300EC9ABA /* ProgressViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B613B683126BAC4300EC9ABA /* ProgressViewController.xib */; };
 		B6314425134BBB1B0065A657 /* CCMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = B6314424134BBB1B0065A657 /* CCMessage.m */; };
-		B63DBCCB1397446D0068E556 /* CCAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = B63DBCCA1397446D0068E556 /* CCAttachment.m */; };
+		B636155F13A958B1007D1D99 /* GTMNSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = B636155C13A958B1007D1D99 /* GTMNSString+HTML.m */; };
+		B636156013A958B1007D1D99 /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = B636155E13A958B1007D1D99 /* NSString+HTML.m */; };
 		B63DBCED139851310068E556 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B63DBCEC139851310068E556 /* AssetsLibrary.framework */; };
 		B64B268C137F9E2C0053E943 /* CCObjectWithPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B268B137F9E2B0053E943 /* CCObjectWithPhoto.m */; };
 		B653F29D1360AA7600686E72 /* WBImage.m in Sources */ = {isa = PBXBuildFile; fileRef = B653F29C1360AA7600686E72 /* WBImage.m */; };
@@ -114,8 +115,11 @@
 		B613B683126BAC4300EC9ABA /* ProgressViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProgressViewController.xib; sourceTree = "<group>"; };
 		B6314423134BBB1B0065A657 /* CCMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCMessage.h; sourceTree = "<group>"; };
 		B6314424134BBB1B0065A657 /* CCMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCMessage.m; sourceTree = "<group>"; };
-		B63DBCC91397446D0068E556 /* CCAttachment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCAttachment.h; sourceTree = "<group>"; };
-		B63DBCCA1397446D0068E556 /* CCAttachment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCAttachment.m; sourceTree = "<group>"; };
+		B636155A13A958B1007D1D99 /* GTMdefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMdefines.h; sourceTree = "<group>"; };
+		B636155B13A958B1007D1D99 /* GTMNSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSString+HTML.h"; sourceTree = "<group>"; };
+		B636155C13A958B1007D1D99 /* GTMNSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSString+HTML.m"; sourceTree = "<group>"; };
+		B636155D13A958B1007D1D99 /* NSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HTML.h"; sourceTree = "<group>"; };
+		B636155E13A958B1007D1D99 /* NSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HTML.m"; sourceTree = "<group>"; };
 		B63DBCEC139851310068E556 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		B64B268A137F9E2B0053E943 /* CCObjectWithPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCObjectWithPhoto.h; sourceTree = "<group>"; };
 		B64B268B137F9E2B0053E943 /* CCObjectWithPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCObjectWithPhoto.m; sourceTree = "<group>"; };
@@ -374,6 +378,11 @@
 		B653F29A1360AA7600686E72 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				B636155A13A958B1007D1D99 /* GTMdefines.h */,
+				B636155B13A958B1007D1D99 /* GTMNSString+HTML.h */,
+				B636155C13A958B1007D1D99 /* GTMNSString+HTML.m */,
+				B636155D13A958B1007D1D99 /* NSString+HTML.h */,
+				B636155E13A958B1007D1D99 /* NSString+HTML.m */,
 				B653F29B1360AA7600686E72 /* WBImage.h */,
 				B653F29C1360AA7600686E72 /* WBImage.m */,
 			);
@@ -506,8 +515,6 @@
 				B60CE05D13766C2100231BC3 /* CCLeaderboard.m */,
 				B64B268A137F9E2B0053E943 /* CCObjectWithPhoto.h */,
 				B64B268B137F9E2B0053E943 /* CCObjectWithPhoto.m */,
-				B63DBCC91397446D0068E556 /* CCAttachment.h */,
-				B63DBCCA1397446D0068E556 /* CCAttachment.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -730,9 +737,10 @@
 				B653F29D1360AA7600686E72 /* WBImage.m in Sources */,
 				B60CE05E13766C2100231BC3 /* CCLeaderboard.m in Sources */,
 				B64B268C137F9E2C0053E943 /* CCObjectWithPhoto.m in Sources */,
-				B63DBCCB1397446D0068E556 /* CCAttachment.m in Sources */,
 				B685E429139AAEF6001B50BD /* CCCollection.m in Sources */,
 				B685E42D139AAF00001B50BD /* CCShareRequest.m in Sources */,
+				B636155F13A958B1007D1D99 /* GTMNSString+HTML.m in Sources */,
+				B636156013A958B1007D1D99 /* NSString+HTML.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -783,7 +791,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Wei Kong (83669HJ83B)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -794,6 +802,7 @@
 					"-all_load",
 				);
 				PREBINDING = NO;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "48F344B1-CA42-4F1D-8D0B-6532F94B2F04";
 				SDKROOT = iphoneos;
 				SYMROOT = build;
 			};
@@ -803,7 +812,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Wei Kong (83669HJ83B)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -814,6 +823,7 @@
 					"-all_load",
 				);
 				PREBINDING = NO;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "48F344B1-CA42-4F1D-8D0B-6532F94B2F04";
 				SDKROOT = iphoneos;
 				SYMROOT = build;
 			};

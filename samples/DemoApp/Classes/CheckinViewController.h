@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "TapDetectingImageView.h"
 
-@class CCPhotoAttachment;
 @protocol CheckinViewControllerDelegate;
 
 @interface CheckinViewController : UIViewController<UITextFieldDelegate, UINavigationControllerDelegate, TapDetectingImageViewDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate> {
@@ -17,7 +16,7 @@
 
 	IBOutlet UITextField *msgView;
 	IBOutlet TapDetectingImageView *photoView;
-    CCPhotoAttachment *photoImage;
+    UIImage *photoImage;
 	IBOutlet UILabel *photoLabel;
 	IBOutlet UIButton *checkinButton;
 }
@@ -30,5 +29,5 @@
 @protocol CheckinViewControllerDelegate <NSObject>
 
 @required
--(void)startCheckin:(CheckinViewController *)controller message:(NSString *)message image:(CCPhotoAttachment *)image;
+-(void)startCheckin:(CheckinViewController *)controller message:(NSString *)message image:(UIImage *)image;
 @end

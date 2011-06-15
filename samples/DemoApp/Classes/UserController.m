@@ -141,13 +141,13 @@
         [alert release];
         return;
     }
-	[[Cocoafish defaultCocoafish] facebookAuth:[NSArray arrayWithObjects:@"publish_stream", @"email", @"offline_access", @"user_photos", nil] delegate:self];
+	[[Cocoafish defaultCocoafish] facebookAuth:[NSArray arrayWithObjects:@"publish_stream", @"email", @"read_friendlists", @"offline_access", @"user_photos", nil] delegate:self];
 }
 
 #pragma mark -
 #pragma mark CCRequest delegate methods
 // successful logout
--(void)request:(CCRequest *)request didSucceed:(CCResponse *)response
+-(void)ccrequest:(CCRequest *)request didSucceed:(CCResponse *)response
 {	
     if ([response.meta.method isEqualToString:@"logoutUser"]) {
         // show login window
@@ -166,7 +166,7 @@
 	
 }
 
--(void)request:(CCRequest *)request didFailWithError:(NSError *)error
+-(void)ccrequest:(CCRequest *)request didFailWithError:(NSError *)error
 {
 
 	NSString *msg = [NSString stringWithFormat:@"%@.",[error localizedDescription]];

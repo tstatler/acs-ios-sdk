@@ -490,7 +490,7 @@
     CCRequest *request = nil;
     NSDictionary *paramDict = nil;
     CCUser *currentUser = [[Cocoafish defaultCocoafish] getCurrentUser];
-    CCPhotoAttachment *photoAttachment = [[[CCPhotoAttachment alloc] initWithImage:[UIImage imageNamed:@"sample.png"]] autorelease];;
+    UIImage *photoAttachment = [UIImage imageNamed:@"sample.png"];
     switch (indexPath.section) {
         case USERS:
             if (indexPath.row == 0) {
@@ -571,7 +571,7 @@
                         paramDict = [NSDictionary dictionaryWithObjectsAndKeys:@"Cocoafish", @"name", @"58 South Park Ave.", @"address", @"San Francisco", @"city", @"California", @"state", @"94107-1807", @"postal_code", @"United States", @"country", @"http://cocoafish.com", @"website", @"cocoafish", @"twitter", [NSNumber numberWithDouble:37.743961], @"latitude", [NSNumber numberWithDouble:-122.42202], @"longitude", nil];
                        
                         request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"POST" baseUrl:@"places/create.json" paramDict:paramDict] autorelease];
-                        [request addPhoto:photoAttachment];
+                        [request addPhotoUIImage:photoAttachment paramDict:nil];
 
                         
                     }
@@ -922,7 +922,7 @@
         NSString *entered = [(AlertPrompt *)alertView enteredText];
         APIViewController *controller = [[APIViewController alloc] initWithNibName:@"APIViewController" bundle:nil];  
         CCRequest *request = nil;
-        CCPhotoAttachment *photoAttachment = [[[CCPhotoAttachment alloc] initWithImage:[UIImage imageNamed:@"sample.png"]] autorelease];;
+        UIImage *photoAttachment = [UIImage imageNamed:@"sample.png"];
 
         if (lastIndexPath.section == USERS) {
             request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"PUT" baseUrl:@"users/update.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"email", nil]] autorelease];
@@ -933,7 +933,9 @@
         } else if (lastIndexPath.section == KEY_VALUES){
             if (lastIndexPath.row == 0) {
                 // set key value
-                request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"PUT" baseUrl:@"keyvalues/set.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"value", @"Test", @"name", nil]] autorelease];
+          //      request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"PUT" baseUrl:@"keyvalues/set.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"value", @"Test", @"name", nil]] autorelease];
+                request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"PUT" baseUrl:@"keyvalues/set.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:[NSDictionary dictionaryWithObject:@"Value" forKey:@"key"], @"value", @"Test", @"name", nil]] autorelease];
+
 
             } else {
                 // append key value
@@ -943,7 +945,7 @@
             }
         } else if (lastIndexPath.section == EVENTS) {
             request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"PUT" baseUrl:[NSString stringWithFormat:@"events/update/%@.json", testEvent.objectId] paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"name", nil]] autorelease];
-            [request addPhoto:photoAttachment];
+            [request addPhotoUIImage:photoAttachment paramDict:nil];
 
         } else if (lastIndexPath.section == MESSAGES) {
             if (lastIndexPath.row == 0) {
@@ -956,7 +958,7 @@
             }
         } else {
             request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"PUT" baseUrl:[NSString stringWithFormat:@"places/update/%@.json", testPlace.objectId] paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"name", nil]] autorelease];
-            [request addPhoto:photoAttachment];
+            [request addPhotoUIImage:photoAttachment paramDict:nil];
 
 
         }
@@ -969,7 +971,7 @@
 }
 
 // successful
--(void)request:(CCRequest *)request didSucceed:(CCResponse *)response
+-(void)ccrequest:(CCRequest *)request didSucceed:(CCResponse *)response
 {	
     if ([response.meta.method isEqualToString:@"logoutUser"] ||
         [response.meta.method isEqualToString:@"deleteUser"]) {

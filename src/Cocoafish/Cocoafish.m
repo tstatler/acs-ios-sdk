@@ -340,13 +340,20 @@ NSString* encodeToPercentEscapeString(NSString *string) {
 
 #pragma CCRequest delegate methods
 
--(void)request:(CCRequest *)request didSucceed:(CCResponse *)response
+-(void)ccrequest:(CCRequest *)request didSucceed:(CCResponse *)response
 {
     NSArray *users = [response getObjectsOfType:[CCUser class]];
     if ([users count] == 1) {
         CCUser *user = [users objectAtIndex:0];
         [[Cocoafish defaultCocoafish] setCurrentUser:user];
     }
+}
+
+// This can be invoked if getme fails
+-(void)ccrequest:(CCRequest *)request didFailWithError:(NSError *)error
+{
+    // set current user to nil
+    [[Cocoafish defaultCocoafish] setCurrentUser:nil];
 }
 
 +(void)initializeWithAppKey:(NSString *)appKey customAppIds:(NSDictionary *)customAppIds

@@ -352,7 +352,7 @@
 
 #pragma mark -
 #pragma mark CCRequest delegate methods
--(void)request:(CCRequest *)request didSucceed:(CCResponse *)response
+-(void)ccrequest:(CCRequest *)request didSucceed:(CCResponse *)response
 {
     // Clear the textFields
 	for (UITextField *textField in textFields) {
@@ -366,7 +366,7 @@
 	[self.delegate loginSucceeded];
 }
 
--(void)request:(CCRequest *)request didFailWithError:(NSError *)error
+-(void)ccrequest:(CCRequest *)request didFailWithError:(NSError *)error
 {
     NSString *msg = [NSString stringWithFormat:@"%@",[error localizedDescription]];
 	UIAlertView *alert = [[UIAlertView alloc] 

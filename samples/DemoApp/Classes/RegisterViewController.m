@@ -317,7 +317,7 @@
     
     pendingRequest = [[[CCRequest alloc] initWithDelegate:self httpMethod:@"POST" baseUrl:@"users/create.json" paramDict:paramDict] autorelease];
 
-    [pendingRequest addPhoto:[[[CCPhotoAttachment alloc] initWithImage:[UIImage imageNamed:@"sample.png"]] autorelease]];
+     [pendingRequest addPhotoUIImage:[UIImage imageNamed:@"sample.png"] paramDict:nil];
     [pendingRequest startAsynchronous];
     
 }
@@ -325,7 +325,7 @@
 #pragma mark -
 #pragma mark CCRequest Delegate methods
 /* Sucessful registration */
--(void)request:(CCRequest *)request didSucceed:(CCResponse *)response
+-(void)ccrequest:(CCRequest *)request didSucceed:(CCResponse *)response
 {
     if ([request isEqual:pendingRequest]) {
         // Remove the modal view
@@ -336,7 +336,7 @@
 }
 
 
--(void)request:(CCRequest *)request didFailWithError:(NSError *)error
+-(void)ccrequest:(CCRequest *)request didFailWithError:(NSError *)error
 {
 	UIAlertView *alert = [[UIAlertView alloc] 
 						  initWithTitle:@"Register Failed!" 

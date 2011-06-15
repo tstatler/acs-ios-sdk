@@ -21,10 +21,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-	if (placeCheckins == nil) {
-		placeCheckins = [[NSMutableArray alloc] init];
-	}
     
     NSDictionary *paramDict = [NSDictionary dictionaryWithObjectsAndKeys:place.objectId, @"place_id", [NSNumber numberWithInt:20], @"per_page", nil];
 	
@@ -53,18 +49,19 @@
 	[controller release];
 }
 
--(void)startCheckin:(CheckinViewController *)controller message:(NSString *)message image:(CCPhotoAttachment *)image
+-(void)startCheckin:(CheckinViewController *)controller message:(NSString *)message image:(UIImage *)image
 {
     NSDictionary *paramDict = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:message, place.objectId, nil] forKeys:[NSArray arrayWithObjects:@"message", @"place_id", nil]];
     CCRequest *request = [[[CCRequest alloc] initWithDelegate:self httpMethod:@"POST" baseUrl:@"checkins/create.json" paramDict:paramDict] autorelease];
 
-    [request addPhoto:image];
+    NSDictionary *imageParamDict =[ NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:800], @"max_photo_size", [NSNumber numberWithDouble:0.5], @"jpeg_compression", nil];
+    [request addPhotoUIImage:image paramDict:imageParamDict];;
                           
     [request startAsynchronous];
 }
 
 #pragma CCRequestDelegate Methods
--(void)request:(CCRequest *)request didSucceed:(CCResponse *)response
+-(void)ccrequest:(CCRequest *)request didSucceed:(CCResponse *)response
 {
     if ([response.meta.method isEqualToString:@"createCheckin"]) {
         NSArray *checkins = [response getObjectsOfType:[CCCheckin class]];
@@ -82,6 +79,9 @@
         
         if (checkin) {
             @synchronized(self) {
+                if (placeCheckins == nil) {
+                    placeCheckins = [[NSMutableArray alloc] initWithCapacity:1];
+                }
                 [placeCheckins insertObject:checkin atIndex:0];
             }
             
@@ -111,7 +111,7 @@
     }
 }
 
--(void)request:(CCRequest *)request didFailWithError:(NSError *)error
+-(void)ccrequest:(CCRequest *)request didFailWithError:(NSError *)error
 {
 	UIAlertView *alert = [[UIAlertView alloc] 
 						  initWithTitle:@"Error!" 

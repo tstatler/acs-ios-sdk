@@ -145,7 +145,7 @@
 -(void)preparePhoto:(UIImage *)image
 {		
     if (photoAttachment == nil) {
-        photoAttachment = [[CCPhotoAttachment alloc] initWithImage:image];
+        photoAttachment = [image retain];
     }
 }
 
@@ -182,7 +182,7 @@
     
     NSDictionary *paramDict = [NSDictionary dictionaryWithObjectsAndKeys:collectionName.text, @"collection_name", object.objectId, [NSString stringWithFormat:@"%@_id", [[object class] modelName]], nil];
         CCRequest *request = [[[CCRequest alloc] initWithDelegate:apiController httpMethod:@"POST" baseUrl:@"photos/create.json" paramDict:paramDict] autorelease];
-    [request addPhoto:photoAttachment];
+    [request addPhotoUIImage:photoAttachment paramDict:nil];
 
     [request startAsynchronous];
     [self.navigationController pushViewController:apiController animated:YES];

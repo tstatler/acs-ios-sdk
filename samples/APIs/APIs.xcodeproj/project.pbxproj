@@ -66,8 +66,9 @@
 		B6042824133B1296008CEE69 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B6042811133B1294008CEE69 /* RegisterViewController.m */; };
 		B6042825133B1296008CEE69 /* RegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B6042812133B1295008CEE69 /* RegisterViewController.xib */; };
 		B6042826133B1296008CEE69 /* TapDetectingImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = B6042814133B1296008CEE69 /* TapDetectingImageView.m */; };
+		B636155213A9363A007D1D99 /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = B636155113A9363A007D1D99 /* NSString+HTML.m */; };
+		B636155613A936A6007D1D99 /* GTMNSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = B636155513A936A6007D1D99 /* GTMNSString+HTML.m */; };
 		B63DBCF8139853D20068E556 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B63DBCF7139853D20068E556 /* AssetsLibrary.framework */; };
-		B63DBCFC139853F70068E556 /* CCAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = B63DBCFB139853F70068E556 /* CCAttachment.m */; };
 		B64B26C8138036200053E943 /* CCDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B2699138036200053E943 /* CCDownloadManager.m */; };
 		B64B26C9138036200053E943 /* Cocoafish.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B269B138036200053E943 /* Cocoafish.m */; };
 		B64B26CA138036200053E943 /* WBImage.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B269E138036200053E943 /* WBImage.m */; };
@@ -204,9 +205,12 @@
 		B6042812133B1295008CEE69 /* RegisterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RegisterViewController.xib; sourceTree = "<group>"; };
 		B6042813133B1295008CEE69 /* TapDetectingImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TapDetectingImageView.h; sourceTree = "<group>"; };
 		B6042814133B1296008CEE69 /* TapDetectingImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TapDetectingImageView.m; sourceTree = "<group>"; };
+		B636155013A9363A007D1D99 /* NSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HTML.h"; sourceTree = "<group>"; };
+		B636155113A9363A007D1D99 /* NSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HTML.m"; sourceTree = "<group>"; };
+		B636155413A936A6007D1D99 /* GTMNSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSString+HTML.h"; sourceTree = "<group>"; };
+		B636155513A936A6007D1D99 /* GTMNSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSString+HTML.m"; sourceTree = "<group>"; };
+		B636155713A936FC007D1D99 /* GTMdefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMdefines.h; sourceTree = "<group>"; };
 		B63DBCF7139853D20068E556 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
-		B63DBCFA139853F70068E556 /* CCAttachment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCAttachment.h; sourceTree = "<group>"; };
-		B63DBCFB139853F70068E556 /* CCAttachment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCAttachment.m; sourceTree = "<group>"; };
 		B64B2698138036200053E943 /* CCDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCDownloadManager.h; sourceTree = "<group>"; };
 		B64B2699138036200053E943 /* CCDownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCDownloadManager.m; sourceTree = "<group>"; };
 		B64B269A138036200053E943 /* Cocoafish.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cocoafish.h; sourceTree = "<group>"; };
@@ -514,6 +518,11 @@
 			children = (
 				B64B269D138036200053E943 /* WBImage.h */,
 				B64B269E138036200053E943 /* WBImage.m */,
+				B636155013A9363A007D1D99 /* NSString+HTML.h */,
+				B636155113A9363A007D1D99 /* NSString+HTML.m */,
+				B636155413A936A6007D1D99 /* GTMNSString+HTML.h */,
+				B636155513A936A6007D1D99 /* GTMNSString+HTML.m */,
+				B636155713A936FC007D1D99 /* GTMdefines.h */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -525,8 +534,6 @@
 				B685E433139B41B9001B50BD /* CCShareRequest.m */,
 				B685E42E139B41AA001B50BD /* CCCollection.h */,
 				B685E42F139B41AA001B50BD /* CCCollection.m */,
-				B63DBCFA139853F70068E556 /* CCAttachment.h */,
-				B63DBCFB139853F70068E556 /* CCAttachment.m */,
 				B64B26A0138036200053E943 /* CCCheckin.h */,
 				B64B26A1138036200053E943 /* CCCheckin.m */,
 				B64B26A2138036200053E943 /* CCEvent.h */,
@@ -752,9 +759,10 @@
 				B64B26DB138036200053E943 /* NSData+Base64.m in Sources */,
 				B64B26DC138036200053E943 /* OAuth+Additions.m in Sources */,
 				B64B26DD138036200053E943 /* OAuthCore.m in Sources */,
-				B63DBCFC139853F70068E556 /* CCAttachment.m in Sources */,
 				B685E430139B41AA001B50BD /* CCCollection.m in Sources */,
 				B685E434139B41B9001B50BD /* CCShareRequest.m in Sources */,
+				B636155213A9363A007D1D99 /* NSString+HTML.m in Sources */,
+				B636155613A936A6007D1D99 /* GTMNSString+HTML.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

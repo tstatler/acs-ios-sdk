@@ -114,14 +114,14 @@
 
 #pragma mark -
 #pragma mark CCRequest delegate methods
--(void)request:(CCRequest *)request didSucceed:(CCResponse *)response
+-(void)ccrequest:(CCRequest *)request didSucceed:(CCResponse *)response
 {
     NSArray *places = [response getObjectsOfType:[CCPlace class]];
      [mapViewController showPlaces:places];
     [listViewController showPlaces:places];
 }
 
--(void)request:(CCRequest *)request didFailWithError:(NSError *)error 
+-(void)ccrequest:(CCRequest *)request didFailWithError:(NSError *)error 
 {
 	
 }

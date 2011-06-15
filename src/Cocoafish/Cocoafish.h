@@ -17,7 +17,6 @@
 #import "CCResponse.h"
 #import "CCMessage.h"
 #import "CCRequest.h"
-#import "CCAttachment.h"
 #import "CCCollection.h"
 #import "CCShareRequest.h"
 

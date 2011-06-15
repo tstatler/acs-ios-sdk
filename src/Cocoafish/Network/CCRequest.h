@@ -9,11 +9,12 @@
 #import "ASIHTTPRequest.h"
 #import "ASIFormDataRequest.h"
 
+@class ALAsset;
+
 @class CCObject;
 @class CCResponse;
 @class CCUploadImage;
 @class CCAttachment;
-@class CCPhotoAttachment;
 
 @protocol CCRequestDelegate;
 
@@ -21,13 +22,15 @@
 @interface CCRequest : ASIFormDataRequest {
     id<CCRequestDelegate> _requestDelegate;
     NSString *_requestId;
+    NSMutableArray *_photos; // list of photos to upload
+    NSMutableArray *_photoParams; // parameter corresponding to _photos
     CCAttachment *_attachment;
 }
 
 -(id)initWithDelegate:(id)requestDelegate  httpMethod:(NSString *)httpMethod baseUrl:(NSString *)baseUrl paramDict:(NSDictionary *)paramDict;
 -(CCResponse *)startSynchronous;
--(void)main;
--(void)addPhoto:(CCPhotoAttachment *)photoAttachment;
+-(void)addPhotoALAsset:(ALAsset *)alasset paramDict:(NSDictionary *)paramDict;
+-(void)addPhotoUIImage:(UIImage *)image paramDict:(NSDictionary *)paramDict;
 
 @property(nonatomic, assign) id<CCRequestDelegate> requestDelegate;
 @property (nonatomic, retain, readonly) NSString *requestId;
@@ -40,9 +43,9 @@
 @optional
 
 // generic callback, if we received custom objects or above callbacks were not implemented
--(void)request:(CCRequest *)request didSucceed:(CCResponse *)response;
+-(void)ccrequest:(CCRequest *)request didSucceed:(CCResponse *)response;
 
--(void)request:(CCRequest *)request didFailWithError:(NSError *)error;
+-(void)ccrequest:(CCRequest *)request didFailWithError:(NSError *)error;
 
 @end
 

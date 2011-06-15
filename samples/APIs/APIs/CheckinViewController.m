@@ -146,7 +146,7 @@
 -(void)preparePhoto:(UIImage *)image
 {		
     if (photoAttachment == nil) {
-        photoAttachment = [[CCPhotoAttachment alloc] initWithImage:image];
+        photoAttachment = [image retain];
     }
 }
 
@@ -185,7 +185,7 @@
     [paramDict setObject:((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testPlace.objectId forKey:@"place_id"];
     [paramDict setObject:msgView.text forKey:@"message"];
     CCRequest *request = [[[CCRequest alloc] initWithDelegate:apiController httpMethod:@"POST" baseUrl:@"checkins/create.json" paramDict:paramDict] autorelease];
-    [request addPhoto:photoAttachment];
+    [request addPhotoUIImage:photoAttachment paramDict:nil];
     [request startAsynchronous];
     [self.navigationController pushViewController:apiController animated:YES];
     [apiController release];

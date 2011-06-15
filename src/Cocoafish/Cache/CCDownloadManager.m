@@ -191,7 +191,7 @@
 	}
 }
 
--(void)request:(CCRequest *)request didSucceed:(CCResponse *)response
+-(void)ccrequest:(CCRequest *)request didSucceed:(CCResponse *)response
 {
     NSArray *types = [NSArray arrayWithObjects:NSStringFromClass([CCPhoto class]), NSStringFromClass([CCUser class]), NSStringFromClass([CCCheckin class]), NSStringFromClass([CCStatus class]), NSStringFromClass([CCEvent class]), nil];
     
@@ -201,6 +201,7 @@
         NSArray *array = [response getObjectsOfType:class];
         if ([array count] > 0) {
             [objects addObjectsFromArray:array];
+            break;
         }
     }
     
@@ -257,7 +258,7 @@
 	
 }
 
--(void)request:(CCRequest *)request didFailWithError:(NSError *)error
+-(void)ccrequest:(CCRequest *)request didFailWithError:(NSError *)error
 {
 	// restart the timer
 	@synchronized(self) {

@@ -12,10 +12,12 @@
 	
 	NSString *_key;
 	NSString *_value;
+    NSDictionary *_valueDictionary; // value can be a dictionary
 }
 
 @property (nonatomic, retain, readonly) NSString *key;
 @property (nonatomic, retain, readonly) NSString *value;
+@property (nonatomic, retain, readonly) NSDictionary *valueDictionary;
 
 
 @end
