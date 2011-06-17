@@ -30,10 +30,10 @@
 	return self;
 }
 
-- (NSString *)description {
+/*- (NSString *)description {
     return [NSString stringWithFormat:@"CCStatus:\n\tmessage: '%@'\n\t%@",
             self.message, [super description]];
-}
+}*/
 
 +(NSString *)modelName
 {

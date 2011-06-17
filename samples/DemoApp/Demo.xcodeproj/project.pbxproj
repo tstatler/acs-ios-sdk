@@ -17,6 +17,7 @@
 		B613B684126BAC4300EC9ABA /* ProgressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B613B682126BAC4300EC9ABA /* ProgressViewController.m */; };
 		B613B685126BAC4300EC9ABA /* ProgressViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B613B683126BAC4300EC9ABA /* ProgressViewController.xib */; };
 		B6314425134BBB1B0065A657 /* CCMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = B6314424134BBB1B0065A657 /* CCMessage.m */; };
+		B633DF9A13ABBBA8008A9A5D /* CCChat.m in Sources */ = {isa = PBXBuildFile; fileRef = B633DF9913ABBBA8008A9A5D /* CCChat.m */; };
 		B636155F13A958B1007D1D99 /* GTMNSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = B636155C13A958B1007D1D99 /* GTMNSString+HTML.m */; };
 		B636156013A958B1007D1D99 /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = B636155E13A958B1007D1D99 /* NSString+HTML.m */; };
 		B63DBCED139851310068E556 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B63DBCEC139851310068E556 /* AssetsLibrary.framework */; };
@@ -115,6 +116,8 @@
 		B613B683126BAC4300EC9ABA /* ProgressViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProgressViewController.xib; sourceTree = "<group>"; };
 		B6314423134BBB1B0065A657 /* CCMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCMessage.h; sourceTree = "<group>"; };
 		B6314424134BBB1B0065A657 /* CCMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCMessage.m; sourceTree = "<group>"; };
+		B633DF9813ABBBA8008A9A5D /* CCChat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCChat.h; sourceTree = "<group>"; };
+		B633DF9913ABBBA8008A9A5D /* CCChat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCChat.m; sourceTree = "<group>"; };
 		B636155A13A958B1007D1D99 /* GTMdefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMdefines.h; sourceTree = "<group>"; };
 		B636155B13A958B1007D1D99 /* GTMNSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSString+HTML.h"; sourceTree = "<group>"; };
 		B636155C13A958B1007D1D99 /* GTMNSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSString+HTML.m"; sourceTree = "<group>"; };
@@ -489,6 +492,8 @@
 		B67B68DD13341319001E4472 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B633DF9813ABBBA8008A9A5D /* CCChat.h */,
+				B633DF9913ABBBA8008A9A5D /* CCChat.m */,
 				B685E42B139AAF00001B50BD /* CCShareRequest.h */,
 				B685E42C139AAF00001B50BD /* CCShareRequest.m */,
 				B685E427139AAEF5001B50BD /* CCCollection.h */,
@@ -741,6 +746,7 @@
 				B685E42D139AAF00001B50BD /* CCShareRequest.m in Sources */,
 				B636155F13A958B1007D1D99 /* GTMNSString+HTML.m in Sources */,
 				B636156013A958B1007D1D99 /* NSString+HTML.m in Sources */,
+				B633DF9A13ABBBA8008A9A5D /* CCChat.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
