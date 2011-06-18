@@ -19,12 +19,12 @@
     NSString *_facebookAccessToken;
 }
 
-@property (nonatomic, retain, readonly) NSString *firstName;
-@property (nonatomic, retain, readonly) NSString *lastName;
-@property (nonatomic, retain, readonly) NSString *email;
-@property (nonatomic, retain, readonly) NSString *username;
+@property (nonatomic, retain) NSString *firstName;
+@property (nonatomic, retain) NSString *lastName;
+@property (nonatomic, retain) NSString *email;
+@property (nonatomic, retain) NSString *username;
 //@property (nonatomic, readonly) Boolean facebookAuthorized;
-@property (nonatomic, retain, readonly) NSString *facebookAccessToken;
+@property (nonatomic, retain) NSString *facebookAccessToken;
 
 -(id)initWithId:(NSString *)objectId first:(NSString *)first last:(NSString *)last email:(NSString *)email username:(NSString *)username;
 

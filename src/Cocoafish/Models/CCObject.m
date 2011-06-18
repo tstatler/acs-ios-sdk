@@ -67,7 +67,7 @@
 
 +(NSArray *)arrayWithJsonResponse:(NSDictionary *)jsonResponse class:(Class)class jsonTag:(NSString *)jsonTag
 {
-    NSArray *jsonArray = [jsonResponse objectForKey:[NSString stringWithFormat:@"%@s", jsonTag]];
+    NSArray *jsonArray = [jsonResponse objectForKey:jsonTag];
     NSMutableArray *results = nil; 
     if ([jsonArray count] > 0) {
         results = [NSMutableArray arrayWithCapacity:[jsonArray count]];
@@ -84,7 +84,7 @@
 
 +(NSArray *)arrayWithJsonResponse:(NSDictionary *)jsonResponse class:(Class)class
 {
-    return [class arrayWithJsonResponse:jsonResponse class:class jsonTag:[class modelName]];
+    return [class arrayWithJsonResponse:jsonResponse class:class jsonTag:[class jsonTag]];
 }
 
 -(id)copyWithZone:(NSZone *)zone  
@@ -112,7 +112,13 @@
 // class name on the server
 +(NSString *)modelName
 {
-    [NSException raise:@"Please set name in the subclass" format:@"modelName unset"];   
+    [NSException raise:@"Please implement modelName in the subclass" format:@"modelName unset"];   
+    return nil;
+}
+
++(NSString *)jsonTag
+{
+    [NSException raise:@"Please implement jsonTag in the subclass" format:@"jsonTag unset"];  
     return nil;
 }
 

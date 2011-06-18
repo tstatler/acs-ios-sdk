@@ -92,6 +92,11 @@
     return @"place";
 }
 
++(NSString *)jsonTag
+{
+    return @"places";
+}
+
 -(void)dealloc
 {
 	self.name = nil;

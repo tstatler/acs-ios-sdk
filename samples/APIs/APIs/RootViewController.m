@@ -841,7 +841,7 @@
                             return;
                         }
                         paramDict =[NSDictionary dictionaryWithObjectsAndKeys:@"Cocoafish Happy Hour", @"name", @"Bring your own drink", @"details", testPlace.objectId, @"place_id", [NSDate date], @"start_time", [NSDate distantFuture], @"end_time", nil];
-                        request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"POST" baseUrl:@"events/create.json" paramDict:nil] autorelease];
+                        request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"POST" baseUrl:@"events/create.json" paramDict:paramDict] autorelease];
 
 
                     } else {

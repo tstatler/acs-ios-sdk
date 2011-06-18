@@ -67,7 +67,7 @@
 		B6042825133B1296008CEE69 /* RegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B6042812133B1295008CEE69 /* RegisterViewController.xib */; };
 		B6042826133B1296008CEE69 /* TapDetectingImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = B6042814133B1296008CEE69 /* TapDetectingImageView.m */; };
 		B633DF8213ABA7CE008A9A5D /* CCChat.m in Sources */ = {isa = PBXBuildFile; fileRef = B633DF8113ABA7CE008A9A5D /* CCChat.m */; };
-		B636155213A9363A007D1D99 /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = B636155113A9363A007D1D99 /* NSString+HTML.m */; };
+		B633DFC713AC60CB008A9A5D /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = B633DFC613AC60CB008A9A5D /* NSString+HTML.m */; };
 		B636155613A936A6007D1D99 /* GTMNSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = B636155513A936A6007D1D99 /* GTMNSString+HTML.m */; };
 		B63DBCF8139853D20068E556 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B63DBCF7139853D20068E556 /* AssetsLibrary.framework */; };
 		B64B26C8138036200053E943 /* CCDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B2699138036200053E943 /* CCDownloadManager.m */; };
@@ -208,8 +208,8 @@
 		B6042814133B1296008CEE69 /* TapDetectingImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TapDetectingImageView.m; sourceTree = "<group>"; };
 		B633DF8013ABA7CE008A9A5D /* CCChat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCChat.h; sourceTree = "<group>"; };
 		B633DF8113ABA7CE008A9A5D /* CCChat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCChat.m; sourceTree = "<group>"; };
-		B636155013A9363A007D1D99 /* NSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HTML.h"; sourceTree = "<group>"; };
-		B636155113A9363A007D1D99 /* NSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HTML.m"; sourceTree = "<group>"; };
+		B633DFC513AC6088008A9A5D /* NSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HTML.h"; sourceTree = "<group>"; };
+		B633DFC613AC60CB008A9A5D /* NSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HTML.m"; sourceTree = "<group>"; };
 		B636155413A936A6007D1D99 /* GTMNSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSString+HTML.h"; sourceTree = "<group>"; };
 		B636155513A936A6007D1D99 /* GTMNSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSString+HTML.m"; sourceTree = "<group>"; };
 		B636155713A936FC007D1D99 /* GTMdefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMdefines.h; sourceTree = "<group>"; };
@@ -519,10 +519,10 @@
 		B64B269C138036200053E943 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				B633DFC613AC60CB008A9A5D /* NSString+HTML.m */,
+				B633DFC513AC6088008A9A5D /* NSString+HTML.h */,
 				B64B269D138036200053E943 /* WBImage.h */,
 				B64B269E138036200053E943 /* WBImage.m */,
-				B636155013A9363A007D1D99 /* NSString+HTML.h */,
-				B636155113A9363A007D1D99 /* NSString+HTML.m */,
 				B636155413A936A6007D1D99 /* GTMNSString+HTML.h */,
 				B636155513A936A6007D1D99 /* GTMNSString+HTML.m */,
 				B636155713A936FC007D1D99 /* GTMdefines.h */,
@@ -766,9 +766,9 @@
 				B64B26DD138036200053E943 /* OAuthCore.m in Sources */,
 				B685E430139B41AA001B50BD /* CCCollection.m in Sources */,
 				B685E434139B41B9001B50BD /* CCShareRequest.m in Sources */,
-				B636155213A9363A007D1D99 /* NSString+HTML.m in Sources */,
 				B636155613A936A6007D1D99 /* GTMNSString+HTML.m in Sources */,
 				B633DF8213ABA7CE008A9A5D /* CCChat.m in Sources */,
+				B633DFC713AC60CB008A9A5D /* NSString+HTML.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -40,6 +40,11 @@
     return @"status";
 }
 
++(NSString *)jsonTag
+{
+    return @"statuses";
+}
+
 -(void)dealloc
 {
 	self.message = nil;

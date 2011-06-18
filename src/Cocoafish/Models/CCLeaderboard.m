@@ -50,6 +50,11 @@
     return @"leaderboard";
 }
 
++(NSString *)jsonTag
+{
+    return @"leaderboards";
+}
+
 -(void)dealloc
 {
 	self.name = nil;

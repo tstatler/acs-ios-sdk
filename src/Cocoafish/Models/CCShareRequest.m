@@ -42,6 +42,12 @@
     return @"share_request";
 }
 
++(NSString *)jsonTag
+{
+    return @"share_requests";
+}
+
+
 -(void)dealloc
 {
     self.token = nil;

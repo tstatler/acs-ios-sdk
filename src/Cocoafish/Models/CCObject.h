@@ -34,4 +34,5 @@
 -(NSString *)arrayDescription:(NSArray *)array;
 
 +(NSString *)modelName; // class name on the server
++(NSString *)jsonTag;
 @end

@@ -19,6 +19,7 @@
 #import "CCRequest.h"
 #import "CCCollection.h"
 #import "CCShareRequest.h"
+#import "CCChat.h"
 
 @protocol CCFBSessionDelegate;
 

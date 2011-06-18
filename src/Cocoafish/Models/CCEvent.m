@@ -74,6 +74,11 @@
     return @"event";
 }
 
++(NSString *)jsonTag
+{
+    return @"events";
+}
+
 -(void)dealloc
 {
 	self.user = nil;

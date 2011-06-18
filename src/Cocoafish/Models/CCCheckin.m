@@ -59,6 +59,11 @@
     return @"checkin";
 }
 
++(NSString *)jsonTag
+{
+    return @"checkins";
+}
+
 -(void)dealloc
 {
 	self.user = nil;

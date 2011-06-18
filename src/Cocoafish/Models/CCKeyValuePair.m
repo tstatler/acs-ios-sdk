@@ -27,6 +27,7 @@
 	if ((self = [super initWithJsonResponse:jsonResponse])) {
 		self.key = [jsonResponse objectForKey:CC_JSON_KEY];
 		NSString *jsonValue = [jsonResponse objectForKey:CC_JSON_VALUE];	
+
         jsonValue = [jsonValue stringByDecodingHTMLEntities];
         NSDictionary *valueJsonDictionary = nil;
         @try {
@@ -35,7 +36,7 @@
             // result is not a dictionary
         }
         if (valueJsonDictionary) {
-            self.valueDictionary = (NSDictionary *)jsonValue;
+            self.valueDictionary = valueJsonDictionary;
         } else {
             self.value = jsonValue;
         }
@@ -52,6 +53,11 @@
 +(NSString *)modelName
 {
     return @"keyvalue";
+}
+
++(NSString *)jsonTag
+{
+    return @"keyvalues";
 }
 
 -(void)dealloc

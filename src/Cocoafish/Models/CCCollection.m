@@ -58,6 +58,11 @@
    return @"collection";
 }
 
++(NSString *)jsonTag
+{
+    return @"collections";
+}
+
 -(void)dealloc
 {
     self.name = nil;

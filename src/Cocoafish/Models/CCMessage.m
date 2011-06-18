@@ -71,6 +71,11 @@
     return @"message";
 }
 
++(NSString *)jsonTag
+{
+    return @"messages";
+}
+
 -(void)dealloc
 {
 	self.threadId = nil;

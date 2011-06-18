@@ -96,6 +96,11 @@
     return @"photo";
 }
 
++(NSString *)jsonTag
+{
+    return @"photos";
+}
+
 -(void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];

@@ -11,7 +11,7 @@
 #import "Cocoafish.h"
 #import "CCDownloadManager.h"
 
-@interface CCUser ()
+/*@interface CCUser ()
 
 @property (nonatomic, retain, readwrite) NSString *email;
 @property (nonatomic, retain, readwrite) NSString *username;
@@ -20,7 +20,7 @@
 //@property (nonatomic, readwrite) Boolean facebookAuthorized;
 @property (nonatomic, retain, readwrite) NSString *facebookAccessToken;
 
-@end
+@end*/
 
 @implementation CCUser
 
@@ -85,6 +85,11 @@
 +(NSString *)modelName
 {
     return @"user";
+}
+
++(NSString *)jsonTag
+{
+    return @"users";
 }
 
 -(void)dealloc

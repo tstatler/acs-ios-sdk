@@ -43,6 +43,11 @@
     return @"chat";
 }
 
++(NSString *)jsonTag
+{
+    return @"chats";
+}
+
 -(void)dealloc
 {
 	self.message = nil;

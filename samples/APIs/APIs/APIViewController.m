@@ -66,6 +66,16 @@
 #pragma CCRequestDelegate callback
 -(void)ccrequest:(CCRequest *)request didSucceed:(CCResponse *)response
 {
+    NSArray *types = [NSArray arrayWithObjects:NSStringFromClass([CCPhoto class]), NSStringFromClass([CCUser class]), NSStringFromClass([CCCheckin class]), NSStringFromClass([CCStatus class]), NSStringFromClass([CCEvent class]), NSStringFromClass([CCCollection class]), NSStringFromClass([CCKeyValuePair class]), NSStringFromClass([CCMessage class]), NSStringFromClass([CCPlace class]), NSStringFromClass([CCChat class]), nil];
+    
+    for (NSString *type in types) {
+        Class class = NSClassFromString(type);
+        NSArray *array = [response getObjectsOfType:class];
+        if (array != nil) {
+            NSLog(@"Received array of type %@: %@", type, array);
+        }
+    }
+
     statusLabel.text = @"Success";
     body.text = [NSString stringWithFormat:@"%@\n%@", [response.meta description], [response.response description]];
     if ([response.meta.method isEqualToString:@"createPlace"]) {
