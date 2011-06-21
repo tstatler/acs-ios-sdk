@@ -22,6 +22,7 @@
 		B636156013A958B1007D1D99 /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = B636155E13A958B1007D1D99 /* NSString+HTML.m */; };
 		B63DBCED139851310068E556 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B63DBCEC139851310068E556 /* AssetsLibrary.framework */; };
 		B64B268C137F9E2C0053E943 /* CCObjectWithPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B268B137F9E2B0053E943 /* CCObjectWithPhoto.m */; };
+		B653466513B12DED00894708 /* CCFriendRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B653466413B12DED00894708 /* CCFriendRequest.m */; };
 		B653F29D1360AA7600686E72 /* WBImage.m in Sources */ = {isa = PBXBuildFile; fileRef = B653F29C1360AA7600686E72 /* WBImage.m */; };
 		B6544E50125E83A4003AFCAB /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B6544E4E125E83A4003AFCAB /* MapViewController.m */; };
 		B6544E51125E83A4003AFCAB /* MapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B6544E4F125E83A4003AFCAB /* MapViewController.xib */; };
@@ -126,6 +127,8 @@
 		B63DBCEC139851310068E556 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		B64B268A137F9E2B0053E943 /* CCObjectWithPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCObjectWithPhoto.h; sourceTree = "<group>"; };
 		B64B268B137F9E2B0053E943 /* CCObjectWithPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCObjectWithPhoto.m; sourceTree = "<group>"; };
+		B653466313B12DED00894708 /* CCFriendRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCFriendRequest.h; sourceTree = "<group>"; };
+		B653466413B12DED00894708 /* CCFriendRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCFriendRequest.m; sourceTree = "<group>"; };
 		B653F29B1360AA7600686E72 /* WBImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBImage.h; sourceTree = "<group>"; };
 		B653F29C1360AA7600686E72 /* WBImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBImage.m; sourceTree = "<group>"; };
 		B6544E4D125E83A4003AFCAB /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
@@ -492,6 +495,8 @@
 		B67B68DD13341319001E4472 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B653466313B12DED00894708 /* CCFriendRequest.h */,
+				B653466413B12DED00894708 /* CCFriendRequest.m */,
 				B633DF9813ABBBA8008A9A5D /* CCChat.h */,
 				B633DF9913ABBBA8008A9A5D /* CCChat.m */,
 				B685E42B139AAF00001B50BD /* CCShareRequest.h */,
@@ -747,6 +752,7 @@
 				B636155F13A958B1007D1D99 /* GTMNSString+HTML.m in Sources */,
 				B636156013A958B1007D1D99 /* NSString+HTML.m in Sources */,
 				B633DF9A13ABBBA8008A9A5D /* CCChat.m in Sources */,
+				B653466513B12DED00894708 /* CCFriendRequest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -92,6 +92,7 @@
 		B64B26DC138036200053E943 /* OAuth+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B26C5138036200053E943 /* OAuth+Additions.m */; };
 		B64B26DD138036200053E943 /* OAuthCore.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B26C7138036200053E943 /* OAuthCore.m */; };
 		B64B26DF13807A8F0053E943 /* sample.png in Resources */ = {isa = PBXBuildFile; fileRef = B64B26DE13807A8F0053E943 /* sample.png */; };
+		B653465113B0265400894708 /* CCFriendRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B653465013B0265400894708 /* CCFriendRequest.m */; };
 		B685E430139B41AA001B50BD /* CCCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = B685E42F139B41AA001B50BD /* CCCollection.m */; };
 		B685E434139B41B9001B50BD /* CCShareRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B685E433139B41B9001B50BD /* CCShareRequest.m */; };
 /* End PBXBuildFile section */
@@ -257,6 +258,8 @@
 		B64B26C6138036200053E943 /* OAuthCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAuthCore.h; sourceTree = "<group>"; };
 		B64B26C7138036200053E943 /* OAuthCore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAuthCore.m; sourceTree = "<group>"; };
 		B64B26DE13807A8F0053E943 /* sample.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sample.png; sourceTree = "<group>"; };
+		B653464F13B0265400894708 /* CCFriendRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCFriendRequest.h; sourceTree = "<group>"; };
+		B653465013B0265400894708 /* CCFriendRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCFriendRequest.m; sourceTree = "<group>"; };
 		B685E42E139B41AA001B50BD /* CCCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCCollection.h; sourceTree = "<group>"; };
 		B685E42F139B41AA001B50BD /* CCCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCCollection.m; sourceTree = "<group>"; };
 		B685E432139B41B9001B50BD /* CCShareRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCShareRequest.h; sourceTree = "<group>"; };
@@ -561,6 +564,8 @@
 				B64B26B5138036200053E943 /* CCUser.m */,
 				B633DF8013ABA7CE008A9A5D /* CCChat.h */,
 				B633DF8113ABA7CE008A9A5D /* CCChat.m */,
+				B653464F13B0265400894708 /* CCFriendRequest.h */,
+				B653465013B0265400894708 /* CCFriendRequest.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -769,6 +774,7 @@
 				B636155613A936A6007D1D99 /* GTMNSString+HTML.m in Sources */,
 				B633DF8213ABA7CE008A9A5D /* CCChat.m in Sources */,
 				B633DFC713AC60CB008A9A5D /* NSString+HTML.m in Sources */,
+				B653465113B0265400894708 /* CCFriendRequest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
