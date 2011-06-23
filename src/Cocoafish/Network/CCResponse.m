@@ -70,7 +70,7 @@
 		}
         // Update current User info
         if ([_meta.status isEqualToString:CC_STATUS_OK]) {
-            if ([_meta.method isEqualToString:@"loginUser"] || [_meta.method isEqualToString:@"createUser"]) {
+            if ([_meta.method isEqualToString:@"loginUser"] || [_meta.method isEqualToString:@"createUser"] || [_meta.method isEqualToString:@"updateUser"]) {
                 NSArray *users = [self getObjectsOfType:[CCUser class]];
                 if ([users count] == 1) {
                     CCUser *user = [users objectAtIndex:0];

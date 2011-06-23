@@ -46,6 +46,10 @@
 -(id)initWithDelegate:(id)requestDelegate httpMethod:(NSString *)httpMethod baseUrl:(NSString *)baseUrl paramDict:(NSDictionary *)paramDict;
 {
     NSMutableArray *paramArray = nil;
+    // sanity check, see if user passed in photo as a key
+    if ([paramDict objectForKey:@"photo"] != nil) {
+        [NSException raise:@"please use addPhotoALAsset or addPhotoUIImage to add a photo upload" format:@"invalid paramter"];
+    }
     NSArray *keys = [paramDict allKeys];
     if ([httpMethod isEqualToString:@"GET"] || [httpMethod isEqualToString:@"DELETE"]) {
         // construct the url
@@ -219,7 +223,7 @@
     [super startSynchronous];	
     CCResponse *response = nil;
 	if (![self error]) {
-		NSLog(@"%@", [self responseString]);
+        NSLog(@"Received %@", [self responseString]);
         response = [[CCResponse alloc] initWithJsonData:[self responseData]];
 	}
     return response;
