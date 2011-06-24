@@ -59,7 +59,8 @@
         NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
         NSString *test_place_id = [prefs stringForKey:@"test_place_id"];
         if (test_place_id) {
-            CCRequest *request = [[CCRequest alloc] initWithDelegate:self httpMethod:@"DELETE" baseUrl:[NSString stringWithFormat:@"places/delete/%@.json",test_place_id] paramDict:nil];
+            NSDictionary *paramDict = [NSDictionary dictionaryWithObjectsAndKeys:test_place_id, @"place_id", nil];
+            CCRequest *request = [[CCRequest alloc] initWithDelegate:self httpMethod:@"DELETE" baseUrl:@"places/delete.json" paramDict:paramDict];
             [request startAsynchronous];
             [prefs removeObjectForKey:@"test_place_id"];
         }
@@ -71,7 +72,9 @@
 -(void)startLogout
 {
     if (testPlace) {
-        CCRequest *request = [[CCRequest alloc] initWithDelegate:self httpMethod:@"DELETE" baseUrl:[NSString stringWithFormat:@"places/delete/%@.json",testPlace.objectId] paramDict:nil];
+        NSDictionary *paramDict = [NSDictionary dictionaryWithObjectsAndKeys:testPlace.objectId, @"place_id", nil];
+
+        CCRequest *request = [[CCRequest alloc] initWithDelegate:self httpMethod:@"DELETE" baseUrl:@"places/delete.json" paramDict:paramDict];
 
         [request startAsynchronous];
         NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
@@ -85,7 +88,8 @@
 -(void)deleteAccount
 {
     if (testPlace) {
-        CCRequest *request = [[CCRequest alloc] initWithDelegate:self httpMethod:@"DELETE" baseUrl:[NSString stringWithFormat:@"places/delete/%@.json",testPlace.objectId] paramDict:nil];
+        NSDictionary *paramDict = [NSDictionary dictionaryWithObjectsAndKeys:testPlace.objectId, @"place_id", nil];
+        CCRequest *request = [[CCRequest alloc] initWithDelegate:self httpMethod:@"DELETE" baseUrl:@"places/delete.json" paramDict:paramDict];
 
         [request startAsynchronous];
         NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
@@ -495,7 +499,9 @@
         case USERS:
             if (indexPath.row == 0) {
                 // show user profile
-                request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:[NSString stringWithFormat:@"users/show/%@.json", currentUser.objectId] paramDict:nil] autorelease];
+                paramDict = [NSDictionary dictionaryWithObjectsAndKeys:currentUser.objectId, @"user_id", nil];
+
+                request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:@"users/show.json" paramDict:paramDict] autorelease];
             } else if (indexPath.row == 1) {
                 // show current user profile
                 request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:@"users/show/me.json" paramDict:nil] autorelease];
@@ -554,14 +560,17 @@
                         [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
                         return;
                     }
-                    
-                    request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:[NSString stringWithFormat:@"places/show/%@.json", testPlace.objectId] paramDict:nil] autorelease];
+                    paramDict = [NSDictionary dictionaryWithObjectsAndKeys:testPlace.objectId, @"place_id", nil];
+
+                    request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:@"places/show.json" paramDict:paramDict] autorelease];
 
                     break;
                 case 2:
                     if (testPlace) {
                         // delete the test place
-                        request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:[NSString stringWithFormat:@"places/delete/%@.json", testPlace.objectId] paramDict:nil] autorelease];
+                        paramDict = [NSDictionary dictionaryWithObjectsAndKeys:testPlace.objectId, @"place_id", nil];
+
+                        request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"DELETE" baseUrl:@"places/delete.json" paramDict:paramDict] autorelease];
 
                         
                     } else {
@@ -690,7 +699,9 @@
                         [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
                         return;
                     }
-                    request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:[NSString stringWithFormat:@"photos/show/%@.json", testPhoto.objectId]  paramDict:nil] autorelease];
+                    paramDict = [NSDictionary dictionaryWithObjectsAndKeys:testPhoto.objectId, @"photo_id", nil];
+
+                    request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:@"photos/show.json"  paramDict:paramDict] autorelease];
 
                     
                     break;
@@ -706,7 +717,9 @@
                         [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
                         return;
                     }
-                    request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"DELETE" baseUrl:[NSString stringWithFormat:@"photos/delete/%@.json", testPhoto.objectId]  paramDict:nil] autorelease];
+                    paramDict = [NSDictionary dictionaryWithObjectsAndKeys:testPhoto.objectId, @"photo_id", nil];
+
+                    request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"DELETE" baseUrl:@"photos/delete.json" paramDict:paramDict] autorelease];
 
                     break;
             }
@@ -765,7 +778,9 @@
                         return;
 
                     } else {
-                        request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"DELETE" baseUrl:[NSString stringWithFormat:@"messages/delete/%@.json", testMessage.objectId] paramDict:nil] autorelease];
+                        paramDict = [NSDictionary dictionaryWithObjectsAndKeys:testMessage.objectId, @"message_id", nil];
+
+                        request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"DELETE" baseUrl:@"messages/delete.json" paramDict:paramDict] autorelease];
 
                     }
                     break;
@@ -791,7 +806,9 @@
                         [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
                         return;
                     }
-                    request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:[NSString stringWithFormat:@"messages/show/%@.json", testMessage.objectId] paramDict:nil] autorelease];
+                    paramDict = [NSDictionary dictionaryWithObjectsAndKeys:testMessage.objectId, @"message_id", nil];
+
+                    request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:@"messages/show.json" paramDict:paramDict] autorelease];
 
                     break;
                 case 3:
@@ -807,7 +824,7 @@
                     break;
                 case 5:
                     // show  message threads
-                    request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:@"messages/show/sent.json" paramDict:nil] autorelease];
+                    request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:@"messages/show/threads.json" paramDict:nil] autorelease];
 
                     break;
                 case 6:
@@ -816,7 +833,9 @@
                         [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
                         return;
                     }
-                    request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:[NSString stringWithFormat:@"messages/show/thread/%@.json", testMessage.threadId] paramDict:nil] autorelease];
+                    paramDict = [NSDictionary dictionaryWithObjectsAndKeys:testMessage.threadId, @"thread_id", nil];
+
+                    request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:@"messages/show/thread.json" paramDict:paramDict] autorelease];
 
                     
                     break;
@@ -826,7 +845,9 @@
                         [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
                         return;
                     }
-                    request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"DELETE" baseUrl:[NSString stringWithFormat:@"messages/delete/thread/%@.json", testMessage.threadId] paramDict:nil] autorelease];
+                    paramDict = [NSDictionary dictionaryWithObjectsAndKeys:testMessage.threadId, @"thread_id", nil];
+
+                    request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"DELETE" baseUrl:@"messages/delete/thread.json" paramDict:paramDict] autorelease];
 
                     break;
             }
@@ -845,7 +866,9 @@
 
 
                     } else {
-                        request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"DELETE" baseUrl:[NSString stringWithFormat:@"events/delete/%@.json", testEvent.objectId] paramDict:nil] autorelease];
+                        paramDict = [NSDictionary dictionaryWithObjectsAndKeys:testEvent.objectId, @"event_id", nil];
+
+                        request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"DELETE" baseUrl:@"events/delete.json" paramDict:paramDict] autorelease];
                     }
                     break;
                 case 1:
@@ -853,7 +876,9 @@
                         [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
                         return;
                     }
-                    request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:[NSString stringWithFormat:@"events/show/%@.json", testEvent.objectId] paramDict:nil] autorelease];
+                    paramDict = [NSDictionary dictionaryWithObjectsAndKeys:testEvent.objectId, @"event_id", nil];
+
+                    request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:@"events/show.json" paramDict:paramDict] autorelease];
 
                     break;
                 case 2:
@@ -923,6 +948,7 @@
         APIViewController *controller = [[APIViewController alloc] initWithNibName:@"APIViewController" bundle:nil];  
         CCRequest *request = nil;
         UIImage *photoAttachment = [UIImage imageNamed:@"sample.png"];
+        NSDictionary *paramDict = nil;
 
         if (lastIndexPath.section == USERS) {
             request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"PUT" baseUrl:@"users/update.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"email", nil]] autorelease];
@@ -944,7 +970,8 @@
                 
             }
         } else if (lastIndexPath.section == EVENTS) {
-            request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"PUT" baseUrl:[NSString stringWithFormat:@"events/update/%@.json", testEvent.objectId] paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"name", nil]] autorelease];
+            paramDict = [NSDictionary dictionaryWithObjectsAndKeys:testEvent.objectId, @"event_id", entered, @"name", nil];
+            request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"PUT" baseUrl:@"events/update.json" paramDict:paramDict] autorelease];
             [request addPhotoUIImage:photoAttachment paramDict:nil];
 
         } else if (lastIndexPath.section == MESSAGES) {
@@ -952,12 +979,15 @@
                 request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"POST" baseUrl:@"messages/create.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"subject", @"Thanks for using Cocoafish", @"body", [NSArray arrayWithObject:[[Cocoafish defaultCocoafish] getCurrentUser].objectId], @"to_ids", nil]] autorelease];
 
             } else {
-                request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"POST" baseUrl:[NSString stringWithFormat:@"messages/reply/%@.json", testMessage.objectId] paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"body", nil]] autorelease];
+                paramDict = [NSDictionary dictionaryWithObjectsAndKeys:testMessage.objectId, @"message_id", entered, @"body", nil];
+                request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"POST" baseUrl:@"messages/reply.json" paramDict:paramDict] autorelease];
 
 
             }
         } else {
-            request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"PUT" baseUrl:[NSString stringWithFormat:@"places/update/%@.json", testPlace.objectId] paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"name", nil]] autorelease];
+            paramDict = [NSDictionary dictionaryWithObjectsAndKeys:testPlace.objectId, @"place_id", entered, @"name", nil];
+
+            request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"PUT" baseUrl:@"places/update.json" paramDict:paramDict] autorelease];
             [request addPhotoUIImage:photoAttachment paramDict:nil];
 
 

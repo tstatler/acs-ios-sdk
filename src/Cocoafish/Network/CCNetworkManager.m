@@ -260,7 +260,9 @@
 
 -(void)showUser:(NSString *)userId
 {
-	NSString *urlPath = [self generateFullRequestUrl:[NSString stringWithFormat:@"users/show/%@.json", userId] additionalParams:nil];
+    NSMutableArray *additionalParams = [NSMutableArray arrayWithObjects:[NSString stringWithFormat:@"user_id=%@", userId], nil];
+    
+	NSString *urlPath = [self generateFullRequestUrl:@"users/show.json" additionalParams:additionalParams];
     
 	NSURL *url = [NSURL URLWithString:urlPath];
 	ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
@@ -515,7 +517,9 @@
 
 -(void)deleteCheckin:(NSString *)checkinId
 {
-    NSString *urlPath = [self generateFullRequestUrl:[NSString stringWithFormat:@"checkins/delete/%@.json", checkinId] additionalParams:nil];
+    NSMutableArray *additionalParams = [NSMutableArray arrayWithObjects:[NSString stringWithFormat:@"checkin_id=%@", checkinId], nil];
+
+    NSString *urlPath = [self generateFullRequestUrl:@"checkins/delete.json" additionalParams:additionalParams];
 	NSURL *url = [NSURL URLWithString:urlPath];
     
 	CCDeleteRequest *request = [[[CCDeleteRequest alloc] initWithURL:url deleteClass:[CCCheckin class]] autorelease];
@@ -525,7 +529,9 @@
 
 -(void)showCheckin:(NSString *)checkinId
 {	
-	NSString *urlPath = [self generateFullRequestUrl:[NSString stringWithFormat:@"checkins/show/%@.json", checkinId] additionalParams:nil];
+    NSMutableArray *additionalParams = [NSMutableArray arrayWithObjects:[NSString stringWithFormat:@"checkin_id=%@", checkinId], nil];
+
+	NSString *urlPath = [self generateFullRequestUrl:@"checkins/show.json" additionalParams:additionalParams];
 	NSURL *url = [NSURL URLWithString:urlPath];
 	ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
     
@@ -579,7 +585,9 @@
 }
 -(void)deletePlace:(NSString *)placeId
 {
-    NSString *urlPath = [self generateFullRequestUrl:[NSString stringWithFormat:@"places/delete/%@.json", placeId] additionalParams:nil];
+    NSMutableArray *additionalParams = [NSMutableArray arrayWithObjects:[NSString stringWithFormat:@"place_id=%@", placeId], nil];
+
+    NSString *urlPath = [self generateFullRequestUrl:[NSString stringWithFormat:@"places/delete.json", placeId] additionalParams:additionalParams];
 	NSURL *url = [NSURL URLWithString:urlPath];
     
     
@@ -590,8 +598,9 @@
 
 -(void)updatePlace:(CCPlace *)place image:(CCUploadImage *)image
 {
+    NSMutableArray *additionalParams = [NSMutableArray arrayWithObjects:[NSString stringWithFormat:@"place_id=%@", place.objectId], nil];
     
-    NSString *urlPath = [self generateFullRequestUrl:[NSString stringWithFormat:@"places/update/%@.json", place.objectId] additionalParams:nil];
+    NSString *urlPath = [self generateFullRequestUrl:@"places/update.json" additionalParams:additionalParams];
     NSURL *url = [NSURL URLWithString:urlPath];
     
 	ASIFormDataRequest *request = [[[ASIFormDataRequest alloc] initWithURL:url] autorelease];
@@ -729,7 +738,9 @@
 
 -(void)showPlace:(NSString *)placeId
 {	
-	NSString *urlPath = [self generateFullRequestUrl:[NSString stringWithFormat:@"places/show/%@.json", placeId] additionalParams:nil];
+    NSMutableArray *additionalParams = [NSMutableArray arrayWithObjects:[NSString stringWithFormat:@"place_id=%@", placeId], nil];
+
+	NSString *urlPath = [self generateFullRequestUrl:@"places/show.json" additionalParams:additionalParams];
 	NSURL *url = [NSURL URLWithString:urlPath];
 	ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
     
@@ -809,7 +820,9 @@
 
 -(void)showPhoto:(NSString *)photoId
 {
-	NSString *urlPath = [self generateFullRequestUrl:[NSString stringWithFormat:@"photos/show/%@.json", photoId] additionalParams:nil];
+    NSMutableArray *additionalParams = [NSMutableArray arrayWithObjects:[NSString stringWithFormat:@"photo_id=%@", photoId], nil];
+
+	NSString *urlPath = [self generateFullRequestUrl:@"photos/show.json" additionalParams:additionalParams];
 	NSURL *url = [NSURL URLWithString:urlPath];
 	ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
     
@@ -818,7 +831,9 @@
 
 -(void)deletePhoto:(NSString *)photoId
 {
-    NSString *urlPath = [self generateFullRequestUrl:[NSString stringWithFormat:@"photos/delete/%@.json", photoId] additionalParams:nil];
+    NSMutableArray *additionalParams = [NSMutableArray arrayWithObjects:[NSString stringWithFormat:@"photo_id=%@", photoId], nil];
+
+    NSString *urlPath = [self generateFullRequestUrl:@"photos/delete.json" additionalParams:additionalParams];
 	NSURL *url = [NSURL URLWithString:urlPath];
     
 	CCDeleteRequest *request = [[[CCDeleteRequest alloc] initWithURL:url deleteClass:[CCPhoto class]] autorelease];	
@@ -1051,7 +1066,9 @@
 -(void)updateEvent:(NSString *)eventId name:(NSString *)name details:(NSString *)details placeId:(NSString *)placeId startTime:(NSDate *)startTime endTime:(NSDate *)endTime image:(CCUploadImage *)image
 
 {
-    NSString *urlPath = [self generateFullRequestUrl:[NSString stringWithFormat:@"events/update/%@.json", eventId] additionalParams:nil];
+    NSArray *additionalParams = [NSArray arrayWithObject:[NSString stringWithFormat:@"event_id=%@", eventId]];
+
+    NSString *urlPath = [self generateFullRequestUrl:@"events/update.json" additionalParams:additionalParams];
     NSURL *url = [NSURL URLWithString:urlPath];
     
 	ASIFormDataRequest *request = [[[ASIFormDataRequest alloc] initWithURL:url] autorelease];
@@ -1093,7 +1110,9 @@
 
 -(void)showEvent:(NSString *)eventId
 {
-    NSString *urlPath = [self generateFullRequestUrl:[NSString stringWithFormat:@"events/show/%@.json", eventId] additionalParams:nil];
+    NSMutableArray *additionalParams = [NSMutableArray arrayWithObjects:[NSString stringWithFormat:@"event_id=%@", eventId], nil];
+
+    NSString *urlPath = [self generateFullRequestUrl:@"events/show.json" additionalParams:additionalParams];
     
 	NSURL *url = [NSURL URLWithString:urlPath];
 	ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
@@ -1124,7 +1143,9 @@
 
 -(void)deleteEvent:(NSString *)eventId
 {
-    NSString *urlPath = [self generateFullRequestUrl:[NSString stringWithFormat:@"events/delete/%@.json", eventId] additionalParams:nil];
+    NSMutableArray *additionalParams = [NSMutableArray arrayWithObjects:[NSString stringWithFormat:@"event_id=%@", eventId], nil];
+
+    NSString *urlPath = [self generateFullRequestUrl:@"events/delete.json" additionalParams:additionalParams];
 	NSURL *url = [NSURL URLWithString:urlPath];
     
 	CCDeleteRequest *request = [[[CCDeleteRequest alloc] initWithURL:url deleteClass:[CCEvent class]] autorelease];
@@ -1157,7 +1178,10 @@
 }
 -(void)replyMessage:(NSString *)messageId body:(NSString *)body
 {
-    NSString *urlPath = [self generateFullRequestUrl:[NSString stringWithFormat:@"messages/reply/%@.json", messageId] additionalParams:nil];
+    
+    NSMutableArray *additionalParams = [NSMutableArray arrayWithObjects:[NSString stringWithFormat:@"message_id=%@", messageId], nil];
+
+    NSString *urlPath = [self generateFullRequestUrl:@"messages/reply.json" additionalParams:additionalParams];
     
 	NSURL *url = [NSURL URLWithString:urlPath];
     
@@ -1171,7 +1195,9 @@
 
 -(void)showMessage:(NSString *)messageId
 {
-    NSString *urlPath = [self generateFullRequestUrl:[NSString stringWithFormat:@"messages/show/%@.json", messageId] additionalParams:nil];
+    NSMutableArray *additionalParams = [NSMutableArray arrayWithObjects:[NSString stringWithFormat:@"message_id=%@", messageId], nil];
+
+    NSString *urlPath = [self generateFullRequestUrl:@"messages/show.json" additionalParams:additionalParams];
     
 	NSURL *url = [NSURL URLWithString:urlPath];
 	ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
@@ -1217,14 +1243,14 @@
 -(void)showThreadMessages:(NSString *)threadId page:(int)page perPage:(int)perPage startTime:(NSDate *)startTime order:(NSString *)order
 {
 
-    NSMutableArray *additionalParams = [NSMutableArray arrayWithObjects:[NSString stringWithFormat:@"page=%d", page], [NSString stringWithFormat:@"per_page=%d", perPage], nil];
+    NSMutableArray *additionalParams = [NSMutableArray arrayWithObjects:[NSString stringWithFormat:@"thread_id=%@", threadId], [NSString stringWithFormat:@"page=%d", page], [NSString stringWithFormat:@"per_page=%d", perPage], nil];
     if (startTime != nil) {
         [additionalParams addObject:[NSString stringWithFormat:@"start_time=%@", encodeToPercentEscapeString([startTime description])]];
     }
     if (order) {
          [additionalParams addObject:[NSString stringWithFormat:@"order=%@", order]];
     }
-    NSString *urlPath = [self generateFullRequestUrl:[NSString stringWithFormat:@"messages/show/thread/%@.json", threadId] additionalParams:additionalParams];
+    NSString *urlPath = [self generateFullRequestUrl:@"messages/show/thread.json" additionalParams:additionalParams];
     
 	NSURL *url = [NSURL URLWithString:urlPath];
 	ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
@@ -1257,7 +1283,9 @@
 
 -(void)deleteMessage:(NSString *)messageId
 {
-    NSString *urlPath = [self generateFullRequestUrl:[NSString stringWithFormat:@"messages/delete/%@.json", messageId] additionalParams:nil];
+    NSMutableArray *additionalParams = [NSMutableArray arrayWithObjects:[NSString stringWithFormat:@"message_id=%@", messageId], nil];
+
+    NSString *urlPath = [self generateFullRequestUrl:@"messages/delete.json" additionalParams:additionalParams];
 	NSURL *url = [NSURL URLWithString:urlPath];
     
 	CCDeleteRequest *request = [[[CCDeleteRequest alloc] initWithURL:url deleteClass:[CCMessage class]] autorelease];
@@ -1268,7 +1296,9 @@
 
 -(void)deleteThreadMessages:(NSString *)threadId
 {
-    NSString *urlPath = [self generateFullRequestUrl:[NSString stringWithFormat:@"messages/delete/thread/%@.json", threadId] additionalParams:nil];
+    NSMutableArray *additionalParams = [NSMutableArray arrayWithObjects:[NSString stringWithFormat:@"thread_id=%@", threadId], nil];
+
+    NSString *urlPath = [self generateFullRequestUrl:@"messages/delete/thread.json" additionalParams:additionalParams];
 	NSURL *url = [NSURL URLWithString:urlPath];
     
 	CCDeleteRequest *request = [[[CCDeleteRequest alloc] initWithURL:url deleteClass:[CCMessage class]] autorelease];
