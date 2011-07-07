@@ -121,8 +121,8 @@
 	if (jsonResponse && [jsonResponse.meta.message length] > 0) {
 		[userInfo setObject:[NSString stringWithFormat:@"%@", jsonResponse.meta.message] forKey:NSLocalizedDescriptionKey];
 	}
-	if (jsonResponse.meta.method) {
-		[userInfo setObject:jsonResponse.meta.method forKey:@"remote_method"];
+	if (jsonResponse.meta.methodName) {
+		[userInfo setObject:jsonResponse.meta.methodName forKey:@"remote_method"];
 	}
 	NSError *error = [NSError errorWithDomain:CC_DOMAIN code:CC_SERVER_ERROR userInfo:userInfo];
 	return error;

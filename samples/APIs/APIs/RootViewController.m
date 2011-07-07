@@ -955,6 +955,7 @@
 
         } else if (lastIndexPath.section == STATUSES) {
             request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"POST" baseUrl:@"statuses/create.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"message", nil]] autorelease];
+            [request addPhotoUIImage:photoAttachment paramDict:nil];
 
         } else if (lastIndexPath.section == KEY_VALUES){
             if (lastIndexPath.row == 0) {
@@ -1003,8 +1004,8 @@
 // successful
 -(void)ccrequest:(CCRequest *)request didSucceed:(CCResponse *)response
 {	
-    if ([response.meta.method isEqualToString:@"logoutUser"] ||
-        [response.meta.method isEqualToString:@"deleteUser"]) {
+    if ([response.meta.methodName isEqualToString:@"logoutUser"] ||
+        [response.meta.methodName isEqualToString:@"deleteUser"]) {
         ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testPlace = nil;
         ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testEvent = nil;
         ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testPhoto = nil;

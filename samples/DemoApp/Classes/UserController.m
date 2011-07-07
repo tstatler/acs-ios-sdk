@@ -149,14 +149,14 @@
 // successful logout
 -(void)ccrequest:(CCRequest *)request didSucceed:(CCResponse *)response
 {	
-    if ([response.meta.method isEqualToString:@"logoutUser"]) {
+    if ([response.meta.methodName isEqualToString:@"logoutUser"]) {
         // show login window
         LoginViewController *loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil];
         [self.navigationController pushViewController:loginViewController animated:NO];
         [userCheckins release];
         userCheckins = nil;
         [loginViewController release];
-    } else if ([response.meta.method isEqualToString:@"searchCheckins"]) {
+    } else if ([response.meta.methodName isEqualToString:@"searchCheckins"]) {
         @synchronized (self) {
             [userCheckins release];
             userCheckins = [[response getObjectsOfType:[CCCheckin class]] retain];

@@ -63,7 +63,7 @@
 #pragma CCRequestDelegate Methods
 -(void)ccrequest:(CCRequest *)request didSucceed:(CCResponse *)response
 {
-    if ([response.meta.method isEqualToString:@"createCheckin"]) {
+    if ([response.meta.methodName isEqualToString:@"createCheckin"]) {
         NSArray *checkins = [response getObjectsOfType:[CCCheckin class]];
         CCCheckin *checkin = nil;
         if ([checkins count] == 1) {
@@ -88,7 +88,7 @@
             [self.tableView reloadData];
         }
         
-    } else if ([response.meta.method isEqualToString:@"searchCheckins"]) {
+    } else if ([response.meta.methodName isEqualToString:@"searchCheckins"]) {
         @synchronized(self) {
             self.placeCheckins = nil;
             placeCheckins = [[response getObjectsOfType:[CCCheckin class]] mutableCopy];

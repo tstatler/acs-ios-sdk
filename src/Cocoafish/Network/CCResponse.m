@@ -33,7 +33,7 @@
 @interface CCMeta()
 @property (nonatomic, readwrite, retain) NSString *status;
 @property (nonatomic, readwrite, retain) NSString *message;
-@property (nonatomic, readwrite, retain) NSString *method;
+@property (nonatomic, readwrite, retain) NSString *methodName;
 @property (nonatomic, readwrite, retain) CCPagination *pagination;
 
 @end
@@ -70,13 +70,13 @@
 		}
         // Update current User info
         if ([_meta.status isEqualToString:CC_STATUS_OK]) {
-            if ([_meta.method isEqualToString:@"loginUser"] || [_meta.method isEqualToString:@"createUser"] || [_meta.method isEqualToString:@"updateUser"]) {
+            if ([_meta.methodName isEqualToString:@"loginUser"] || [_meta.methodName isEqualToString:@"createUser"] || [_meta.methodName isEqualToString:@"updateUser"]) {
                 NSArray *users = [self getObjectsOfType:[CCUser class]];
                 if ([users count] == 1) {
                     CCUser *user = [users objectAtIndex:0];
                     [[Cocoafish defaultCocoafish] setCurrentUser:user];
                 }
-            } else if ([_meta.method isEqualToString:@"logoutUser"] || [_meta.method isEqualToString:@"deleteUser"]) {
+            } else if ([_meta.methodName isEqualToString:@"logoutUser"] || [_meta.methodName isEqualToString:@"deleteUser"]) {
                 [[Cocoafish defaultCocoafish] setCurrentUser:nil];
             }
         }
@@ -221,7 +221,7 @@
 @synthesize status = _status;
 @synthesize message = _message;
 @synthesize code = _code;
-@synthesize method = _method;
+@synthesize methodName = _methodName;
 @synthesize pagination = _pagination;
 
 -(id)initWithJsonResponse:(NSDictionary *)jsonResponse
@@ -234,7 +234,7 @@
 	if (self) {
 		// get response code and details if there are any
 		self.message = [meta objectForKey:CC_JSON_META_MESSAGE];
-		self.method = [meta objectForKey:CC_JSON_META_METHOD];
+		self.methodName = [meta objectForKey:CC_JSON_META_METHOD];
 		NSString *tmpValue = [meta objectForKey:CC_JSON_META_CODE];
 		_code = tmpValue ? [tmpValue intValue] : 0;
 		self.status = [meta objectForKey:CC_JSON_META_STATUS];
@@ -247,8 +247,8 @@
 -(NSString *)description
 {
 
-    return [NSString stringWithFormat:@"CCMeta:\n\tstatus: %@\n\tmessage: %@\n\tmethod: %@\n\tcode: %d\n\t%@",
-            self.status, self.message, self.method, self.code, self.pagination?[self.pagination description] : @""];
+    return [NSString stringWithFormat:@"CCMeta:\n\tstatus: %@\n\tmessage: %@\n\tmethodName: %@\n\tcode: %d\n\t%@",
+            self.status, self.message, self.methodName, self.code, self.pagination?[self.pagination description] : @""];
     
 }
 
@@ -256,7 +256,7 @@
 {
 	self.message = nil;
 	self.status = nil;
-	self.method = nil;
+	self.methodName = nil;
     self.pagination = nil;
 	[super dealloc];
 }

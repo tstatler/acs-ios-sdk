@@ -78,27 +78,27 @@
 
     statusLabel.text = @"Success";
     body.text = [NSString stringWithFormat:@"%@\n%@", [response.meta description], [response.response description]];
-    if ([response.meta.method isEqualToString:@"createPlace"]) {
+    if ([response.meta.methodName isEqualToString:@"createPlace"]) {
         CCPlace *place = [[response getObjectsOfType:[CCPlace class]] objectAtIndex:0];
         ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testPlace = place;
         NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
         [prefs setObject:place.objectId forKey:@"test_place_id"];
-    } else if ([response.meta.method isEqualToString:@"createPhoto"] && ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testPhoto == nil) {
+    } else if ([response.meta.methodName isEqualToString:@"createPhoto"] && ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testPhoto == nil) {
         CCPhoto *photo = [[response getObjectsOfType:[CCPhoto class]] objectAtIndex:0];
         ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testPhoto = photo;
-    } else if ([response.meta.method isEqualToString:@"createEvent"] && ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testEvent == nil) {
+    } else if ([response.meta.methodName isEqualToString:@"createEvent"] && ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testEvent == nil) {
         CCEvent *event = [[response getObjectsOfType:[CCEvent class]] objectAtIndex:0];
         ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testEvent = event;
-    } else if ([response.meta.method isEqualToString:@"createMessage"] && ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testMessage == nil) {
+    } else if ([response.meta.methodName isEqualToString:@"createMessage"] && ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testMessage == nil) {
         CCMessage *message = [[response getObjectsOfType:[CCMessage class]] objectAtIndex:0];
         ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testMessage = message;
-    } else if ([response.meta.method isEqualToString:@"deletePlace"]) {
+    } else if ([response.meta.methodName isEqualToString:@"deletePlace"]) {
         ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testPlace = nil;
-    } else if ([response.meta.method isEqualToString:@"deletePhoto"]) {
+    } else if ([response.meta.methodName isEqualToString:@"deletePhoto"]) {
         ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testPhoto = nil;
-    } else if ([response.meta.method isEqualToString:@"deleteEvent"]) {
+    } else if ([response.meta.methodName isEqualToString:@"deleteEvent"]) {
         ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testEvent = nil;
-    } else if ([response.meta.method isEqualToString:@"deleteMessageThread"]) {
+    } else if ([response.meta.methodName isEqualToString:@"deleteMessageThread"]) {
         ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testMessage = nil;
     }
        

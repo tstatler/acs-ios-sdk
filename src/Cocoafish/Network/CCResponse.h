@@ -46,14 +46,14 @@
 	NSString *_status;
 	NSInteger _code;
 	NSString *_message;
-	NSString *_method; // method name
+	NSString *_methodName; // method name
     CCPagination *_pagination;
 }
 
 @property (nonatomic, readonly) NSInteger code;
 @property (nonatomic, retain, readonly) NSString *message;
 @property (nonatomic, retain, readonly) NSString *status;
-@property (nonatomic, retain, readonly) NSString *method;
+@property (nonatomic, retain, readonly) NSString *methodName;
 @property (nonatomic, retain, readonly) CCPagination *pagination;
 
 -(id)initWithJsonResponse:(NSDictionary *)jsonResponse;
