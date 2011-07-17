@@ -13,6 +13,7 @@
 @property (nonatomic, retain, readwrite) NSDate *createdAt;
 @property (nonatomic, retain, readwrite) NSDate *updatedAt;
 @property (nonatomic, retain, readwrite) NSArray *tags;
+@property (nonatomic, retain, readwrite) NSDictionary *customFields;
 @end
 
 
@@ -21,6 +22,7 @@
 @synthesize createdAt = _createdAt;
 @synthesize updatedAt = _updatedAt;
 @synthesize tags = _tags;
+@synthesize customFields = _customFields;
 
 -(id)initWithJsonResponse:(NSDictionary *)jsonResponse
 {
@@ -47,6 +49,8 @@
 	}
     
     self.tags = [jsonResponse objectForKey:@"tags"];
+    
+    self.customFields = [jsonResponse objectForKey:@"custom_fields"];
 
 	return self;
 }
@@ -93,6 +97,8 @@
     copy.objectId = [_objectId copy];
     copy.updatedAt = [_updatedAt copy];
     copy.createdAt = [_createdAt copy];
+    copy.tags = [_tags copy];
+    copy.customFields = [_customFields copy];
 
     return copy;
 }
@@ -127,6 +133,8 @@
 	self.createdAt = nil;
 	self.updatedAt = nil;
 	self.objectId = nil;
+    self.tags = nil;
+    self.customFields = nil;
 	[super dealloc];
 }
 

@@ -17,12 +17,14 @@
 	NSDate * _createdAt;
 	NSDate *_updatedAt;
     NSArray *_tags;
+    NSDictionary *_customFields;
 }
 
 @property (nonatomic, retain, readonly) NSString *objectId;
 @property (nonatomic, retain, readonly) NSDate *createdAt;
 @property (nonatomic, retain, readonly) NSDate *updatedAt;
 @property (nonatomic, retain, readonly) NSArray *tags;
+@property (nonatomic, retain, readonly) NSDictionary *customFields;
 
 -(id)initWithJsonResponse:(NSDictionary *)jsonResponse;
 
