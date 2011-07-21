@@ -11,6 +11,7 @@
 #import "Cocoafish.h"
 #import "CCResponse.h"
 #import "CCRequest.h"
+//#import "ASIDownloadCache.h"
 
 #define DEFAULT_TIME_INTERVAL	3
 #define MAX_CACHE_SIZE      5242880 // file cache size 5M
@@ -85,6 +86,7 @@
         ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
         [request setUserInfo:[NSDictionary dictionaryWithObjectsAndKeys:photo, @"object", [NSNumber numberWithInt:size], @"size", nil]];
         [request setDownloadDestinationPath:[photo localPath:size]];
+      //  [request setDownloadCache:[ASIDownloadCache sharedCache]]; 
         // set callbacks
         [request setDelegate:self];
         [request setDidFinishSelector:@selector(downloadDone:)];
@@ -131,14 +133,23 @@
         if (existingParent && [existingParent.objectId isEqualToString:parent.objectId]) {
             return;
         }
+        Boolean found = NO;
+        CCObject *foundObject = [_processingPhotos objectForKey:photo.objectId];
+        if (foundObject && ([foundObject.objectId isEqualToString:parent.objectId] || [foundObject.objectId isEqualToString:photo.objectId] || [parent.objectId isEqualToString:photo.objectId])) {
+            // we get the photo ojbect first, then its parent object, so have to check all conditions
+            found = YES;
+        }
         [_processingPhotos setObject:parent forKey:photo.objectId];
+
 		
 		if (self.autoUpdateTimer != nil) {
 			[self.autoUpdateTimer invalidate];
 			self.autoUpdateTimer = nil;
 		}
 		
-		_timeInterval = DEFAULT_TIME_INTERVAL;
+        if (!found) {
+            _timeInterval = DEFAULT_TIME_INTERVAL;
+        }
 		self.autoUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:(_timeInterval)
 																target:self
 															  selector:@selector(updateProcessingPhotos)

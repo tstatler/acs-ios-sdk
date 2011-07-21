@@ -23,6 +23,8 @@
 @synthesize updatedAt = _updatedAt;
 @synthesize tags = _tags;
 @synthesize customFields = _customFields;
+@synthesize etag = _etag;
+@synthesize lastModified = _lastModified;
 
 -(id)initWithJsonResponse:(NSDictionary *)jsonResponse
 {
@@ -99,6 +101,8 @@
     copy.createdAt = [_createdAt copy];
     copy.tags = [_tags copy];
     copy.customFields = [_customFields copy];
+    copy.etag = [_etag copy];
+    copy.lastModified = [_lastModified copy];
 
     return copy;
 }
@@ -135,6 +139,8 @@
 	self.objectId = nil;
     self.tags = nil;
     self.customFields = nil;
+    self.etag = nil;
+    self.lastModified = nil;
 	[super dealloc];
 }
 

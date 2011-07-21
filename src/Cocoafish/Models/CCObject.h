@@ -18,6 +18,8 @@
 	NSDate *_updatedAt;
     NSArray *_tags;
     NSDictionary *_customFields;
+    NSString *_etag;
+    NSString *_lastModified;
 }
 
 @property (nonatomic, retain, readonly) NSString *objectId;
@@ -25,6 +27,8 @@
 @property (nonatomic, retain, readonly) NSDate *updatedAt;
 @property (nonatomic, retain, readonly) NSArray *tags;
 @property (nonatomic, retain, readonly) NSDictionary *customFields;
+@property (nonatomic, retain, readwrite) NSString *etag;
+@property (nonatomic, retain, readwrite) NSString *lastModified;
 
 -(id)initWithJsonResponse:(NSDictionary *)jsonResponse;
 

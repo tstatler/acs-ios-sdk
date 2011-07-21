@@ -97,6 +97,7 @@
                 } else {
                     value = (NSString *)valueObject;
                 }
+                
                 [self setPostValue:value forKey:key];
                 
             }
@@ -363,7 +364,8 @@
 {
     NSLog(@"Received %@", [origRequest responseString]);
     CCResponse *response = [[CCResponse alloc] initWithJsonData:[origRequest responseData]];
-    if (response && [response.meta.status isEqualToString:CC_STATUS_OK]) {
+    if (response && ([origRequest responseStatusCode] == 200 || [origRequest responseStatusCode] == 304)) {
+        // If response is ok(200) or not modified (304
         if ([_requestDelegate respondsToSelector:@selector(ccrequest:didSucceed:)]) {
             [_requestDelegate ccrequest:origRequest didSucceed:response];
         }
