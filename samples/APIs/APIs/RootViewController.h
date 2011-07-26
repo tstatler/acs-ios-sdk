@@ -19,6 +19,7 @@ typedef enum SECTIONS {
     PHOTOS,
     KEY_VALUES,
     EVENTS,
+    CLIENTS,
     NUM_SECTIONS
 } sections;
 

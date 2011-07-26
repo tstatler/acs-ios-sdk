@@ -315,7 +315,7 @@
     [paramDict setObject:password forKey:@"password"];   
     [paramDict setObject:password forKey:@"password_confirmation"];   
     
-    pendingRequest = [[[CCRequest alloc] initWithDelegate:self httpMethod:@"POST" baseUrl:@"users/create.json" paramDict:paramDict] autorelease];
+    pendingRequest = [[[CCRequest alloc] initHttpsWithDelegate:self httpMethod:@"POST" baseUrl:@"users/create.json" paramDict:paramDict] autorelease];
     [pendingRequest addPhotoUIImage:[UIImage imageNamed:@"sample.png"] paramDict:nil];
 
     [pendingRequest startAsynchronous];

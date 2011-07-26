@@ -27,7 +27,11 @@
     CCAttachment *_attachment;
 }
 
--(id)initWithDelegate:(id)requestDelegate  httpMethod:(NSString *)httpMethod baseUrl:(NSString *)baseUrl paramDict:(NSDictionary *)paramDict;
+-(id)initWithDelegate:(id)requestDelegate httpMethod:(NSString *)httpMethod baseUrl:(NSString *)baseUrl paramDict:(NSDictionary *)paramDict;
+// to make a http call
+-(id)initHttpsWithDelegate:(id)requestDelegate httpMethod:(NSString *)httpMethod baseUrl:(NSString *)baseUrl paramDict:(NSDictionary *)paramDict;
+-(id)initWithDelegate:(id)requestDelegate httpProtocol:(NSString *)protocal httpMethod:(NSString *)httpMethod baseUrl:(NSString *)baseUrl paramDict:(NSDictionary *)paramDict;
+
 -(CCResponse *)startSynchronous;
 -(void)addPhotoALAsset:(ALAsset *)alasset paramDict:(NSDictionary *)paramDict;
 -(void)addPhotoUIImage:(UIImage *)image paramDict:(NSDictionary *)paramDict;

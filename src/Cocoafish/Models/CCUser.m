@@ -28,6 +28,7 @@
 @synthesize username = _username;
 @synthesize firstName = _firstName;
 @synthesize lastName = _lastName;
+@synthesize role = _role;
 //@synthesize facebookAuthorized = _facebookAuthorized;
 @synthesize facebookAccessToken = _facebookAccessToken;
 
@@ -42,6 +43,7 @@
 		self.lastName = [jsonResponse objectForKey:CC_JSON_USER_LAST];
 		//self.facebookAuthorized = [[jsonResponse objectForKey:CC_JSON_USER_FACEBOOK_AUTHORIZED] boolValue];
         self.facebookAccessToken = [jsonResponse objectForKey:CC_JSON_USER_FACEBOOK_ACCESS_TOKEN];
+        self.role = [jsonResponse objectForKey:@"role"];
         if (self.firstName == nil && self.lastName == nil && self.username == nil) {
             NSLog(@"Invalid user object from server: %@", jsonResponse);
             [self release];
@@ -79,6 +81,7 @@
     copy.firstName = [_firstName copy];
     copy.lastName = [_lastName copy];
     copy.facebookAccessToken = [_facebookAccessToken copy];
+    copy.role = [_role copy];
     return copy;
 }
 
@@ -99,6 +102,7 @@
 	self.firstName = nil;
 	self.lastName = nil;
     self.facebookAccessToken = nil;
+    self.role = nil;
 	[super dealloc];
 }
 

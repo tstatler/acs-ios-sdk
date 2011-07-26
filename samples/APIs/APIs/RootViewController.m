@@ -224,6 +224,8 @@
             return 4;
         case EVENTS:
             return 4;
+        case CLIENTS:
+            return 1;
         default:
             break;
     }
@@ -249,6 +251,8 @@
             return @"Key/Value Pairs";
         case EVENTS:
             return @"Events";
+        case CLIENTS:
+            return @"Clients";
         default:
             break;
     }
@@ -427,6 +431,9 @@
                     break;
             }
             
+            break;
+        case CLIENTS:
+            cell.textLabel.text = @"Geolocate a client";
             break;
         default:
             break;
@@ -909,6 +916,9 @@
             }
             
             break;
+        case CLIENTS:
+            request = [[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:@"clients/geolocate.json" paramDict:nil];
+            break;
         default:
             break;
     }
@@ -960,8 +970,8 @@
         } else if (lastIndexPath.section == KEY_VALUES){
             if (lastIndexPath.row == 0) {
                 // set key value
-          //      request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"PUT" baseUrl:@"keyvalues/set.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"value", @"Test", @"name", nil]] autorelease];
-                request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"PUT" baseUrl:@"keyvalues/set.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:[NSDictionary dictionaryWithObject:@"Value" forKey:@"key"], @"value", @"Test", @"name", nil]] autorelease];
+                request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"PUT" baseUrl:@"keyvalues/set.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:@"{ \"image\": \"https://s3.amazonaws.com/docuweeks2011v1/S004_D@2x.jpg\", \"imagetype\": \"remote\", \"message\": \"Elmo is an international icon. Few people know his creator, Kevin Clash, who dreamed of working with his idol, master puppeteer Jim Henson. Displaying his creativity and talent at a young age, Kevin ultimately found a home on Sesame Street.\", \"messagetype\": \"trailer\", \"program_id\": \"1\", \"title\": \"Being Elmo: A Puppeteer's Journey\", \"url\": \"http://www.youtube.com/embed/DoYgaX7jMEw\" }", @"value", @"Test", @"name", nil]] autorelease];
+           //     request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"PUT" baseUrl:@"keyvalues/set.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:[NSDictionary dictionaryWithObject:@"Value" forKey:@"key"], @"value", @"Test", @"name", nil]] autorelease];
 
 
             } else {

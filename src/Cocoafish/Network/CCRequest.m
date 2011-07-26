@@ -22,9 +22,9 @@
 -(void)main;
 -(void)initCommon;
 -(void)addOauthHeaderToRequest;
-- (NSData *)imageDataFromALAsset:(ALAsset *)alasset;
+-(NSData *)imageDataFromALAsset:(ALAsset *)alasset;
 -(void)checkPhotoParams:(NSDictionary *)paramDict;
-+(NSString *)generateFullRequestUrl:(NSString *)partialUrl additionalParams:(NSArray *)additionalParams;
++(NSString *)generateFullRequestUrl:(NSString *)partialUrl httpProtocol:(NSString *)httpProtocol additionalParams:(NSArray *)additionalParams;
 @property (nonatomic, readwrite, retain) NSString *requestId;
 @property (nonatomic, readwrite, retain) CCAttachment *attachment;
 @end
@@ -43,7 +43,18 @@
     return self;
 }
 
--(id)initWithDelegate:(id)requestDelegate httpMethod:(NSString *)httpMethod baseUrl:(NSString *)baseUrl paramDict:(NSDictionary *)paramDict;
+
+-(id)initWithDelegate:(id)requestDelegate httpMethod:(NSString *)httpMethod baseUrl:(NSString *)baseUrl paramDict:(NSDictionary *)paramDict
+{
+    return [self initWithDelegate:requestDelegate httpProtocol:@"http" httpMethod:httpMethod baseUrl:baseUrl paramDict:paramDict];
+}
+
+-(id)initHttpsWithDelegate:(id)requestDelegate httpMethod:(NSString *)httpMethod baseUrl:(NSString *)baseUrl paramDict:(NSDictionary *)paramDict
+{
+    return [self initWithDelegate:requestDelegate httpProtocol:@"https" httpMethod:httpMethod baseUrl:baseUrl paramDict:paramDict];
+}
+
+-(id)initWithDelegate:(id)requestDelegate httpProtocol:(NSString *)httpProtocol httpMethod:(NSString *)httpMethod baseUrl:(NSString *)baseUrl paramDict:(NSDictionary *)paramDict
 {
     NSMutableArray *paramArray = nil;
     // sanity check, see if user passed in photo as a key
@@ -73,7 +84,7 @@
         }
     }
     
-    NSString *urlPath = [CCRequest generateFullRequestUrl:baseUrl additionalParams:paramArray];
+    NSString *urlPath = [CCRequest generateFullRequestUrl:baseUrl httpProtocol:httpProtocol additionalParams:paramArray];
     
 	NSURL *newUrl = [NSURL URLWithString:urlPath];
     self = [super initWithURL:newUrl];
@@ -327,7 +338,7 @@
 	[self addRequestHeader:@"Authorization" value:header];
 }
 
-+(NSString *)generateFullRequestUrl:(NSString *)partialUrl additionalParams:(NSArray *)additionalParams
++(NSString *)generateFullRequestUrl:(NSString *)partialUrl httpProtocol:(NSString *)httpProtocol additionalParams:(NSArray *)additionalParams
 {
 	NSString *url = nil;
 	NSString *appKey = [[Cocoafish defaultCocoafish] getAppKey];
@@ -337,15 +348,15 @@
     }
 	if ([appKey length] > 0) {
 		if (paramsString) {
-			url = [NSString stringWithFormat:@"%@/%@?key=%@&%@", CC_BACKEND_URL, partialUrl, appKey, 
+			url = [NSString stringWithFormat:@"%@://%@/%@?key=%@&%@", httpProtocol, CC_BACKEND_URL, partialUrl, appKey, 
                    paramsString];
 		} else {
-			url = [NSString stringWithFormat:@"%@/%@?key=%@", CC_BACKEND_URL, partialUrl, appKey];
+			url = [NSString stringWithFormat:@"%@://%@/%@?key=%@", httpProtocol, CC_BACKEND_URL, partialUrl, appKey];
 		}
 	} else if (paramsString) {
-		url = [NSString stringWithFormat:@"%@/%@?%@", CC_BACKEND_URL, partialUrl, paramsString];
+		url = [NSString stringWithFormat:@"%@://%@/%@?%@", httpProtocol, CC_BACKEND_URL, partialUrl, paramsString];
 	} else {
-		url = [NSString stringWithFormat:@"%@/%@", CC_BACKEND_URL, partialUrl];
+		url = [NSString stringWithFormat:@"%@://%@/%@", httpProtocol, CC_BACKEND_URL, partialUrl];
 	}
 	return url;
 }
