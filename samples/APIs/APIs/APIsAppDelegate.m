@@ -11,12 +11,13 @@
 // Your cocoafish oauth token/secret must be set before running this demo
 //#define COCOAFISH_OAUTH_CONSUMER_KEY @"your consumer key here"
 //#define COCOAFISH_OAUTH_CONSUMER_SECRET @"your consumer secret here"
+
 #if !defined(COCOAFISH_OAUTH_CONSUMER_KEY) || !defined(COCOAFISH_OAUTH_CONSUMER_SECRET)
     #error : Please uncomment above lines and set your oauth key and secret
 #endif
 
 // If you want to add facebook support, please set the facebook app id here.
-static NSString * const facebookAppId = nil;
+static NSString * const facebookAppId = @"";
 
 @implementation APIsAppDelegate
 
@@ -24,6 +25,7 @@ static NSString * const facebookAppId = nil;
 @synthesize testPhoto = _testPhoto;
 @synthesize testEvent = _testEvent;
 @synthesize testMessage = _testMessage;
+@synthesize testPost = _testPost;
 @synthesize window=_window;
 
 @synthesize navigationController=_navigationController;
@@ -93,6 +95,7 @@ static NSString * const facebookAppId = nil;
     [_testPhoto release];
     [_testEvent release];
     [_testMessage release];
+    [_testPost release];
     [super dealloc];
 }
 

@@ -20,6 +20,7 @@
 -(Boolean)checkTestPhoto;
 -(Boolean)checkTestEvent;
 -(Boolean)checkTestMessage;
+-(Boolean)checkTestPost;
 @end
 
 @implementation RootViewController
@@ -54,6 +55,7 @@
     testPhoto = ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testPhoto;
     testEvent = ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testEvent;
     testMessage = ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testMessage;
+    testPost = ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testPost;
     if (!testPlace) {
         // remove test place from last run
         NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
@@ -205,6 +207,25 @@
     
 }
 
+// Some actions requires a test place to be creatd first
+-(Boolean)checkTestPost
+{
+    Boolean ret = YES;
+    if (ret && !testPost) {
+        ret = NO;
+        UIAlertView *alert = [[UIAlertView alloc] 
+                              initWithTitle:@"Missing test post" 
+                              message:@"Please goto Post section and submit a test post first!"
+                              delegate:self 
+                              cancelButtonTitle:@"Ok"
+                              otherButtonTitles:nil];
+        [alert show];
+        [alert release];
+    }
+    return ret;
+    
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     switch (section) {
@@ -226,6 +247,8 @@
             return 4;
         case CLIENTS:
             return 1;
+        case POSTS:
+            return 3;
         default:
             break;
     }
@@ -253,6 +276,8 @@
             return @"Events";
         case CLIENTS:
             return @"Clients";
+        case POSTS:
+            return @"Posts";
         default:
             break;
     }
@@ -435,6 +460,26 @@
         case CLIENTS:
             cell.textLabel.text = @"Geolocate a client";
             break;
+        case POSTS:
+            switch (indexPath.row) {
+                case 0:
+                    if (!testPost) {
+                        cell.textLabel.text = @"Create a test post";
+                    } else {
+                        cell.textLabel.text = @"Delete the test post";
+                    }
+                    break;
+                case 1:
+                    
+                    cell.textLabel.text = @"Search user's posts";
+                    break;
+                case 2:
+                    cell.textLabel.text = @"Add a review to the post";
+                    
+                default:
+                    break;
+            }
+            break;
         default:
             break;
     }
@@ -506,7 +551,7 @@
         case USERS:
             if (indexPath.row == 0) {
                 // show user profile
-                paramDict = [NSDictionary dictionaryWithObjectsAndKeys:currentUser.objectId, @"user_id", nil];
+                paramDict = [NSDictionary dictionaryWithObjectsAndKeys:currentUser.objectId, @"user_id",nil];
 
                 request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:@"users/show.json" paramDict:paramDict] autorelease];
             } else if (indexPath.row == 1) {
@@ -919,6 +964,38 @@
         case CLIENTS:
             request = [[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:@"clients/geolocate.json" paramDict:nil];
             break;
+        case POSTS:
+            switch (indexPath.row) {
+                case 0:
+                    if (!testPost) {
+                        request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"POST" baseUrl:@"posts/create.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:@"Good day", @"content", @"This is a title", @"title", nil]] autorelease];
+                    } else {
+                        // delete the post
+                        request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"DELETE" baseUrl:@"posts/delete.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:testPost.objectId, @"post_id", nil]] autorelease];
+                    }
+                    break;
+                case 1:
+                    request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"GET" baseUrl:@"posts/search.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:currentUser.objectId, @"user_id", nil]] autorelease];
+                    break;
+                case 2:
+                    if (![self checkTestPost]) {
+                        [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+                        return;
+                    }
+                    prompt = [AlertPrompt alloc];
+                    prompt = [prompt initWithTitle:@"Enter a a rating" message:@"Please enter a rating for the post" delegate:self cancelButtonTitle:@"Cancel" okButtonTitle:@"Okay" defaultInput:testEvent.name];
+                    lastIndexPath = [indexPath copy];
+                    [prompt show];
+                    [prompt release];
+                    [controller release];
+                    [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+
+                    return;
+                default:
+                    break;
+            }
+                
+            break;
         default:
             break;
     }
@@ -970,8 +1047,8 @@
         } else if (lastIndexPath.section == KEY_VALUES){
             if (lastIndexPath.row == 0) {
                 // set key value
-                request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"PUT" baseUrl:@"keyvalues/set.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:@"{ \"image\": \"https://s3.amazonaws.com/docuweeks2011v1/S004_D@2x.jpg\", \"imagetype\": \"remote\", \"message\": \"Elmo is an international icon. Few people know his creator, Kevin Clash, who dreamed of working with his idol, master puppeteer Jim Henson. Displaying his creativity and talent at a young age, Kevin ultimately found a home on Sesame Street.\", \"messagetype\": \"trailer\", \"program_id\": \"1\", \"title\": \"Being Elmo: A Puppeteer's Journey\", \"url\": \"http://www.youtube.com/embed/DoYgaX7jMEw\" }", @"value", @"Test", @"name", nil]] autorelease];
-           //     request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"PUT" baseUrl:@"keyvalues/set.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:[NSDictionary dictionaryWithObject:@"Value" forKey:@"key"], @"value", @"Test", @"name", nil]] autorelease];
+               // request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"PUT" baseUrl:@"keyvalues/set.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:@"custom_fields[foo]", @"value", @"Test", @"name", nil]] autorelease];
+                request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"PUT" baseUrl:@"keyvalues/set.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"value", @"Test", @"name", nil]] autorelease];
 
 
             } else {
@@ -995,6 +1072,8 @@
 
 
             }
+        } else  if (lastIndexPath.section == POSTS) {
+            request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"POST" baseUrl:@"reviews/create.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:testPost.objectId, @"post_id", entered, @"rating", @"love it", @"content", nil]] autorelease];
         } else {
             paramDict = [NSDictionary dictionaryWithObjectsAndKeys:testPlace.objectId, @"place_id", entered, @"name", nil];
 
@@ -1020,10 +1099,12 @@
         ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testEvent = nil;
         ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testPhoto = nil;
         ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testMessage = nil;
+        ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testPost = nil;
         testPlace = nil;
         testEvent = nil;
         testPhoto = nil;
         testMessage = nil;
+        testPost = nil;
     
         // show login window
         LoginViewController *loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil];

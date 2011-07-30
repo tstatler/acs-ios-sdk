@@ -93,6 +93,8 @@
 		B64B26DD138036200053E943 /* OAuthCore.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B26C7138036200053E943 /* OAuthCore.m */; };
 		B64B26DF13807A8F0053E943 /* sample.png in Resources */ = {isa = PBXBuildFile; fileRef = B64B26DE13807A8F0053E943 /* sample.png */; };
 		B653465113B0265400894708 /* CCFriendRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B653465013B0265400894708 /* CCFriendRequest.m */; };
+		B656032313E3C2890094140B /* CCPost.m in Sources */ = {isa = PBXBuildFile; fileRef = B656032013E3C2890094140B /* CCPost.m */; };
+		B656032413E3C2890094140B /* CCReview.m in Sources */ = {isa = PBXBuildFile; fileRef = B656032213E3C2890094140B /* CCReview.m */; };
 		B685E430139B41AA001B50BD /* CCCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = B685E42F139B41AA001B50BD /* CCCollection.m */; };
 		B685E434139B41B9001B50BD /* CCShareRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B685E433139B41B9001B50BD /* CCShareRequest.m */; };
 /* End PBXBuildFile section */
@@ -260,6 +262,10 @@
 		B64B26DE13807A8F0053E943 /* sample.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sample.png; sourceTree = "<group>"; };
 		B653464F13B0265400894708 /* CCFriendRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCFriendRequest.h; sourceTree = "<group>"; };
 		B653465013B0265400894708 /* CCFriendRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCFriendRequest.m; sourceTree = "<group>"; };
+		B656031F13E3C2890094140B /* CCPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPost.h; sourceTree = "<group>"; };
+		B656032013E3C2890094140B /* CCPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCPost.m; sourceTree = "<group>"; };
+		B656032113E3C2890094140B /* CCReview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCReview.h; sourceTree = "<group>"; };
+		B656032213E3C2890094140B /* CCReview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCReview.m; sourceTree = "<group>"; };
 		B685E42E139B41AA001B50BD /* CCCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCCollection.h; sourceTree = "<group>"; };
 		B685E42F139B41AA001B50BD /* CCCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCCollection.m; sourceTree = "<group>"; };
 		B685E432139B41B9001B50BD /* CCShareRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCShareRequest.h; sourceTree = "<group>"; };
@@ -536,6 +542,10 @@
 		B64B269F138036200053E943 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B656031F13E3C2890094140B /* CCPost.h */,
+				B656032013E3C2890094140B /* CCPost.m */,
+				B656032113E3C2890094140B /* CCReview.h */,
+				B656032213E3C2890094140B /* CCReview.m */,
 				B685E432139B41B9001B50BD /* CCShareRequest.h */,
 				B685E433139B41B9001B50BD /* CCShareRequest.m */,
 				B685E42E139B41AA001B50BD /* CCCollection.h */,
@@ -775,6 +785,8 @@
 				B633DF8213ABA7CE008A9A5D /* CCChat.m in Sources */,
 				B633DFC713AC60CB008A9A5D /* NSString+HTML.m in Sources */,
 				B653465113B0265400894708 /* CCFriendRequest.m in Sources */,
+				B656032313E3C2890094140B /* CCPost.m in Sources */,
+				B656032413E3C2890094140B /* CCReview.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

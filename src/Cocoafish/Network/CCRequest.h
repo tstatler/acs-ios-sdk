@@ -35,6 +35,7 @@
 -(CCResponse *)startSynchronous;
 -(void)addPhotoALAsset:(ALAsset *)alasset paramDict:(NSDictionary *)paramDict;
 -(void)addPhotoUIImage:(UIImage *)image paramDict:(NSDictionary *)paramDict;
+-(void)addCustomField:(NSString *)customKey value:(NSString *)value type:(NSString *)type;
 
 @property(nonatomic, assign) id<CCRequestDelegate> requestDelegate;
 @property (nonatomic, retain, readonly) NSString *requestId;

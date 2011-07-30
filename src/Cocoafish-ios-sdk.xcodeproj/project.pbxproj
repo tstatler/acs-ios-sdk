@@ -95,6 +95,16 @@
 		B64B274B138097890053E943 /* OAuth+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B271F138097890053E943 /* OAuth+Additions.m */; };
 		B64B274C138097890053E943 /* OAuthCore.h in Headers */ = {isa = PBXBuildFile; fileRef = B64B2720138097890053E943 /* OAuthCore.h */; };
 		B64B274D138097890053E943 /* OAuthCore.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B2721138097890053E943 /* OAuthCore.m */; };
+		B656033613E3D6AB0094140B /* CCCollection.h in Headers */ = {isa = PBXBuildFile; fileRef = B656032C13E3D6AB0094140B /* CCCollection.h */; };
+		B656033713E3D6AB0094140B /* CCCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = B656032D13E3D6AB0094140B /* CCCollection.m */; };
+		B656033813E3D6AB0094140B /* CCFriendRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = B656032E13E3D6AB0094140B /* CCFriendRequest.h */; };
+		B656033913E3D6AB0094140B /* CCFriendRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B656032F13E3D6AB0094140B /* CCFriendRequest.m */; };
+		B656033A13E3D6AB0094140B /* CCPost.h in Headers */ = {isa = PBXBuildFile; fileRef = B656033013E3D6AB0094140B /* CCPost.h */; };
+		B656033B13E3D6AB0094140B /* CCPost.m in Sources */ = {isa = PBXBuildFile; fileRef = B656033113E3D6AB0094140B /* CCPost.m */; };
+		B656033C13E3D6AB0094140B /* CCReview.h in Headers */ = {isa = PBXBuildFile; fileRef = B656033213E3D6AB0094140B /* CCReview.h */; };
+		B656033D13E3D6AB0094140B /* CCReview.m in Sources */ = {isa = PBXBuildFile; fileRef = B656033313E3D6AB0094140B /* CCReview.m */; };
+		B656033E13E3D6AB0094140B /* CCShareRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = B656033413E3D6AB0094140B /* CCShareRequest.h */; };
+		B656033F13E3D6AB0094140B /* CCShareRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B656033513E3D6AB0094140B /* CCShareRequest.m */; };
 		B68992AC12C30077006D4ED8 /* YAJL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B68992AA12C30077006D4ED8 /* YAJL.framework */; };
 /* End PBXBuildFile section */
 
@@ -192,6 +202,16 @@
 		B64B271F138097890053E943 /* OAuth+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "OAuth+Additions.m"; sourceTree = "<group>"; };
 		B64B2720138097890053E943 /* OAuthCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAuthCore.h; sourceTree = "<group>"; };
 		B64B2721138097890053E943 /* OAuthCore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAuthCore.m; sourceTree = "<group>"; };
+		B656032C13E3D6AB0094140B /* CCCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCCollection.h; sourceTree = "<group>"; };
+		B656032D13E3D6AB0094140B /* CCCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCCollection.m; sourceTree = "<group>"; };
+		B656032E13E3D6AB0094140B /* CCFriendRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCFriendRequest.h; sourceTree = "<group>"; };
+		B656032F13E3D6AB0094140B /* CCFriendRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCFriendRequest.m; sourceTree = "<group>"; };
+		B656033013E3D6AB0094140B /* CCPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPost.h; sourceTree = "<group>"; };
+		B656033113E3D6AB0094140B /* CCPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCPost.m; sourceTree = "<group>"; };
+		B656033213E3D6AB0094140B /* CCReview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCReview.h; sourceTree = "<group>"; };
+		B656033313E3D6AB0094140B /* CCReview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCReview.m; sourceTree = "<group>"; };
+		B656033413E3D6AB0094140B /* CCShareRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCShareRequest.h; sourceTree = "<group>"; };
+		B656033513E3D6AB0094140B /* CCShareRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCShareRequest.m; sourceTree = "<group>"; };
 		B689924712C2FBE7006D4ED8 /* libCocoafish.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCocoafish.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B68992AA12C30077006D4ED8 /* YAJL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = YAJL.framework; sourceTree = "<group>"; };
 		B68992BC12C30516006D4ED8 /* libz.1.2.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.3.dylib; path = usr/lib/libz.1.2.3.dylib; sourceTree = SDKROOT; };
@@ -360,6 +380,16 @@
 		B64B26F9138097890053E943 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B656032C13E3D6AB0094140B /* CCCollection.h */,
+				B656032D13E3D6AB0094140B /* CCCollection.m */,
+				B656032E13E3D6AB0094140B /* CCFriendRequest.h */,
+				B656032F13E3D6AB0094140B /* CCFriendRequest.m */,
+				B656033013E3D6AB0094140B /* CCPost.h */,
+				B656033113E3D6AB0094140B /* CCPost.m */,
+				B656033213E3D6AB0094140B /* CCReview.h */,
+				B656033313E3D6AB0094140B /* CCReview.m */,
+				B656033413E3D6AB0094140B /* CCShareRequest.h */,
+				B656033513E3D6AB0094140B /* CCShareRequest.m */,
 				B64B26FA138097890053E943 /* CCCheckin.h */,
 				B64B26FB138097890053E943 /* CCCheckin.m */,
 				B64B26FC138097890053E943 /* CCEvent.h */,
@@ -470,6 +500,11 @@
 				B64B2748138097890053E943 /* NSData+Base64.h in Headers */,
 				B64B274A138097890053E943 /* OAuth+Additions.h in Headers */,
 				B64B274C138097890053E943 /* OAuthCore.h in Headers */,
+				B656033613E3D6AB0094140B /* CCCollection.h in Headers */,
+				B656033813E3D6AB0094140B /* CCFriendRequest.h in Headers */,
+				B656033A13E3D6AB0094140B /* CCPost.h in Headers */,
+				B656033C13E3D6AB0094140B /* CCReview.h in Headers */,
+				B656033E13E3D6AB0094140B /* CCShareRequest.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -563,6 +598,11 @@
 				B64B2749138097890053E943 /* NSData+Base64.m in Sources */,
 				B64B274B138097890053E943 /* OAuth+Additions.m in Sources */,
 				B64B274D138097890053E943 /* OAuthCore.m in Sources */,
+				B656033713E3D6AB0094140B /* CCCollection.m in Sources */,
+				B656033913E3D6AB0094140B /* CCFriendRequest.m in Sources */,
+				B656033B13E3D6AB0094140B /* CCPost.m in Sources */,
+				B656033D13E3D6AB0094140B /* CCReview.m in Sources */,
+				B656033F13E3D6AB0094140B /* CCShareRequest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

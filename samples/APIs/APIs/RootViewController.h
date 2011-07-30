@@ -20,6 +20,7 @@ typedef enum SECTIONS {
     KEY_VALUES,
     EVENTS,
     CLIENTS,
+    POSTS,
     NUM_SECTIONS
 } sections;
 
@@ -29,6 +30,7 @@ typedef enum SECTIONS {
     CCPhoto *testPhoto;
     CCEvent *testEvent;
     CCMessage *testMessage;
+    CCPost *testPost;
 }
 
 

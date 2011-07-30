@@ -66,7 +66,7 @@
 #pragma CCRequestDelegate callback
 -(void)ccrequest:(CCRequest *)request didSucceed:(CCResponse *)response
 {
-    NSArray *types = [NSArray arrayWithObjects:NSStringFromClass([CCPhoto class]), NSStringFromClass([CCUser class]), NSStringFromClass([CCCheckin class]), NSStringFromClass([CCStatus class]), NSStringFromClass([CCEvent class]), NSStringFromClass([CCCollection class]), NSStringFromClass([CCKeyValuePair class]), NSStringFromClass([CCMessage class]), NSStringFromClass([CCPlace class]), NSStringFromClass([CCChat class]), nil];
+    NSArray *types = [NSArray arrayWithObjects:NSStringFromClass([CCPhoto class]), NSStringFromClass([CCUser class]), NSStringFromClass([CCCheckin class]), NSStringFromClass([CCStatus class]), NSStringFromClass([CCEvent class]), NSStringFromClass([CCCollection class]), NSStringFromClass([CCKeyValuePair class]), NSStringFromClass([CCMessage class]), NSStringFromClass([CCPlace class]), NSStringFromClass([CCChat class]), NSStringFromClass([CCPost class]), NSStringFromClass([CCReview class]), nil];
     
     for (NSString *type in types) {
         Class class = NSClassFromString(type);
@@ -92,6 +92,9 @@
     } else if ([response.meta.methodName isEqualToString:@"createMessage"] && ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testMessage == nil) {
         CCMessage *message = [[response getObjectsOfType:[CCMessage class]] objectAtIndex:0];
         ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testMessage = message;
+    } else if ([response.meta.methodName isEqualToString:@"createPost"] && ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testPost == nil) {
+        CCPost *post = [[response getObjectsOfType:[CCPost class]] objectAtIndex:0];
+        ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testPost = post;
     } else if ([response.meta.methodName isEqualToString:@"deletePlace"]) {
         ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testPlace = nil;
     } else if ([response.meta.methodName isEqualToString:@"deletePhoto"]) {
@@ -100,6 +103,8 @@
         ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testEvent = nil;
     } else if ([response.meta.methodName isEqualToString:@"deleteMessageThread"]) {
         ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testMessage = nil;
+    } else if ([response.meta.methodName isEqualToString:@"deletePost"]) {
+        ((APIsAppDelegate *)[UIApplication sharedApplication].delegate).testPost = nil;
     }
        
 }

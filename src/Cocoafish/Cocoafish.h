@@ -20,6 +20,8 @@
 #import "CCCollection.h"
 #import "CCShareRequest.h"
 #import "CCChat.h"
+#import "CCPost.h"
+#import "CCReview.h"
 
 @protocol CCFBSessionDelegate;
 
