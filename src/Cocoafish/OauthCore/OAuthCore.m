@@ -62,7 +62,7 @@ NSString *OAuthorizationHeader(NSURL *url, NSString *method, NSData *body, NSStr
 	NSMutableDictionary *encodedParameters = [NSMutableDictionary dictionary];
 	for(NSString *key in parameters) {
 		NSString *value = [parameters objectForKey:key];
-		[encodedParameters setObject:[value ab_RFC3986EncodedString] forKey:[key ab_RFC3986EncodedString]];
+		[encodedParameters setObject:[value ab_RFC3986EncodedString] forKey:key];
 	}
 	
 	NSArray *sortedKeys = [[encodedParameters allKeys] sortedArrayUsingFunction:SortParameter context:encodedParameters];
