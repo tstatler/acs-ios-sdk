@@ -15,7 +15,7 @@
     NSString *_content;
 	CCUser *_user;
     NSInteger _reviewsCount;
-    double _ratingAverage;
+    double _ratingsAverage;
     NSDictionary *_ratingsSummary;
 }
 
@@ -23,7 +23,7 @@
 @property (nonatomic, retain, readonly) NSString *content;
 @property (nonatomic, retain, readonly) CCUser *user;
 @property (nonatomic, readonly) NSInteger reviewsCount;
-@property (nonatomic, readonly) double ratingAverage;
+@property (nonatomic, readonly) double ratingsAverage;
 @property (nonatomic, retain, readonly) NSDictionary *ratingsSummary;
 
 -(id)initWithJsonResponse:(NSDictionary *)jsonResponse;
