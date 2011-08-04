@@ -14,6 +14,7 @@
 @property (nonatomic, retain, readwrite) NSString *content;
 @property (nonatomic, retain, readwrite) CCUser *user;
 @property (nonatomic, readwrite) NSInteger reviewsCount;
+@property (nonatomic, readwrite) double ratingAverage;
 @property (nonatomic, retain, readwrite) NSDictionary *ratingsSummary;
 @end
 
@@ -22,6 +23,7 @@
 @synthesize content = _content;
 @synthesize user = _user;
 @synthesize reviewsCount = _reviewsCount;
+@synthesize ratingAverage = _ratingAverage;
 @synthesize ratingsSummary = _ratingsSummary;
 
 
@@ -39,9 +41,13 @@
 			self = nil;
 		}
         self.title = [jsonResponse objectForKey:@"title"];
-        NSString *reviewCountStr = [jsonResponse objectForKey:@"reviews_count"];
-        if (reviewCountStr) {
-            _reviewsCount = [reviewCountStr intValue];
+        NSString *tmpStr = [jsonResponse objectForKey:@"reviews_count"];
+        if (tmpStr) {
+            _reviewsCount = [tmpStr intValue];
+        }
+        tmpStr = [jsonResponse objectForKey:@"rating_average"];
+        if (tmpStr) {
+            _ratingAverage = [tmpStr doubleValue];
         }
         self.ratingsSummary = [jsonResponse objectForKey:@"ratings_summary"];
         
