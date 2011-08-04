@@ -45,7 +45,7 @@
         if (tmpStr) {
             _reviewsCount = [tmpStr intValue];
         }
-        tmpStr = [jsonResponse objectForKey:@"rating_average"];
+        tmpStr = [jsonResponse objectForKey:@"ratings_average"];
         if (tmpStr) {
             _ratingAverage = [tmpStr doubleValue];
         }
