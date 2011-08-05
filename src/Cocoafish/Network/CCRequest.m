@@ -91,7 +91,7 @@
     self = [super initWithURL:newUrl];
     if (self) {
         NSLog(@"CCRequest Url: %@", [newUrl absoluteString]);
-        [self setRequestMethod:httpMethod];
+        [self setRequestMethod:httpMethod]; 
         self.requestDelegate = requestDelegate;       
         if ([httpMethod isEqualToString:@"POST"] || [httpMethod isEqualToString:@"PUT"]) {
             // add post body
@@ -99,11 +99,13 @@
                 id valueObject = [paramDict valueForKey:key];
                 NSString *value = nil;
                 // URL encode string
-                if ([valueObject isKindOfClass:[NSArray class]]) {
+                if ([valueObject isKindOfClass:[NSArray class]] && ![baseUrl isEqualToString:@"keyvalues/set.json"]) {
                     // concatenate the array
                     value = [valueObject componentsJoinedByString:@","];
-                } else if ([valueObject isKindOfClass:[NSDictionary class]]) {
+                } else if (([valueObject isKindOfClass:[NSDictionary class]] || [valueObject isKindOfClass:[NSArray class]]) && [baseUrl isEqualToString:@"keyvalues/set.json"]) {
                     value = [valueObject yajl_JSONString];
+                    // if it is keyvalues set, convert array or dictionary to json and set type to json
+                    [self setPostValue:@"json" forKey:@"type"];
                 } else if (![valueObject isKindOfClass:[NSString class]]) {
                     value = [valueObject description];
                 } else {

@@ -983,7 +983,7 @@
                         return;
                     }
                     prompt = [AlertPrompt alloc];
-                    prompt = [prompt initWithTitle:@"Enter a a rating" message:@"Please enter a rating for the post" delegate:self cancelButtonTitle:@"Cancel" okButtonTitle:@"Okay" defaultInput:testEvent.name];
+                    prompt = [prompt initWithTitle:@"Enter a a rating" message:@"Please enter a rating for the post" delegate:self cancelButtonTitle:@"Cancel" okButtonTitle:@"Okay" defaultInput:@"10"];
                     lastIndexPath = [indexPath copy];
                     [prompt show];
                     [prompt release];
@@ -1047,8 +1047,8 @@
         } else if (lastIndexPath.section == KEY_VALUES){
             if (lastIndexPath.row == 0) {
                 // set key value
-               // request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"PUT" baseUrl:@"keyvalues/set.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:@"custom_fields[foo]", @"value", @"Test", @"name", nil]] autorelease];
                 request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"PUT" baseUrl:@"keyvalues/set.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:entered, @"value", @"Test", @"name", nil]] autorelease];
+               // request = [[[CCRequest alloc] initWithDelegate:controller httpMethod:@"PUT" baseUrl:@"keyvalues/set.json" paramDict:[NSDictionary dictionaryWithObjectsAndKeys:[NSArray arrayWithObjects:@"1",@"2",nil], @"value", @"Test", @"name", nil]] autorelease];
 
 
             } else {
