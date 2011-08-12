@@ -21,6 +21,8 @@
 @property (nonatomic, readwrite) NSInteger recurringCount;
 @property (nonatomic, readwrite) NSInteger numOccurrences;
 @property (nonatomic, retain, readwrite) NSString *ical;
+@property (nonatomic, retain, readwrite) NSDate *recurringUntil;
+@property (nonatomic, readwrite) Boolean exclusive;
 @end
 
 @interface CCEventOccurrence ()
@@ -42,14 +44,16 @@
 @synthesize recurringCount = _recurringCount;
 @synthesize numOccurrences = _numOccurrences;
 @synthesize ical = _ical;
+@synthesize recurringUntil = _recurringUntil;
+@synthesize exclusive = _exclusive;
 
 -(id)initWithJsonResponse:(NSDictionary *)jsonResponse
 {
 	self = [super initWithJsonResponse:jsonResponse];
+    NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
+    dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZ";
+    NSString *dateString = nil;
 	if (self) {
-        NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
-        dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZ";
-        NSString *dateString = nil;
 		@try {
             self.name = [jsonResponse objectForKey:CC_JSON_NAME];
 			_user = [[CCUser alloc] initWithJsonResponse:[jsonResponse objectForKey:CC_JSON_USER]];
@@ -74,6 +78,12 @@
         self.recurringCount = [[jsonResponse objectForKey:@"recurring_count"] intValue];
         self.numOccurrences = [[jsonResponse objectForKey:@"num_occurrences"] intValue];
         self.ical = [jsonResponse objectForKey:@"ical"];
+        dateString = [jsonResponse objectForKey:@"recurring_until"];
+        if (dateString) {
+            self.recurringUntil = [dateFormatter dateFromString:dateString];
+        }
+        self.exclusive = [[jsonResponse objectForKey:@"exclusive"] boolValue];
+
 
 	}
 	return self;
@@ -103,6 +113,7 @@
 	self.details = nil;
     self.startTime = nil;
     self.recurring = nil;
+    self.recurringUntil = nil;
     self.ical = nil;
 	[super dealloc];
 }
