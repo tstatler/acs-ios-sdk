@@ -16,7 +16,11 @@
     NSString *_name;
     NSString *_details;
     NSDate *_startTime;
-    NSDate *_endTime;
+    NSInteger duration;
+    NSString *recurring;
+    NSInteger recurringCount;
+    NSInteger numOccurrences;
+    NSString *ical;
 	CCUser *_user;
 	CCPlace *_place;
 }
@@ -27,6 +31,25 @@
 @property (nonatomic, retain, readonly) CCPlace *place;
 @property (nonatomic, retain, readonly) NSDate *startTime;
 @property (nonatomic, retain, readonly) NSDate *endTime;
+@property (nonatomic, readonly) NSInteger duration;
+@property (nonatomic, retain, readonly) NSString *recurring;
+@property (nonatomic, readonly) NSInteger recurringCount;
+@property (nonatomic, readonly) NSInteger numOccurrences;
+@property (nonatomic, retain, readonly) NSString *ical;
+
 
 -(id)initWithJsonResponse:(NSDictionary *)jsonResponse;
+@end
+
+@interface CCEventOccurrence : CCObject {
+@private
+    NSDate *_startTime;
+    NSDate *_endTime;
+    CCEvent *_event;
+}
+
+@property (nonatomic, retain, readonly) NSDate *startTime;
+@property (nonatomic, retain, readonly) NSDate *endTime;
+@property (nonatomic, retain, readonly) CCEvent *event;
+
 @end

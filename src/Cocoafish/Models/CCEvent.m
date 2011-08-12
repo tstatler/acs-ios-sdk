@@ -16,7 +16,17 @@
 @property (nonatomic, retain, readwrite) CCUser *user;
 @property (nonatomic, retain, readwrite) CCPlace *place;
 @property (nonatomic, retain, readwrite) NSDate *startTime;
+@property (nonatomic, readwrite) NSInteger duration;
+@property (nonatomic, retain, readwrite) NSString *recurring;
+@property (nonatomic, readwrite) NSInteger recurringCount;
+@property (nonatomic, readwrite) NSInteger numOccurrences;
+@property (nonatomic, retain, readwrite) NSString *ical;
+@end
+
+@interface CCEventOccurrence ()
+@property (nonatomic, retain, readwrite) NSDate *startTime;
 @property (nonatomic, retain, readwrite) NSDate *endTime;
+@property (nonatomic, retain, readwrite) CCEvent *event;
 @end
 
 @implementation CCEvent
@@ -27,6 +37,11 @@
 @synthesize place = _place;
 @synthesize startTime = _startTime;
 @synthesize endTime = _endTime;
+@synthesize duration = _duration;
+@synthesize recurring = _recurring;
+@synthesize recurringCount = _recurringCount;
+@synthesize numOccurrences = _numOccurrences;
+@synthesize ical = _ical;
 
 -(id)initWithJsonResponse:(NSDictionary *)jsonResponse
 {
@@ -45,6 +60,7 @@
             if (dateString) {
                 self.startTime = [dateFormatter dateFromString:dateString];
             }
+            
 
         }
 		@catch (NSException *e) {
@@ -53,11 +69,11 @@
 			self = nil;
 		}
         self.details = [jsonResponse objectForKey:CC_JSON_DETAILS];
-        
-        dateString = [jsonResponse objectForKey:CC_JSON_END_TIME];
-        if (dateString) {
-            self.endTime = [dateFormatter dateFromString:dateString];
-        }
+        self.duration = [[jsonResponse objectForKey:@"duration"] intValue];
+        self.recurring = [jsonResponse objectForKey:@"recurring"];
+        self.recurringCount = [[jsonResponse objectForKey:@"recurring_count"] intValue];
+        self.numOccurrences = [[jsonResponse objectForKey:@"num_occurrences"] intValue];
+        self.ical = [jsonResponse objectForKey:@"ical"];
 
 	}
 	return self;
@@ -86,7 +102,64 @@
 	self.name = nil;
 	self.details = nil;
     self.startTime = nil;
-    self.endTime = nil;
+    self.recurring = nil;
+    self.ical = nil;
+	[super dealloc];
+}
+@end
+
+@implementation CCEventOccurrence
+
+@synthesize startTime = _startTime;
+@synthesize endTime = _endTime;
+@synthesize event = _event;
+
+
+-(id)initWithJsonResponse:(NSDictionary *)jsonResponse
+{
+	self = [super initWithJsonResponse:jsonResponse];
+	if (self) {
+        NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
+        dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZ";
+        NSString *dateString = nil;
+		@try {
+			_event = [[CCEvent alloc] initWithJsonResponse:[jsonResponse objectForKey:@"event"]];
+            dateString = [jsonResponse objectForKey:CC_JSON_START_TIME];
+            if (dateString) {
+                self.startTime = [dateFormatter dateFromString:dateString];
+            }
+            dateString = [jsonResponse objectForKey:CC_JSON_END_TIME];
+            if (dateString) {
+                self.endTime = [dateFormatter dateFromString:dateString];
+            }
+            
+        }
+		@catch (NSException *e) {
+			NSLog(@"Error: Failed to parse EventOccurrence object. Reason: %@", [e reason]);
+			[self release];
+			self = nil;
+		}
+	}
+	return self;
+}
+
+
++(NSString *)modelName
+{
+    return @"event_occurrence";
+}
+
++(NSString *)jsonTag
+{
+    return @"event_occurrences";
+}
+
+
+-(void)dealloc
+{
+	self.startTime = nil;
+	self.endTime = nil;
+	self.event = nil;
 	[super dealloc];
 }
 @end
