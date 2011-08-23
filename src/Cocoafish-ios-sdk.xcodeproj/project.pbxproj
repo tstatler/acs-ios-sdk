@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AE9348C214030B4800BBC7B1 /* NSString+HTML.h in Headers */ = {isa = PBXBuildFile; fileRef = AE9348C014030B4800BBC7B1 /* NSString+HTML.h */; };
+		AE9348C314030B4800BBC7B1 /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = AE9348C114030B4800BBC7B1 /* NSString+HTML.m */; };
+		AE9348C714030B5900BBC7B1 /* CCChat.h in Headers */ = {isa = PBXBuildFile; fileRef = AE9348C514030B5900BBC7B1 /* CCChat.h */; };
+		AE9348C814030B5900BBC7B1 /* CCChat.m in Sources */ = {isa = PBXBuildFile; fileRef = AE9348C614030B5900BBC7B1 /* CCChat.m */; };
 		B604294B133D3973008CEE69 /* ASIAuthenticationDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = B60428F7133D3973008CEE69 /* ASIAuthenticationDialog.h */; };
 		B604294C133D3973008CEE69 /* ASIAuthenticationDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = B60428F8133D3973008CEE69 /* ASIAuthenticationDialog.m */; };
 		B604294D133D3973008CEE69 /* ASICacheDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = B60428F9133D3973008CEE69 /* ASICacheDelegate.h */; };
@@ -81,8 +85,6 @@
 		B64B273D138097890053E943 /* CCUser.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B270F138097890053E943 /* CCUser.m */; };
 		B64B273E138097890053E943 /* CCConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = B64B2711138097890053E943 /* CCConstants.h */; };
 		B64B273F138097890053E943 /* CCConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B2712138097890053E943 /* CCConstants.m */; };
-		B64B2740138097890053E943 /* CCDownloadRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = B64B2713138097890053E943 /* CCDownloadRequest.h */; };
-		B64B2741138097890053E943 /* CCDownloadRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B2714138097890053E943 /* CCDownloadRequest.m */; };
 		B64B2742138097890053E943 /* CCNetworkManager.h in Headers */ = {isa = PBXBuildFile; fileRef = B64B2715138097890053E943 /* CCNetworkManager.h */; };
 		B64B2743138097890053E943 /* CCNetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B2716138097890053E943 /* CCNetworkManager.m */; };
 		B64B2744138097890053E943 /* CCRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = B64B2717138097890053E943 /* CCRequest.h */; };
@@ -113,6 +115,10 @@
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		8D1107310486CEB800E47090 /* Cocoafish_ios_sdk-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Cocoafish_ios_sdk-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		AE9348C014030B4800BBC7B1 /* NSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HTML.h"; sourceTree = "<group>"; };
+		AE9348C114030B4800BBC7B1 /* NSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HTML.m"; sourceTree = "<group>"; };
+		AE9348C514030B5900BBC7B1 /* CCChat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCChat.h; sourceTree = "<group>"; };
+		AE9348C614030B5900BBC7B1 /* CCChat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCChat.m; sourceTree = "<group>"; };
 		B60428F7133D3973008CEE69 /* ASIAuthenticationDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIAuthenticationDialog.h; sourceTree = "<group>"; };
 		B60428F8133D3973008CEE69 /* ASIAuthenticationDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIAuthenticationDialog.m; sourceTree = "<group>"; };
 		B60428F9133D3973008CEE69 /* ASICacheDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASICacheDelegate.h; sourceTree = "<group>"; };
@@ -188,8 +194,6 @@
 		B64B270F138097890053E943 /* CCUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCUser.m; sourceTree = "<group>"; };
 		B64B2711138097890053E943 /* CCConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCConstants.h; sourceTree = "<group>"; };
 		B64B2712138097890053E943 /* CCConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCConstants.m; sourceTree = "<group>"; };
-		B64B2713138097890053E943 /* CCDownloadRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCDownloadRequest.h; sourceTree = "<group>"; };
-		B64B2714138097890053E943 /* CCDownloadRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCDownloadRequest.m; sourceTree = "<group>"; };
 		B64B2715138097890053E943 /* CCNetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCNetworkManager.h; sourceTree = "<group>"; };
 		B64B2716138097890053E943 /* CCNetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCNetworkManager.m; sourceTree = "<group>"; };
 		B64B2717138097890053E943 /* CCRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCRequest.h; sourceTree = "<group>"; };
@@ -371,6 +375,8 @@
 		B64B26F6138097890053E943 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				AE9348C014030B4800BBC7B1 /* NSString+HTML.h */,
+				AE9348C114030B4800BBC7B1 /* NSString+HTML.m */,
 				B64B26F7138097890053E943 /* WBImage.h */,
 				B64B26F8138097890053E943 /* WBImage.m */,
 			);
@@ -380,6 +386,8 @@
 		B64B26F9138097890053E943 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				AE9348C514030B5900BBC7B1 /* CCChat.h */,
+				AE9348C614030B5900BBC7B1 /* CCChat.m */,
 				B656032C13E3D6AB0094140B /* CCCollection.h */,
 				B656032D13E3D6AB0094140B /* CCCollection.m */,
 				B656032E13E3D6AB0094140B /* CCFriendRequest.h */,
@@ -421,8 +429,6 @@
 			children = (
 				B64B2711138097890053E943 /* CCConstants.h */,
 				B64B2712138097890053E943 /* CCConstants.m */,
-				B64B2713138097890053E943 /* CCDownloadRequest.h */,
-				B64B2714138097890053E943 /* CCDownloadRequest.m */,
 				B64B2715138097890053E943 /* CCNetworkManager.h */,
 				B64B2716138097890053E943 /* CCNetworkManager.m */,
 				B64B2717138097890053E943 /* CCRequest.h */,
@@ -493,7 +499,6 @@
 				B64B273A138097890053E943 /* CCStatus.h in Headers */,
 				B64B273C138097890053E943 /* CCUser.h in Headers */,
 				B64B273E138097890053E943 /* CCConstants.h in Headers */,
-				B64B2740138097890053E943 /* CCDownloadRequest.h in Headers */,
 				B64B2742138097890053E943 /* CCNetworkManager.h in Headers */,
 				B64B2744138097890053E943 /* CCRequest.h in Headers */,
 				B64B2746138097890053E943 /* CCResponse.h in Headers */,
@@ -505,6 +510,8 @@
 				B656033A13E3D6AB0094140B /* CCPost.h in Headers */,
 				B656033C13E3D6AB0094140B /* CCReview.h in Headers */,
 				B656033E13E3D6AB0094140B /* CCShareRequest.h in Headers */,
+				AE9348C214030B4800BBC7B1 /* NSString+HTML.h in Headers */,
+				AE9348C714030B5900BBC7B1 /* CCChat.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -591,7 +598,6 @@
 				B64B273B138097890053E943 /* CCStatus.m in Sources */,
 				B64B273D138097890053E943 /* CCUser.m in Sources */,
 				B64B273F138097890053E943 /* CCConstants.m in Sources */,
-				B64B2741138097890053E943 /* CCDownloadRequest.m in Sources */,
 				B64B2743138097890053E943 /* CCNetworkManager.m in Sources */,
 				B64B2745138097890053E943 /* CCRequest.m in Sources */,
 				B64B2747138097890053E943 /* CCResponse.m in Sources */,
@@ -603,6 +609,8 @@
 				B656033B13E3D6AB0094140B /* CCPost.m in Sources */,
 				B656033D13E3D6AB0094140B /* CCReview.m in Sources */,
 				B656033F13E3D6AB0094140B /* CCShareRequest.m in Sources */,
+				AE9348C314030B4800BBC7B1 /* NSString+HTML.m in Sources */,
+				AE9348C814030B5900BBC7B1 /* CCChat.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
