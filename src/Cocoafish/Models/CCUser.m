@@ -71,7 +71,7 @@
 /*- (NSString *)description {
     return [NSString stringWithFormat:@"CCUser:\n\temail: %@\n\tuserName: %@\n\tfirst: %@\n\tlast: %@\n\tfacebookAccessToken :%@\n%@",
             self.email, self.username, self.firstName, self.lastName, self.facebookAccessToken, [super description]];
-}*/
+}
 
 -(id)copyWithZone:(NSZone *)zone  
 {
@@ -83,7 +83,7 @@
     copy.facebookAccessToken = [_facebookAccessToken copy];
     copy.role = [_role copy];
     return copy;
-}
+}*/
 
 +(NSString *)modelName
 {

@@ -12,12 +12,12 @@
 @class CCUser;
 @interface CCMessage : CCObject {
 @private
-    NSString *threadId;
-    NSString *status;
-    NSString *subject;
-    NSString *body;
-    CCUser *from;
-    NSArray *to; // list of users the message was sent to
+    NSString *_threadId;
+    NSString *_status;
+    NSString *_subject;
+    NSString *_body;
+    CCUser *_from;
+    NSArray *_to; // list of users the message was sent to
 }
 
 @property (nonatomic, retain, readonly) NSString *threadId;

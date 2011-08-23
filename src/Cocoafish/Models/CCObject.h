@@ -11,7 +11,7 @@
 #import "CCConstants.h"
 
 
-@interface CCObject : NSObject <NSCopying> {
+@interface CCObject : NSObject {
 
 	NSString * _objectId;
 	NSDate * _createdAt;

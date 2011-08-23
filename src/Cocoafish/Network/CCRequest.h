@@ -32,7 +32,7 @@
 -(id)initHttpsWithDelegate:(id)requestDelegate httpMethod:(NSString *)httpMethod baseUrl:(NSString *)baseUrl paramDict:(NSDictionary *)paramDict;
 -(id)initWithDelegate:(id)requestDelegate httpProtocol:(NSString *)protocal httpMethod:(NSString *)httpMethod baseUrl:(NSString *)baseUrl paramDict:(NSDictionary *)paramDict;
 
--(CCResponse *)startSynchronous;
+-(CCResponse *)startSynchronousRequest;
 -(void)addPhotoALAsset:(ALAsset *)alasset paramDict:(NSDictionary *)paramDict;
 -(void)addPhotoUIImage:(UIImage *)image paramDict:(NSDictionary *)paramDict;
 -(void)addCustomField:(NSString *)customKey value:(NSString *)value type:(NSString *)type;

@@ -53,7 +53,6 @@
 		B67B692413341319001E4472 /* CCStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = B67B68E913341319001E4472 /* CCStatus.m */; };
 		B67B692513341319001E4472 /* CCUser.m in Sources */ = {isa = PBXBuildFile; fileRef = B67B68EB13341319001E4472 /* CCUser.m */; };
 		B67B692613341319001E4472 /* CCConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = B67B68EE13341319001E4472 /* CCConstants.m */; };
-		B67B692813341319001E4472 /* CCNetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B67B68F213341319001E4472 /* CCNetworkManager.m */; };
 		B67B692913341319001E4472 /* CCResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = B67B68F413341319001E4472 /* CCResponse.m */; };
 		B67B692A13341319001E4472 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = B67B68F713341319001E4472 /* NSData+Base64.m */; };
 		B67B692B13341319001E4472 /* OAuth+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = B67B68F913341319001E4472 /* OAuth+Additions.m */; };
@@ -191,8 +190,6 @@
 		B67B68EB13341319001E4472 /* CCUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCUser.m; sourceTree = "<group>"; };
 		B67B68ED13341319001E4472 /* CCConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCConstants.h; sourceTree = "<group>"; };
 		B67B68EE13341319001E4472 /* CCConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCConstants.m; sourceTree = "<group>"; };
-		B67B68F113341319001E4472 /* CCNetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCNetworkManager.h; sourceTree = "<group>"; };
-		B67B68F213341319001E4472 /* CCNetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCNetworkManager.m; sourceTree = "<group>"; };
 		B67B68F313341319001E4472 /* CCResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCResponse.h; sourceTree = "<group>"; };
 		B67B68F413341319001E4472 /* CCResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCResponse.m; sourceTree = "<group>"; };
 		B67B68F613341319001E4472 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
@@ -546,8 +543,6 @@
 				B6D3036F13485434001259F3 /* CCRequest.m */,
 				B67B68ED13341319001E4472 /* CCConstants.h */,
 				B67B68EE13341319001E4472 /* CCConstants.m */,
-				B67B68F113341319001E4472 /* CCNetworkManager.h */,
-				B67B68F213341319001E4472 /* CCNetworkManager.m */,
 				B67B68F313341319001E4472 /* CCResponse.h */,
 				B67B68F413341319001E4472 /* CCResponse.m */,
 			);
@@ -735,7 +730,6 @@
 				B67B692413341319001E4472 /* CCStatus.m in Sources */,
 				B67B692513341319001E4472 /* CCUser.m in Sources */,
 				B67B692613341319001E4472 /* CCConstants.m in Sources */,
-				B67B692813341319001E4472 /* CCNetworkManager.m in Sources */,
 				B67B692913341319001E4472 /* CCResponse.m in Sources */,
 				B67B692A13341319001E4472 /* NSData+Base64.m in Sources */,
 				B67B692B13341319001E4472 /* OAuth+Additions.m in Sources */,

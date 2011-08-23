@@ -8,7 +8,7 @@
 
 #import "CCObjectWithPhoto.h"
 
-@interface CCUser : CCObjectWithPhoto <NSCopying> {
+@interface CCUser : CCObjectWithPhoto {
 
 	NSString *_firstName;
 	NSString *_lastName;

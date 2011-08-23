@@ -68,7 +68,7 @@
     return [NSString stringWithFormat:@"CCPlace:\n\tname: %@\n\taddress: %@\n\tcrossStreet: %@\n\tcity: %@\n\tstate: %@\n\tpostalCode: %@\n\tcountry :%@\n\tphone: %@\n\twebsite: %@\n\ttwitter: %@\n\tlocation: %@\n\t%@",
             self.name, self.address, self.crossStreet, self.city, self.state, self.postalCode,
             self.country, self.phone, self.website, self.twitter, [self.location description], [super description]];
-}*/
+}
 
 -(id)copyWithZone:(NSZone *)zone  
 {
@@ -85,7 +85,7 @@
     copy.twitter = [_twitter copy];
     copy.location= [_location copy];
     return copy;
-}
+}*/
 
 +(NSString *)modelName
 {

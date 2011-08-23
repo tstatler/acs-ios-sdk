@@ -81,10 +81,6 @@
 		B64B273D138097890053E943 /* CCUser.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B270F138097890053E943 /* CCUser.m */; };
 		B64B273E138097890053E943 /* CCConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = B64B2711138097890053E943 /* CCConstants.h */; };
 		B64B273F138097890053E943 /* CCConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B2712138097890053E943 /* CCConstants.m */; };
-		B64B2740138097890053E943 /* CCDownloadRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = B64B2713138097890053E943 /* CCDownloadRequest.h */; };
-		B64B2741138097890053E943 /* CCDownloadRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B2714138097890053E943 /* CCDownloadRequest.m */; };
-		B64B2742138097890053E943 /* CCNetworkManager.h in Headers */ = {isa = PBXBuildFile; fileRef = B64B2715138097890053E943 /* CCNetworkManager.h */; };
-		B64B2743138097890053E943 /* CCNetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B2716138097890053E943 /* CCNetworkManager.m */; };
 		B64B2744138097890053E943 /* CCRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = B64B2717138097890053E943 /* CCRequest.h */; };
 		B64B2745138097890053E943 /* CCRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B2718138097890053E943 /* CCRequest.m */; };
 		B64B2746138097890053E943 /* CCResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = B64B2719138097890053E943 /* CCResponse.h */; };
@@ -106,6 +102,13 @@
 		B656033E13E3D6AB0094140B /* CCShareRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = B656033413E3D6AB0094140B /* CCShareRequest.h */; };
 		B656033F13E3D6AB0094140B /* CCShareRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B656033513E3D6AB0094140B /* CCShareRequest.m */; };
 		B68992AC12C30077006D4ED8 /* YAJL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B68992AA12C30077006D4ED8 /* YAJL.framework */; };
+		B6954FC1140351C40081F31F /* CCChat.h in Headers */ = {isa = PBXBuildFile; fileRef = B6954FBF140351C40081F31F /* CCChat.h */; };
+		B6954FC2140351C40081F31F /* CCChat.m in Sources */ = {isa = PBXBuildFile; fileRef = B6954FC0140351C40081F31F /* CCChat.m */; };
+		B6954FC9140352380081F31F /* GTMdefines.h in Headers */ = {isa = PBXBuildFile; fileRef = B6954FC4140352380081F31F /* GTMdefines.h */; };
+		B6954FCA140352380081F31F /* GTMNSString+HTML.h in Headers */ = {isa = PBXBuildFile; fileRef = B6954FC5140352380081F31F /* GTMNSString+HTML.h */; };
+		B6954FCB140352380081F31F /* GTMNSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = B6954FC6140352380081F31F /* GTMNSString+HTML.m */; };
+		B6954FCC140352380081F31F /* NSString+HTML.h in Headers */ = {isa = PBXBuildFile; fileRef = B6954FC7140352380081F31F /* NSString+HTML.h */; };
+		B6954FCD140352380081F31F /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = B6954FC8140352380081F31F /* NSString+HTML.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -188,10 +191,6 @@
 		B64B270F138097890053E943 /* CCUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCUser.m; sourceTree = "<group>"; };
 		B64B2711138097890053E943 /* CCConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCConstants.h; sourceTree = "<group>"; };
 		B64B2712138097890053E943 /* CCConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCConstants.m; sourceTree = "<group>"; };
-		B64B2713138097890053E943 /* CCDownloadRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCDownloadRequest.h; sourceTree = "<group>"; };
-		B64B2714138097890053E943 /* CCDownloadRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCDownloadRequest.m; sourceTree = "<group>"; };
-		B64B2715138097890053E943 /* CCNetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCNetworkManager.h; sourceTree = "<group>"; };
-		B64B2716138097890053E943 /* CCNetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCNetworkManager.m; sourceTree = "<group>"; };
 		B64B2717138097890053E943 /* CCRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCRequest.h; sourceTree = "<group>"; };
 		B64B2718138097890053E943 /* CCRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCRequest.m; sourceTree = "<group>"; };
 		B64B2719138097890053E943 /* CCResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCResponse.h; sourceTree = "<group>"; };
@@ -219,6 +218,13 @@
 		B68992C012C30544006D4ED8 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		B68992C212C30544006D4ED8 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		B68992C612C3055A006D4ED8 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		B6954FBF140351C40081F31F /* CCChat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCChat.h; sourceTree = "<group>"; };
+		B6954FC0140351C40081F31F /* CCChat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCChat.m; sourceTree = "<group>"; };
+		B6954FC4140352380081F31F /* GTMdefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMdefines.h; sourceTree = "<group>"; };
+		B6954FC5140352380081F31F /* GTMNSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSString+HTML.h"; sourceTree = "<group>"; };
+		B6954FC6140352380081F31F /* GTMNSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSString+HTML.m"; sourceTree = "<group>"; };
+		B6954FC7140352380081F31F /* NSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HTML.h"; sourceTree = "<group>"; };
+		B6954FC8140352380081F31F /* NSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HTML.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -371,6 +377,11 @@
 		B64B26F6138097890053E943 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				B6954FC4140352380081F31F /* GTMdefines.h */,
+				B6954FC5140352380081F31F /* GTMNSString+HTML.h */,
+				B6954FC6140352380081F31F /* GTMNSString+HTML.m */,
+				B6954FC7140352380081F31F /* NSString+HTML.h */,
+				B6954FC8140352380081F31F /* NSString+HTML.m */,
 				B64B26F7138097890053E943 /* WBImage.h */,
 				B64B26F8138097890053E943 /* WBImage.m */,
 			);
@@ -380,6 +391,8 @@
 		B64B26F9138097890053E943 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B6954FBF140351C40081F31F /* CCChat.h */,
+				B6954FC0140351C40081F31F /* CCChat.m */,
 				B656032C13E3D6AB0094140B /* CCCollection.h */,
 				B656032D13E3D6AB0094140B /* CCCollection.m */,
 				B656032E13E3D6AB0094140B /* CCFriendRequest.h */,
@@ -421,10 +434,6 @@
 			children = (
 				B64B2711138097890053E943 /* CCConstants.h */,
 				B64B2712138097890053E943 /* CCConstants.m */,
-				B64B2713138097890053E943 /* CCDownloadRequest.h */,
-				B64B2714138097890053E943 /* CCDownloadRequest.m */,
-				B64B2715138097890053E943 /* CCNetworkManager.h */,
-				B64B2716138097890053E943 /* CCNetworkManager.m */,
 				B64B2717138097890053E943 /* CCRequest.h */,
 				B64B2718138097890053E943 /* CCRequest.m */,
 				B64B2719138097890053E943 /* CCResponse.h */,
@@ -493,8 +502,6 @@
 				B64B273A138097890053E943 /* CCStatus.h in Headers */,
 				B64B273C138097890053E943 /* CCUser.h in Headers */,
 				B64B273E138097890053E943 /* CCConstants.h in Headers */,
-				B64B2740138097890053E943 /* CCDownloadRequest.h in Headers */,
-				B64B2742138097890053E943 /* CCNetworkManager.h in Headers */,
 				B64B2744138097890053E943 /* CCRequest.h in Headers */,
 				B64B2746138097890053E943 /* CCResponse.h in Headers */,
 				B64B2748138097890053E943 /* NSData+Base64.h in Headers */,
@@ -505,6 +512,10 @@
 				B656033A13E3D6AB0094140B /* CCPost.h in Headers */,
 				B656033C13E3D6AB0094140B /* CCReview.h in Headers */,
 				B656033E13E3D6AB0094140B /* CCShareRequest.h in Headers */,
+				B6954FC1140351C40081F31F /* CCChat.h in Headers */,
+				B6954FC9140352380081F31F /* GTMdefines.h in Headers */,
+				B6954FCA140352380081F31F /* GTMNSString+HTML.h in Headers */,
+				B6954FCC140352380081F31F /* NSString+HTML.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -591,8 +602,6 @@
 				B64B273B138097890053E943 /* CCStatus.m in Sources */,
 				B64B273D138097890053E943 /* CCUser.m in Sources */,
 				B64B273F138097890053E943 /* CCConstants.m in Sources */,
-				B64B2741138097890053E943 /* CCDownloadRequest.m in Sources */,
-				B64B2743138097890053E943 /* CCNetworkManager.m in Sources */,
 				B64B2745138097890053E943 /* CCRequest.m in Sources */,
 				B64B2747138097890053E943 /* CCResponse.m in Sources */,
 				B64B2749138097890053E943 /* NSData+Base64.m in Sources */,
@@ -603,6 +612,9 @@
 				B656033B13E3D6AB0094140B /* CCPost.m in Sources */,
 				B656033D13E3D6AB0094140B /* CCReview.m in Sources */,
 				B656033F13E3D6AB0094140B /* CCShareRequest.m in Sources */,
+				B6954FC2140351C40081F31F /* CCChat.m in Sources */,
+				B6954FCB140352380081F31F /* GTMNSString+HTML.m in Sources */,
+				B6954FCD140352380081F31F /* NSString+HTML.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

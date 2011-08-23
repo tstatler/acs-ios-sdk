@@ -183,7 +183,7 @@ NSString* encodeToPercentEscapeString(NSString *string) {
 {
     CCRequest *request = [[[CCRequest alloc] initWithDelegate:self httpMethod:@"DELETE" baseUrl:@"social/facebook/unlink.json" paramDict:nil] autorelease];
 
-    CCResponse *response = [request startSynchronous];
+    CCResponse *response = [request startSynchronousRequest];
     if (response && [response.meta.status isEqualToString:CC_STATUS_OK]) {
         NSArray *users = [response getObjectsOfType:[CCUser class]];
         if ([users count] == 1) {
@@ -212,7 +212,7 @@ NSString* encodeToPercentEscapeString(NSString *string) {
 
     }
 
-    CCResponse *response = [request startSynchronous];
+    CCResponse *response = [request startSynchronousRequest];
     if (response && [response.meta.status isEqualToString:CC_STATUS_OK]) {
         NSArray *users = [response getObjectsOfType:[CCUser class]];
         if ([users count] == 1) {
@@ -253,7 +253,7 @@ NSString* encodeToPercentEscapeString(NSString *string) {
 -(NSString *)getCookiePath {
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString *documentsDirectory = [paths objectAtIndex:0];
-	NSString *cookieDataPath = [[documentsDirectory stringByAppendingPathComponent:@"cookieData.txt"] copy];
+	NSString *cookieDataPath = [documentsDirectory stringByAppendingPathComponent:@"cookieData.txt"];
 	return cookieDataPath;
 }
 
@@ -286,7 +286,6 @@ NSString* encodeToPercentEscapeString(NSString *string) {
 	[NSKeyedArchiver archiveRootObject:cookieList toFile:cookieDataPath];
 	
 	// release memory
-	[cookieDataPath release];
 	[cookieList release];
 }
 
@@ -303,9 +302,6 @@ NSString* encodeToPercentEscapeString(NSString *string) {
 		// Debug
 		NSLog(@"Restored cookie %@", newCookie);
 	}
-	
-	// release memory
-	[cookieDataPath release];
 }
 
 -(void) printCookieStorage {

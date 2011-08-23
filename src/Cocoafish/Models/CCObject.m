@@ -93,7 +93,7 @@
     return [class arrayWithJsonResponse:jsonResponse class:class jsonTag:[class jsonTag]];
 }
 
--(id)copyWithZone:(NSZone *)zone  
+/*-(id)copyWithZone:(NSZone *)zone  
 {
     CCObject *copy = [[[self class] allocWithZone:zone] init];
     copy.objectId = [_objectId copy];
@@ -105,7 +105,7 @@
     copy.lastModified = [_lastModified copy];
 
     return copy;
-}
+}*/
 
 /*- (NSString *)description {
     return [NSString stringWithFormat:@"id: %@\n\tcreatedAt: %@\n\tupdatedAt: %@", 

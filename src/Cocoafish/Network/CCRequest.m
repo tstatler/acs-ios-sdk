@@ -230,7 +230,7 @@
     [super main];
 }
 
--(CCResponse *)startSynchronous
+-(CCResponse *)startSynchronousRequest
 {
   /*  [self setDelegate:nil];
     [self setDidFailSelector:nil];
@@ -239,7 +239,7 @@
     CCResponse *response = nil;
 	if (![self error]) {
         NSLog(@"Received %@", [self responseString]);
-        response = [[CCResponse alloc] initWithJsonData:[self responseData]];
+        response = [[[CCResponse alloc] initWithJsonData:[self responseData]] autorelease];
 	}
     return response;
 }
@@ -411,6 +411,7 @@
             [_requestDelegate ccrequest:origRequest didFailWithError:requestError];
         }
     }
+    [response release];
     
 }
 

@@ -14,7 +14,7 @@
 @private
 	CCUser *_user;
 	CCPlace *_place;
-	NSString *message;
+	NSString *_message;
 }
 
 @property (nonatomic, retain, readonly) CCUser *user;

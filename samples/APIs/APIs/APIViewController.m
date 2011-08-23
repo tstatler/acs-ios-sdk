@@ -66,7 +66,7 @@
 #pragma CCRequestDelegate callback
 -(void)ccrequest:(CCRequest *)request didSucceed:(CCResponse *)response
 {
-    NSArray *types = [NSArray arrayWithObjects:NSStringFromClass([CCPhoto class]), NSStringFromClass([CCUser class]), NSStringFromClass([CCCheckin class]), NSStringFromClass([CCStatus class]), NSStringFromClass([CCEvent class]), NSStringFromClass([CCCollection class]), NSStringFromClass([CCKeyValuePair class]), NSStringFromClass([CCMessage class]), NSStringFromClass([CCPlace class]), NSStringFromClass([CCChat class]), NSStringFromClass([CCPost class]), NSStringFromClass([CCReview class]), nil];
+    NSArray *types = [NSArray arrayWithObjects:NSStringFromClass([CCPhoto class]), NSStringFromClass([CCUser class]), NSStringFromClass([CCCheckin class]), NSStringFromClass([CCStatus class]), NSStringFromClass([CCEvent class]), NSStringFromClass([CCEventOccurrence class]),NSStringFromClass([CCCollection class]), NSStringFromClass([CCKeyValuePair class]), NSStringFromClass([CCMessage class]), NSStringFromClass([CCPlace class]), NSStringFromClass([CCChat class]), NSStringFromClass([CCPost class]), NSStringFromClass([CCReview class]), nil];
     
     for (NSString *type in types) {
         Class class = NSClassFromString(type);

@@ -10,7 +10,7 @@
 #import "CCObjectWithPhoto.h"
 #import <CoreLocation/CoreLocation.h>
 
-@interface CCPlace : CCObjectWithPhoto <NSCopying> {
+@interface CCPlace : CCObjectWithPhoto {
 
 @protected
 	NSString *_name;

@@ -16,13 +16,13 @@
     NSString *_name;
     NSString *_details;
     NSDate *_startTime;
-    NSInteger duration;
-    NSString *recurring;
-    NSInteger recurringCount;
-    NSDate *recurringUntil;
-    Boolean exclusive;
-    NSInteger numOccurrences;
-    NSString *ical;
+    NSInteger _duration;
+    NSString *_recurring;
+    NSInteger _recurringCount;
+    NSDate *_recurringUntil;
+    Boolean _exclusive;
+    NSInteger _numOccurrences;
+    NSString *_ical;
 	CCUser *_user;
 	CCPlace *_place;
 }

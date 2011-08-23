@@ -62,7 +62,7 @@ typedef enum PhotoSize {
     NSString *_make;
     NSInteger _height;
     NSInteger _width;
-    NSString *shutterSpeed;
+    NSString *_shutterSpeed;
 }
 
 @property (nonatomic, retain, readonly) NSString *model;
@@ -73,30 +73,5 @@ typedef enum PhotoSize {
 @property (nonatomic, retain, readonly) NSString *shutterSpeed;
 
 -(id)initWithJsonResponse:(NSDictionary *)jsonResponse;
-
-@end
-
-@interface CCUploadImage :  NSObject  {
-@private
-    UIImage *_rawImage;
-    NSData *_photoData;
-    int _maxPhotoSize;
-    double _jpegCompression;
-    
-    // the following are used by CCNetworkManager
-    SEL _didFinishSelector; // callback method once the request is finished
-    NSString *_photoKey; 
-    ASIFormDataRequest *_request;
-    NSString *_photoFileName;
-}
-
-@property (nonatomic, retain) ASIFormDataRequest *request;
-@property (nonatomic) SEL didFinishSelector;
-@property (nonatomic,retain) NSString *photoFileName;
-@property (nonatomic, retain) NSString *photoKey;
-
--(id)initWithImage:(UIImage *)image;
--(id)initWithImage:(UIImage *)image maxPhotoSize:(int)maxPhotoSize jpegCompression:(double)jpegCompression;
--(void)processAndSetPhotoData;
 
 @end

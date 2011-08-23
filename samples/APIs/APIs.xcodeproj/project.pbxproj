@@ -85,7 +85,6 @@
 		B64B26D4138036200053E943 /* CCStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B26B3138036200053E943 /* CCStatus.m */; };
 		B64B26D5138036200053E943 /* CCUser.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B26B5138036200053E943 /* CCUser.m */; };
 		B64B26D6138036200053E943 /* CCConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B26B8138036200053E943 /* CCConstants.m */; };
-		B64B26D8138036200053E943 /* CCNetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B26BC138036200053E943 /* CCNetworkManager.m */; };
 		B64B26D9138036200053E943 /* CCRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B26BE138036200053E943 /* CCRequest.m */; };
 		B64B26DA138036200053E943 /* CCResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B26C0138036200053E943 /* CCResponse.m */; };
 		B64B26DB138036200053E943 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B26C3138036200053E943 /* NSData+Base64.m */; };
@@ -247,8 +246,6 @@
 		B64B26B5138036200053E943 /* CCUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCUser.m; sourceTree = "<group>"; };
 		B64B26B7138036200053E943 /* CCConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCConstants.h; sourceTree = "<group>"; };
 		B64B26B8138036200053E943 /* CCConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCConstants.m; sourceTree = "<group>"; };
-		B64B26BB138036200053E943 /* CCNetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCNetworkManager.h; sourceTree = "<group>"; };
-		B64B26BC138036200053E943 /* CCNetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCNetworkManager.m; sourceTree = "<group>"; };
 		B64B26BD138036200053E943 /* CCRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCRequest.h; sourceTree = "<group>"; };
 		B64B26BE138036200053E943 /* CCRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCRequest.m; sourceTree = "<group>"; };
 		B64B26BF138036200053E943 /* CCResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCResponse.h; sourceTree = "<group>"; };
@@ -585,8 +582,6 @@
 			children = (
 				B64B26B7138036200053E943 /* CCConstants.h */,
 				B64B26B8138036200053E943 /* CCConstants.m */,
-				B64B26BB138036200053E943 /* CCNetworkManager.h */,
-				B64B26BC138036200053E943 /* CCNetworkManager.m */,
 				B64B26BD138036200053E943 /* CCRequest.h */,
 				B64B26BE138036200053E943 /* CCRequest.m */,
 				B64B26BF138036200053E943 /* CCResponse.h */,
@@ -773,7 +768,6 @@
 				B64B26D4138036200053E943 /* CCStatus.m in Sources */,
 				B64B26D5138036200053E943 /* CCUser.m in Sources */,
 				B64B26D6138036200053E943 /* CCConstants.m in Sources */,
-				B64B26D8138036200053E943 /* CCNetworkManager.m in Sources */,
 				B64B26D9138036200053E943 /* CCRequest.m in Sources */,
 				B64B26DA138036200053E943 /* CCResponse.m in Sources */,
 				B64B26DB138036200053E943 /* NSData+Base64.m in Sources */,

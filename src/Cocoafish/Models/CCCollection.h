@@ -17,7 +17,7 @@
     NSString *_name;
     CCPhoto *_coverPhoto;
     CCUser *_user; // owner
-    CCCollection *parentCollection;
+    CCCollection *_parentCollection;
     CCCollectionCount *_count;
 }
 
