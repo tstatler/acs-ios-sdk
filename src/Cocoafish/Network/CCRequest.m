@@ -207,8 +207,8 @@
                             [[token lowercaseString] isEqualToString:@"jpeg"] || 
                             [[token lowercaseString] isEqualToString:@"png"] || 
                             [[token lowercaseString] isEqualToString:@"gif"]) {
-                            fileName = [[NSString alloc] initWithFormat:@"photo.%@", token];
-                            contentType = [[NSString alloc] initWithFormat:@"image/%@", token];
+                            fileName = [[[NSString alloc] initWithFormat:@"photo.%@", token] autorelease];
+                            contentType = [[[NSString alloc] initWithFormat:@"image/%@", token] autorelease];
                             break;
                         }
                     }
