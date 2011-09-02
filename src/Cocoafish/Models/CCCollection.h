@@ -23,7 +23,6 @@
 
 @property (nonatomic, retain, readonly) NSString *name;
 @property (nonatomic, retain, readonly) CCPhoto *coverPhoto;
-@property (nonatomic, retain, readonly) NSArray *photos;
 @property (nonatomic, retain, readonly) CCUser *user;
 @property (nonatomic, retain, readonly) CCCollection *parentCollection;
 @property (nonatomic, retain, readonly) CCCollectionCount *count;
