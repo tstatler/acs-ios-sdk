@@ -48,15 +48,16 @@
 	
 	if ((self = [super init])) {
 		self.response = [jsonResponse objectForKey:CC_JSON_RESPONSE];
-		self.meta = [[[CCMeta alloc] initWithJsonResponse:jsonResponse] autorelease];
+		_meta = [[CCMeta alloc] initWithJsonResponse:jsonResponse];
 		
 		// check if this is a compound response
 		NSArray *compoundResponses = [_response objectForKey:CC_JSON_RESPONSES];
 		if (compoundResponses && [compoundResponses isKindOfClass:[NSArray class]]) {
 			NSMutableArray *responseArray = [NSMutableArray arrayWithCapacity:[compoundResponses count]];
 			for (NSDictionary *rp in compoundResponses) {
-				CCResponse *tmpResponse = [[[CCResponse alloc] initWithJsonResponse:rp] autorelease];
+				CCResponse *tmpResponse = [[CCResponse alloc] initWithJsonResponse:rp];
 				[responseArray addObject:tmpResponse];
+                [tmpResponse release];
 			}
 			if ([responseArray count] > 0) {
 				self.responses = (NSArray *)responseArray;
@@ -238,7 +239,7 @@
 		NSString *tmpValue = [meta objectForKey:CC_JSON_META_CODE];
 		_code = tmpValue ? [tmpValue intValue] : 0;
 		self.status = [meta objectForKey:CC_JSON_META_STATUS];
-        self.pagination = [[CCPagination alloc] initWithJsonResponse:meta];
+        _pagination = [[CCPagination alloc] initWithJsonResponse:meta];
 	
 	}
 	return self;
