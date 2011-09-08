@@ -13,12 +13,12 @@ static Cocoafish *theDefaultCocoafish = nil;
 
 // Encode a string to embed in an URL.
 NSString* encodeToPercentEscapeString(NSString *string) {
-    return (NSString *)
+    return [(NSString *)
     CFURLCreateStringByAddingPercentEscapes(NULL,
                                             (CFStringRef) string,
                                             NULL,
                                             (CFStringRef) @"!*'();:@&=+$,/?%#[]",
-                                            kCFStringEncodingUTF8);
+                                            kCFStringEncodingUTF8) autorelease];
 }
 
 @interface Cocoafish (PrivateMethods)
