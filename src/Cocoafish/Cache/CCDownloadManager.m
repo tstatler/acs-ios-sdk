@@ -212,7 +212,6 @@
         NSArray *array = [response getObjectsOfType:class];
         if ([array count] > 0) {
             [objects addObjectsFromArray:array];
-            break;
         }
     }
     

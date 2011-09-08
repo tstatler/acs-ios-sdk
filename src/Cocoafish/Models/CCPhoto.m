@@ -187,6 +187,7 @@
 -(id)initWithJsonResponse:(NSDictionary *)jsonResponse
 {
     if (!jsonResponse) {
+        [self release];
         return nil;
     }
     self = [super init];

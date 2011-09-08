@@ -29,6 +29,7 @@
 -(id)initWithJsonResponse:(NSDictionary *)jsonResponse
 {
 	if (jsonResponse == nil) {
+        [self release];
 		return nil;
 	}
 	self.objectId = [jsonResponse objectForKey:CC_JSON_OBJECT_ID];
@@ -60,6 +61,7 @@
 -(id)initWithId:(NSString *)objectId
 {
     if (!objectId) {
+        [self release];
         return nil;
     }
     if ((self = [super init])) {

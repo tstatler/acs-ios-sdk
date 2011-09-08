@@ -57,6 +57,7 @@
 -(id)initWithId:(NSString *)objectId first:(NSString *)first last:(NSString *)last email:(NSString *)email username:(NSString *)username
 {
 	if (objectId == nil || (email == nil && username == nil)) {
+        [self release];
 		return nil;
 	}
 	if ((self = [super initWithId:objectId])) {
