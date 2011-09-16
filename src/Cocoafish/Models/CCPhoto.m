@@ -62,8 +62,8 @@
 		self.processed = [[jsonResponse objectForKey:CC_JSON_PROCESSED] boolValue];
 		self.contentType = [jsonResponse objectForKey:CC_JSON_CONTENT_TYPE];
 		self.urls = [jsonResponse objectForKey:CC_JSON_URLS];
-        _user = [jsonResponse objectForKey:CC_JSON_USER];
-		NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
+        _user = [[CCUser alloc] initWithJsonResponse:[jsonResponse objectForKey:CC_JSON_USER]];
+        NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
 		dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZ";
 		
         NSString *dateString = [jsonResponse objectForKey:@"custom_date"];
