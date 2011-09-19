@@ -13,6 +13,7 @@
 
 @interface CCShareRequest ()
 @property (nonatomic, retain, readwrite) NSString *token;
+@property (nonatomic, retain, readwrite) NSString *recipientEmail;
 @property (nonatomic, retain, readwrite) NSArray *collections;
 @property (nonatomic, retain, readwrite) NSArray *photos;
 @property (nonatomic, retain, readwrite) CCUser *user;
@@ -23,6 +24,7 @@
 @synthesize collections = _collections;
 @synthesize photos = _photos;
 @synthesize user = _user;
+@synthesize recipientEmail = recipientEmail_;
 
 -(id)initWithJsonResponse:(NSDictionary *)jsonResponse
 {
@@ -30,7 +32,8 @@
 	if (self) {
         
 		self.token = [jsonResponse objectForKey:@"token"];
-        _user = [[CCUser alloc] initWithJsonResponse:[jsonResponse objectForKey:@"user"]];
+        self.recipientEmail = [jsonResponse objectForKey:@"recipient_email"];
+        self.user = [[[CCUser alloc] initWithJsonResponse:[jsonResponse objectForKey:@"user"]] autorelease];
         self.photos = [CCPhoto arrayWithJsonResponse:jsonResponse class:[CCPhoto class]];
         self.collections = [CCCollection arrayWithJsonResponse:jsonResponse class:[CCCollection class]];
 	}
@@ -51,6 +54,7 @@
 -(void)dealloc
 {
     self.token = nil;
+    self.recipientEmail = nil;
     self.collections = nil;
     self.photos = nil;
     self.user = nil;
