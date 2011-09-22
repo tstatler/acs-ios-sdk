@@ -21,6 +21,15 @@ NSString* encodeToPercentEscapeString(NSString *string) {
                                             kCFStringEncodingUTF8) autorelease];
 }
 
+void CCLog(NSString *format, ...) {
+    if (theDefaultCocoafish.loggingEnabled) {
+        va_list arglist;
+        va_start(arglist, format);
+        NSLogv(format, arglist);
+        va_end(arglist);
+    }
+}
+
 @interface Cocoafish (PrivateMethods)
 -(NSString *)getCookiePath;
 -(void)saveUserSession;
@@ -37,6 +46,7 @@ NSString* encodeToPercentEscapeString(NSString *string) {
 @synthesize downloadManager = _downloadManager;
 @synthesize cocoafishDir = _cocoafishDir;
 @synthesize deviceToken = _deviceToken;
+@synthesize loggingEnabled = loggingEnabled_;
 
 -(id)initWithAppKey:(NSString *)appKey customAppIds:(NSDictionary *)customAppIds
 {
@@ -263,7 +273,9 @@ NSString* encodeToPercentEscapeString(NSString *string) {
 	NSString *cookieDataPath = [self getCookiePath];
 	
 	// debug
-	NSLog(@"Storing cookies into file %@", cookieDataPath);
+    if ([[Cocoafish defaultCocoafish] loggingEnabled]) {
+        NSLog(@"Storing cookies into file %@", cookieDataPath);
+    }
 	
 	NSHTTPCookieStorage* sharedCookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
 	NSArray* cookies = [sharedCookieStorage cookies];
@@ -300,14 +312,14 @@ NSString* encodeToPercentEscapeString(NSString *string) {
 		[sharedCookieStorage setCookie:newCookie];
 		
 		// Debug
-		NSLog(@"Restored cookie %@", newCookie);
+		CCLog(@"Restored cookie %@", newCookie);
 	}
 }
 
 -(void) printCookieStorage {
 	NSHTTPCookieStorage* sharedCookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
 	NSArray* cookies = [sharedCookieStorage cookies] ;
-	NSLog(@"cookies: %@", cookies);
+	CCLog(@"cookies: %@", cookies);
 }
 
 

@@ -90,7 +90,7 @@
 	NSURL *newUrl = [NSURL URLWithString:urlPath];
     self = [super initWithURL:newUrl];
     if (self) {
-        NSLog(@"CCRequest Url: %@", [newUrl absoluteString]);
+        CCLog(@"CCRequest Url: %@", [newUrl absoluteString]);
         [self setRequestMethod:httpMethod]; 
         self.requestDelegate = requestDelegate;       
         if ([httpMethod isEqualToString:@"POST"] || [httpMethod isEqualToString:@"PUT"]) {
@@ -238,7 +238,7 @@
     [super startSynchronous];	
     CCResponse *response = nil;
 	if (![self error]) {
-        NSLog(@"Received %@", [self responseString]);
+        CCLog(@"Received %@", [self responseString]);
         response = [[[CCResponse alloc] initWithJsonData:[self responseData]] autorelease];
 	}
     return response;
@@ -389,7 +389,7 @@
 #pragma ASIHTTPrequest Callback
 -(void)requestDone:(CCRequest *)origRequest
 {
-    NSLog(@"Received %@", [origRequest responseString]);
+    CCLog(@"Received %@", [origRequest responseString]);
     CCResponse *response = [[CCResponse alloc] initWithJsonData:[origRequest responseData]];
     if (response && ([origRequest responseStatusCode] == 200 || [origRequest responseStatusCode] == 304)) {
         // If response is ok(200) or not modified (304
