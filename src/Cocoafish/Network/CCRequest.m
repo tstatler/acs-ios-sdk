@@ -189,7 +189,7 @@
             if ([_photos count] == 1) {
                 key = @"photo";
             } else {
-                key = [NSString stringWithFormat:@"photos[%d]", i];
+                key = @"photos[]";
             }
             if ([photo isKindOfClass:[ALAsset class]]) {
                 // alasset
