@@ -9,6 +9,7 @@
 #import "CCEvent.h"
 #import "CCUser.h"
 #import "CCPlace.h"
+#import "Cocoafish.h"
 
 @interface CCEvent ()
 @property (nonatomic, retain, readwrite) NSString *name;
@@ -50,8 +51,6 @@
 -(id)initWithJsonResponse:(NSDictionary *)jsonResponse
 {
 	self = [super initWithJsonResponse:jsonResponse];
-    NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
-    dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZ";
     NSString *dateString = nil;
 	if (self) {
 		@try {
@@ -62,7 +61,7 @@
             
             dateString = [jsonResponse objectForKey:CC_JSON_START_TIME];
             if (dateString) {
-                self.startTime = [dateFormatter dateFromString:dateString];
+                self.startTime = [[[Cocoafish defaultCocoafish] jsonDateFormatter] dateFromString:dateString];
             }
             
 
@@ -80,7 +79,7 @@
         self.ical = [jsonResponse objectForKey:@"ical"];
         dateString = [jsonResponse objectForKey:@"recurring_until"];
         if (dateString) {
-            self.recurringUntil = [dateFormatter dateFromString:dateString];
+            self.recurringUntil = [[[Cocoafish defaultCocoafish] jsonDateFormatter] dateFromString:dateString];
         }
         self.exclusive = [[jsonResponse objectForKey:@"exclusive"] boolValue];
 
@@ -130,18 +129,16 @@
 {
 	self = [super initWithJsonResponse:jsonResponse];
 	if (self) {
-        NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
-        dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZ";
         NSString *dateString = nil;
 		@try {
 			_event = [[CCEvent alloc] initWithJsonResponse:[jsonResponse objectForKey:@"event"]];
             dateString = [jsonResponse objectForKey:CC_JSON_START_TIME];
             if (dateString) {
-                self.startTime = [dateFormatter dateFromString:dateString];
+                self.startTime = [[[Cocoafish defaultCocoafish] jsonDateFormatter] dateFromString:dateString];
             }
             dateString = [jsonResponse objectForKey:CC_JSON_END_TIME];
             if (dateString) {
-                self.endTime = [dateFormatter dateFromString:dateString];
+                self.endTime = [[[Cocoafish defaultCocoafish] jsonDateFormatter] dateFromString:dateString];
             }
             
         }

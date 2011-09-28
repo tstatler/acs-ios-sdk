@@ -7,6 +7,7 @@
 //
 
 #import "CCObject.h"
+#import "Cocoafish.h"
 
 @interface CCObject()
 @property (nonatomic, retain, readwrite) NSString *objectId;
@@ -38,17 +39,14 @@
 	}
 	
 	
-	NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
-	dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZ";
-	
 	NSString *dateString = [jsonResponse objectForKey:CC_JSON_CREATED_AT];
 	if (dateString) {
-		self.createdAt = [dateFormatter dateFromString:dateString];
+		self.createdAt = [[[Cocoafish defaultCocoafish] jsonDateFormatter] dateFromString:dateString];
 	}
 	
 	dateString = [jsonResponse objectForKey:CC_JSON_UPDATED_AT];
 	if (dateString) {
-		self.updatedAt = [dateFormatter dateFromString:dateString];
+		self.updatedAt = [[[Cocoafish defaultCocoafish] jsonDateFormatter] dateFromString:dateString];
 	}
     
     self.tags = [jsonResponse objectForKey:@"tags"];

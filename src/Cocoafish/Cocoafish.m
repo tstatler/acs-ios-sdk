@@ -46,7 +46,8 @@ void CCLog(NSString *format, ...) {
 @synthesize downloadManager = _downloadManager;
 @synthesize cocoafishDir = _cocoafishDir;
 @synthesize deviceToken = _deviceToken;
-@synthesize loggingEnabled = loggingEnabled_;
+@synthesize loggingEnabled = _loggingEnabled;
+@synthesize jsonDateFormatter = _jsonDateFormatter;
 
 -(id)initWithAppKey:(NSString *)appKey customAppIds:(NSDictionary *)customAppIds
 {
@@ -111,6 +112,10 @@ void CCLog(NSString *format, ...) {
         [request startAsynchronous];
 	}
 	
+    // set up date formatter
+    self.jsonDateFormatter = [[[NSDateFormatter alloc] init] autorelease];
+    self.jsonDateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZ";
+
 }
 
 -(NSString *)getAppKey
@@ -343,6 +348,7 @@ void CCLog(NSString *format, ...) {
 	[_consumerSecret release];
 	[_downloadManager release];
 	[_cocoafishDir release];
+    [_jsonDateFormatter release];
 	[super dealloc];
 }
 

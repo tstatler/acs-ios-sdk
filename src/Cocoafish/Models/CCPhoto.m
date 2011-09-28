@@ -63,12 +63,10 @@
 		self.contentType = [jsonResponse objectForKey:CC_JSON_CONTENT_TYPE];
 		self.urls = [jsonResponse objectForKey:CC_JSON_URLS];
         _user = [[CCUser alloc] initWithJsonResponse:[jsonResponse objectForKey:CC_JSON_USER]];
-        NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
-		    dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZ";
 		
         NSString *dateString = [jsonResponse objectForKey:@"custom_date"];
 		if (dateString) {
-			self.customDate = [dateFormatter dateFromString:dateString];
+			self.customDate = [[[Cocoafish defaultCocoafish] jsonDateFormatter] dateFromString:dateString];
 		}
         
         _exif = [[CCExif alloc] initWithJsonResponse:[jsonResponse objectForKey:@"exif"]];
