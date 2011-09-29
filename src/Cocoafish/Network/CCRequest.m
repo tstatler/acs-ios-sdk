@@ -359,20 +359,21 @@
 	NSString *url = nil;
 	NSString *appKey = [[Cocoafish defaultCocoafish] getAppKey];
     NSString *paramsString = nil;
+    NSString *backendUrl = [[Cocoafish defaultCocoafish] apiURL];
     if ([additionalParams count] > 0) {
         paramsString = [additionalParams componentsJoinedByString:@"&"];
     }
 	if ([appKey length] > 0) {
 		if (paramsString) {
-			url = [NSString stringWithFormat:@"%@://%@/%@?key=%@&%@", httpProtocol, CC_BACKEND_URL, partialUrl, appKey, 
+			url = [NSString stringWithFormat:@"%@://%@/%@?key=%@&%@", httpProtocol, backendUrl, partialUrl, appKey, 
                    paramsString];
 		} else {
-			url = [NSString stringWithFormat:@"%@://%@/%@?key=%@", httpProtocol, CC_BACKEND_URL, partialUrl, appKey];
+			url = [NSString stringWithFormat:@"%@://%@/%@?key=%@", httpProtocol, backendUrl, partialUrl, appKey];
 		}
 	} else if (paramsString) {
-		url = [NSString stringWithFormat:@"%@://%@/%@?%@", httpProtocol, CC_BACKEND_URL, partialUrl, paramsString];
+		url = [NSString stringWithFormat:@"%@://%@/%@?%@", httpProtocol, backendUrl, partialUrl, paramsString];
 	} else {
-		url = [NSString stringWithFormat:@"%@://%@/%@", httpProtocol, CC_BACKEND_URL, partialUrl];
+		url = [NSString stringWithFormat:@"%@://%@/%@", httpProtocol, backendUrl, partialUrl];
 	}
 	return url;
 }

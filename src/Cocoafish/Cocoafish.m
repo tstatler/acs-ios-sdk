@@ -48,6 +48,7 @@ void CCLog(NSString *format, ...) {
 @synthesize deviceToken = _deviceToken;
 @synthesize loggingEnabled = _loggingEnabled;
 @synthesize jsonDateFormatter = _jsonDateFormatter;
+@synthesize apiURL = _apiURL;
 
 -(id)initWithAppKey:(NSString *)appKey customAppIds:(NSDictionary *)customAppIds
 {
@@ -79,6 +80,7 @@ void CCLog(NSString *format, ...) {
 -(void)initCommon:(NSDictionary *)customAppIds
 {
     theDefaultCocoafish = self;
+    self.apiURL = CC_BACKEND_URL;
 
 	// create Cocoafish dir if there is none
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES); 
