@@ -37,9 +37,10 @@
 	NSString *_cocoafishDir;
 	CCDownloadManager *_downloadManager;
     NSString *_deviceToken; // For push notificaiton
-    BOOL loggingEnabled;
-    NSDateFormatter *jsonDateFormatter;
-    NSString *apiUrl;
+    BOOL _loggingEnabled;
+    NSDateFormatter *_jsonDateFormatter;
+    NSString *_apiUrl;
+    BOOL _downloadManagerEnabled;
 }
 
 @property(nonatomic, assign) id<CCFBSessionDelegate> _fbSessionDelegate;
@@ -49,6 +50,7 @@
 @property(nonatomic, assign, readwrite) BOOL loggingEnabled;
 @property(nonatomic, retain, readwrite) NSDateFormatter *jsonDateFormatter;
 @property(nonatomic, retain, readwrite) NSString *apiURL;
+@property(nonatomic, assign, readwrite) BOOL downloadManagerEnabled;
 
 +(void)initializeWithAppKey:(NSString *)appKey customAppIds:(NSDictionary *)customAppIds;;
 +(void)initializeWithOauthConsumerKey:(NSString *)consumerKey consumerSecret:(NSString *)consumerSecret customAppIds:(NSDictionary *)customAppIds;;

@@ -49,6 +49,7 @@ void CCLog(NSString *format, ...) {
 @synthesize loggingEnabled = _loggingEnabled;
 @synthesize jsonDateFormatter = _jsonDateFormatter;
 @synthesize apiURL = _apiURL;
+@synthesize downloadManagerEnabled = _downloadManagerEnabled;
 
 -(id)initWithAppKey:(NSString *)appKey customAppIds:(NSDictionary *)customAppIds
 {

@@ -24,7 +24,7 @@
 	if (self) {
         _photo = [[CCPhoto alloc] initWithJsonResponse:[jsonResponse objectForKey:CC_JSON_PHOTO]];
 		
-        if (_photo && !_photo.processed) {
+        if (_photo && !_photo.processed && [[Cocoafish defaultCocoafish] downloadManagerEnabled]) {
 			// Photo hasn't been processed on the server, add to the download manager queue 
 			// it will pull for its status periodically.
 			[[Cocoafish defaultCocoafish].downloadManager addProcessingPhoto:_photo parent:self];
