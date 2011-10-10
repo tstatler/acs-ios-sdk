@@ -18,6 +18,7 @@
 @property (nonatomic, readwrite) int size;
 @property (nonatomic, retain, readwrite) NSArray *collections;
 @property (nonatomic, retain, readwrite) NSString *md5;
+@property (nonatomic, retain, readwrite) NSString *title;
 @property (nonatomic, readwrite) BOOL processed;
 @property (nonatomic, retain, readwrite) NSString *contentType;
 @property (nonatomic, retain, readwrite) NSDictionary *urls;
@@ -44,6 +45,7 @@
 @synthesize size = _size;
 @synthesize collections = _collections;
 @synthesize md5 = _md5;
+@synthesize title = _title;
 @synthesize processed = _processed;
 @synthesize contentType = _contentType;
 @synthesize urls = _urls;
@@ -59,6 +61,7 @@
 		self.size = [[jsonResponse objectForKey:CC_JSON_SIZE] intValue];
         self.collections = [CCCollection arrayWithJsonResponse:jsonResponse class:[CCCollection class]];
 		self.md5 = [jsonResponse objectForKey:CC_JSON_MD5];
+        self.title = [jsonResponse objectForKey:CC_JSON_TITLE];
 		self.processed = [[jsonResponse objectForKey:CC_JSON_PROCESSED] boolValue];
 		self.contentType = [jsonResponse objectForKey:CC_JSON_CONTENT_TYPE];
 		self.urls = [jsonResponse objectForKey:CC_JSON_URLS];
@@ -105,6 +108,7 @@
 	self.filename = nil;
 	self.collections = nil;
 	self.md5 = nil;
+    self.title = nil;
 	self.contentType = nil;
 	self.urls = nil;
     self.user = nil;

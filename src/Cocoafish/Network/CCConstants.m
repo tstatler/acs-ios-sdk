@@ -83,6 +83,7 @@ NSString * const CC_JSON_FILENAME = @"filename";
 NSString * const CC_JSON_SIZE = @"size";
 NSString * const CC_JSON_COLLECTION_NAME = @"collection_name";
 NSString * const CC_JSON_MD5 = @"md5";
+NSString * const CC_JSON_TITLE = @"title";
 NSString * const CC_JSON_PROCESSED = @"processed";
 NSString * const CC_JSON_CONTENT_TYPE = @"content_type";
 NSString * const CC_JSON_URLS = @"urls";
