@@ -192,7 +192,9 @@
                 key = @"photos[]";
             }
             if ([photo isKindOfClass:[ALAsset class]]) {
-                fileName = [[photo defaultRepresentation] filename];
+                if ([[photo defaultRepresentation] respondsToSelector:@selector(filename)]) {
+                    fileName = [[photo defaultRepresentation] filename];
+                }
                 // alasset
                 if (needProcess) {
                     UIImage *image = [UIImage imageWithCGImage:[[photo defaultRepresentation] fullResolutionImage]];   
