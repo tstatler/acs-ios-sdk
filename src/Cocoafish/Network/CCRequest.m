@@ -192,6 +192,7 @@
                 key = @"photos[]";
             }
             if ([photo isKindOfClass:[ALAsset class]]) {
+                fileName = [[photo defaultRepresentation] filename];
                 // alasset
                 if (needProcess) {
                     UIImage *image = [UIImage imageWithCGImage:[[photo defaultRepresentation] fullResolutionImage]];   
@@ -199,6 +200,7 @@
                     // convert to jpeg and save
                     photoData = UIImageJPEGRepresentation(processedImage, jpegCompression);      
                 } else {
+                    contentType = @"application/octet-stream";
                     // get filename and type
                     NSString *uti = [[photo defaultRepresentation] UTI];
                     NSArray *tokens = [NSArray arrayWithArray:[uti componentsSeparatedByString:@"."]];
@@ -207,7 +209,6 @@
                             [[token lowercaseString] isEqualToString:@"jpeg"] || 
                             [[token lowercaseString] isEqualToString:@"png"] || 
                             [[token lowercaseString] isEqualToString:@"gif"]) {
-                            fileName = [[[NSString alloc] initWithFormat:@"photo.%@", token] autorelease];
                             contentType = [[[NSString alloc] initWithFormat:@"image/%@", token] autorelease];
                             break;
                         }

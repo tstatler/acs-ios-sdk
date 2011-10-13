@@ -19,6 +19,7 @@
 @property (nonatomic, retain, readwrite) NSArray *collections;
 @property (nonatomic, retain, readwrite) NSString *md5;
 @property (nonatomic, retain, readwrite) NSString *title;
+@property (nonatomic, retain, readwrite) NSDate *takenAt;
 @property (nonatomic, readwrite) BOOL processed;
 @property (nonatomic, retain, readwrite) NSString *contentType;
 @property (nonatomic, retain, readwrite) NSDictionary *urls;
@@ -52,9 +53,9 @@
 @synthesize customDate = _customDate;
 @synthesize user = _user;
 @synthesize exif = _exif;
+@synthesize takenAt = _takenAt;
 
--(id)initWithJsonResponse:(NSDictionary *)jsonResponse
-{
+-(id)initWithJsonResponse:(NSDictionary *)jsonResponse {
 
 	if ((self = [super initWithJsonResponse:jsonResponse])) {
 		self.filename = [jsonResponse objectForKey:CC_JSON_FILENAME];
@@ -62,6 +63,15 @@
         self.collections = [CCCollection arrayWithJsonResponse:jsonResponse class:[CCCollection class]];
 		self.md5 = [jsonResponse objectForKey:CC_JSON_MD5];
         self.title = [jsonResponse objectForKey:CC_JSON_TITLE];
+        
+        NSString *takenAt = [jsonResponse objectForKey:CC_JSON_TAKEN_AT];
+        if (takenAt) {
+            self.takenAt = [[[Cocoafish defaultCocoafish] jsonDateFormatter] dateFromString:takenAt];
+            if (self.takenAt == nil) {
+                self.takenAt = [[[Cocoafish defaultCocoafish] jsonDateWithoutTimeZoneFormatter] dateFromString:takenAt];
+            }
+        }
+        
 		self.processed = [[jsonResponse objectForKey:CC_JSON_PROCESSED] boolValue];
 		self.contentType = [jsonResponse objectForKey:CC_JSON_CONTENT_TYPE];
 		self.urls = [jsonResponse objectForKey:CC_JSON_URLS];
