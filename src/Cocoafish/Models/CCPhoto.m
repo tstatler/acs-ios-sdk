@@ -67,9 +67,6 @@
         NSString *takenAt = [jsonResponse objectForKey:CC_JSON_TAKEN_AT];
         if (takenAt) {
             self.takenAt = [[[Cocoafish defaultCocoafish] jsonDateFormatter] dateFromString:takenAt];
-            if (self.takenAt == nil) {
-                self.takenAt = [[[Cocoafish defaultCocoafish] jsonDateWithoutTimeZoneFormatter] dateFromString:takenAt];
-            }
         }
         
 		self.processed = [[jsonResponse objectForKey:CC_JSON_PROCESSED] boolValue];
