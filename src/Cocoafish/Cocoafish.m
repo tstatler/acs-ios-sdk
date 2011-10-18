@@ -48,6 +48,7 @@ void CCLog(NSString *format, ...) {
 @synthesize deviceToken = _deviceToken;
 @synthesize loggingEnabled = _loggingEnabled;
 @synthesize jsonDateFormatter = _jsonDateFormatter;
+@synthesize exifDateFormatter = _exifDateFormatter;
 @synthesize apiURL = _apiURL;
 @synthesize downloadManagerEnabled = _downloadManagerEnabled;
 
@@ -118,7 +119,7 @@ void CCLog(NSString *format, ...) {
     // set up date formatter
     self.jsonDateFormatter = [[[NSDateFormatter alloc] init] autorelease];
     self.jsonDateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZ";
-
+    self.exifDateFormatter = [[[NSDateFormatter alloc] init] autorelease];
 }
 
 -(NSString *)getAppKey
@@ -352,6 +353,7 @@ void CCLog(NSString *format, ...) {
 	[_downloadManager release];
 	[_cocoafishDir release];
     [_jsonDateFormatter release];
+    [_exifDateFormatter release];
 	[super dealloc];
 }
 

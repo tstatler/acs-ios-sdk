@@ -205,8 +205,7 @@
 
         NSString *dateString = [jsonResponse objectForKey:@"create_date"];
 		if (dateString) {
-            NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
-			self.createDate = [dateFormatter dateFromString:dateString];
+			self.createDate = [[[Cocoafish defaultCocoafish] exifDateFormatter] dateFromString:dateString];
 		}
         
         self.make = [jsonResponse objectForKey:@"make"];

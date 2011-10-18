@@ -39,6 +39,7 @@
     NSString *_deviceToken; // For push notificaiton
     BOOL _loggingEnabled;
     NSDateFormatter *_jsonDateFormatter;
+    NSDateFormatter *_exifDateFormatter;
     NSString *_apiUrl;
     BOOL _downloadManagerEnabled;
 }
@@ -49,6 +50,7 @@
 @property(nonatomic, retain, readwrite) NSString *deviceToken;
 @property(nonatomic, assign, readwrite) BOOL loggingEnabled;
 @property(nonatomic, retain, readwrite) NSDateFormatter *jsonDateFormatter;
+@property(nonatomic, retain, readwrite) NSDateFormatter *exifDateFormatter;
 @property(nonatomic, retain, readwrite) NSString *apiURL;
 @property(nonatomic, assign, readwrite) BOOL downloadManagerEnabled;
 
