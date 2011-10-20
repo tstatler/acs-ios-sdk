@@ -99,13 +99,33 @@
                 id valueObject = [paramDict valueForKey:key];
                 NSString *value = nil;
                 // URL encode string
-                if ([valueObject isKindOfClass:[NSArray class]] && ![baseUrl isEqualToString:@"keyvalues/set.json"]) {
+                NSRange range = [key rangeOfString : @"[]"];
+                
+                BOOL isArray = NO;
+                if (range.location == [key length] - 2) {
+                    isArray = YES;
+                }
+                if ([valueObject isKindOfClass:[NSArray class]] && isArray) {
+                    // convert to mulple fields
+                    for (id item in valueObject) {
+                        if ([item isKindOfClass:[NSString class]]) {
+                            [self addPostValue:item forKey:key];
+                        } else {
+                            [self addPostValue:[item description] forKey:key];
+                        }
+                        
+                    }
+                    continue;
+                } else if ([valueObject isKindOfClass:[NSArray class]] && ![baseUrl isEqualToString:@"keyvalues/set.json"]) {
                     // concatenate the array
                     value = [valueObject componentsJoinedByString:@","];
+
                 } else if (([valueObject isKindOfClass:[NSDictionary class]] || [valueObject isKindOfClass:[NSArray class]]) && [baseUrl isEqualToString:@"keyvalues/set.json"]) {
                     value = [valueObject yajl_JSONString];
                     // if it is keyvalues set, convert array or dictionary to json and set type to json
                     [self setPostValue:@"json" forKey:@"type"];
+                } else if ([valueObject isKindOfClass:[NSDictionary class]]) {
+                    value = [valueObject yajl_JSONString];
                 } else if (![valueObject isKindOfClass:[NSString class]]) {
                     value = [valueObject description];
                 } else {

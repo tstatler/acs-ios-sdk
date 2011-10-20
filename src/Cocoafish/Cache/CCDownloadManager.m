@@ -37,11 +37,14 @@
 	return self;
 }
 
--(void)downloadPhoto:(CCPhoto *)photo size:(int)size
+-(BOOL)downloadPhoto:(CCPhoto *)photo size:(int)size
 {
 	@synchronized(self) {
         NSString *urlPath = [photo getImageUrl:size];
-        if (!urlPath && !photo.processed) {
+        if (!urlPath) {
+            return false;
+        }
+      /*  if (!urlPath && !photo.processed) {
             // we don't have the photo url info yet because the photo is being processed, put in the queue
             if (_pendingPhotoDownloadQueue == nil) {
                 _pendingPhotoDownloadQueue = [[NSMutableDictionary alloc] init];
@@ -75,11 +78,11 @@
                                                                    repeats:NO];
             }
             return;
-        }
+        }*/
         NSString *downloadPath = [photo localPath:size];
 		if ([_downloadInProgress containsObject:downloadPath]) {
 			// download already in progress, no op
-			return;
+			return true;
 		}
         
         NSURL *url = [NSURL URLWithString:urlPath];
@@ -92,7 +95,7 @@
         [request setDidFinishSelector:@selector(downloadDone:)];
         [request setDidFailSelector:@selector(downloadFailed:)];
         [request startAsynchronous];
-		
+		return true;
 	}
 }
 

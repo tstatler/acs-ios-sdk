@@ -35,13 +35,13 @@ NSString *OAuthorizationHeader(NSURL *url, NSString *method, NSData *body, NSStr
 	NSString *_oAuthVersion = @"1.0";
 	
 	NSMutableDictionary *oAuthAuthorizationParameters = [NSMutableDictionary dictionary];
-	[oAuthAuthorizationParameters setObject:_oAuthNonce forKey:@"oauth_nonce"];
-	[oAuthAuthorizationParameters setObject:_oAuthTimestamp forKey:@"oauth_timestamp"];
-	[oAuthAuthorizationParameters setObject:_oAuthSignatureMethod forKey:@"oauth_signature_method"];
-	[oAuthAuthorizationParameters setObject:_oAuthVersion forKey:@"oauth_version"];
-	[oAuthAuthorizationParameters setObject:_oAuthConsumerKey forKey:@"oauth_consumer_key"];
+	[oAuthAuthorizationParameters setObject:[NSArray arrayWithObject:_oAuthNonce] forKey:@"oauth_nonce"];
+	[oAuthAuthorizationParameters setObject:[NSArray arrayWithObject:_oAuthTimestamp] forKey:@"oauth_timestamp"];
+	[oAuthAuthorizationParameters setObject:[NSArray arrayWithObject:_oAuthSignatureMethod] forKey:@"oauth_signature_method"];
+	[oAuthAuthorizationParameters setObject:[NSArray arrayWithObject:_oAuthVersion] forKey:@"oauth_version"];
+	[oAuthAuthorizationParameters setObject:[NSArray arrayWithObject:_oAuthConsumerKey] forKey:@"oauth_consumer_key"];
 	if(_oAuthToken)
-		[oAuthAuthorizationParameters setObject:_oAuthToken forKey:@"oauth_token"];
+		[oAuthAuthorizationParameters setObject:[NSArray arrayWithObject:_oAuthToken] forKey:@"oauth_token"];
 	
 	// get query and body parameters
 	NSDictionary *additionalQueryParameters = [NSURL ab_parseURLQueryString:[url query]];
@@ -56,20 +56,41 @@ NSString *OAuthorizationHeader(NSURL *url, NSString *method, NSData *body, NSStr
 	// combine all parameters
 	NSMutableDictionary *parameters = [[oAuthAuthorizationParameters mutableCopy] autorelease];
 	if(additionalQueryParameters) [parameters addEntriesFromDictionary:additionalQueryParameters];
+    if (additionalBodyParameters) {
+        NSArray *keys = [additionalBodyParameters allKeys];
+        for (NSString *key in keys) {
+            NSMutableArray *existingValueArray = [parameters objectForKey:key];
+            if (existingValueArray) {
+                [existingValueArray addObjectsFromArray:[additionalBodyParameters objectForKey:key]];
+            } else {
+                [parameters setObject:[additionalBodyParameters objectForKey:key] forKey:key];
+            }
+        }
+    }
 	if(additionalBodyParameters) [parameters addEntriesFromDictionary:additionalBodyParameters];
 	
 	// -> UTF-8 -> RFC3986
 	NSMutableDictionary *encodedParameters = [NSMutableDictionary dictionary];
 	for(NSString *key in parameters) {
-		NSString *value = [parameters objectForKey:key];
-		[encodedParameters setObject:[value ab_RFC3986EncodedString] forKey:key];
+
+        NSArray *sortedValueArray = [[[parameters objectForKey:key] allObjects] sortedArrayUsingSelector:@selector(localizedCompare:)];
+        NSMutableArray *encodedValueArray = [NSMutableArray arrayWithCapacity:1];
+        for (NSString *value in sortedValueArray) {
+            [encodedValueArray addObject:[value ab_RFC3986EncodedString]];
+        }
+        
+        [encodedParameters setObject:encodedValueArray forKey:key];
+        
 	}
 	
-	NSArray *sortedKeys = [[encodedParameters allKeys] sortedArrayUsingFunction:SortParameter context:encodedParameters];
+	NSArray *sortedKeys = [[encodedParameters allKeys] sortedArrayUsingFunction:SortParameter context:nil/*encodedParameters*/];
 	
 	NSMutableArray *parameterArray = [NSMutableArray array];
 	for(NSString *key in sortedKeys) {
-		[parameterArray addObject:[NSString stringWithFormat:@"%@=%@", key, [encodedParameters objectForKey:key]]];
+        NSArray *valueArray = [encodedParameters objectForKey:key];
+        for (NSString *value in valueArray) {
+            [parameterArray addObject:[NSString stringWithFormat:@"%@=%@", key, value]];
+        }
 	}
 	NSString *normalizedParameterString = [parameterArray componentsJoinedByString:@"&"];
 	
@@ -88,14 +109,14 @@ NSString *OAuthorizationHeader(NSURL *url, NSString *method, NSData *body, NSStr
 	NSString *base64Signature = [signature base64EncodedString];
 	
 	NSMutableDictionary *authorizationHeaderDictionary = [[oAuthAuthorizationParameters mutableCopy] autorelease];
-	[authorizationHeaderDictionary setObject:base64Signature forKey:@"oauth_signature"];
+	[authorizationHeaderDictionary setObject:[NSArray arrayWithObject:base64Signature] forKey:@"oauth_signature"];
 	
 	NSMutableArray *authorizationHeaderItems = [NSMutableArray array];
 	for(NSString *key in authorizationHeaderDictionary) {
-		NSString *value = [authorizationHeaderDictionary objectForKey:key];
+		NSArray *value = [authorizationHeaderDictionary objectForKey:key];
 		[authorizationHeaderItems addObject:[NSString stringWithFormat:@"%@=\"%@\"",
 											 [key ab_RFC3986EncodedString],
-											 [value ab_RFC3986EncodedString]]];
+											 [[value objectAtIndex:0] ab_RFC3986EncodedString]]];
 	}
 	
 	NSString *authorizationHeaderString = [authorizationHeaderItems componentsJoinedByString:@", "];

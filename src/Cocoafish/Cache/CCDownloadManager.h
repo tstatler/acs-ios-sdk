@@ -21,6 +21,6 @@
 }
 
 
--(void)downloadPhoto:(CCPhoto *)photo size:(int)size;
+-(BOOL)downloadPhoto:(CCPhoto *)photo size:(int)size;
 -(void)addProcessingPhoto:(CCPhoto *)photo parent:(CCObject *)parent;
 @end

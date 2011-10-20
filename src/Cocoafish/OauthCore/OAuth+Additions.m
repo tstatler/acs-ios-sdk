@@ -19,8 +19,14 @@
 			NSString *key = [keyValue objectAtIndex:0];
 			NSString *value = [keyValue objectAtIndex:1];
 			value = [value stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-			if(key && value)
-				[dict setObject:value forKey:key];
+			if(key && value) {
+                NSMutableArray *valueArray = [dict objectForKey:key];
+                if (!valueArray) {
+                    valueArray = [NSMutableArray arrayWithCapacity:1];
+                }
+                [valueArray addObject:value];
+                [dict setObject:valueArray forKey:key];
+            }
 		}
 	}
 	return [NSDictionary dictionaryWithDictionary:dict];
