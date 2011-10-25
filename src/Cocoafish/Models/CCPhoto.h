@@ -28,6 +28,8 @@ typedef enum PhotoSize {
 	NSString *_filename;
 	int _size;
 	NSString *_md5;
+    NSString *_title;
+    NSDate *_takenAt;
 	BOOL _processed;
 	NSString  *_contentType;
 	NSDictionary *_urls;
@@ -42,6 +44,8 @@ typedef enum PhotoSize {
 @property (nonatomic, readonly) int size;
 @property (nonatomic, retain, readonly) NSArray *collections;
 @property (nonatomic, retain, readonly) NSString *md5;
+@property (nonatomic, retain, readonly) NSString *title;
+@property (nonatomic, retain, readonly) NSDate *takenAt;
 @property (nonatomic, readonly) BOOL processed;
 @property (nonatomic, retain, readonly) NSString *contentType;
 @property (nonatomic, retain, readonly) NSDate *customDate;
@@ -75,3 +79,4 @@ typedef enum PhotoSize {
 -(id)initWithJsonResponse:(NSDictionary *)jsonResponse;
 
 @end
+

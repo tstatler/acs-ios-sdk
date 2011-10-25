@@ -24,6 +24,7 @@
 @property (nonatomic, readwrite) NSInteger photos;
 @property (nonatomic, readwrite) NSInteger totalPhotos;
 @property (nonatomic, readwrite) NSInteger subCollections;
+@property (nonatomic, readwrite) NSInteger shares;
 @end
 
 @implementation CCCollection
@@ -79,6 +80,7 @@
 @synthesize photos = _photos;
 @synthesize totalPhotos = _totalPhotos;
 @synthesize subCollections = _subCollections;
+@synthesize shares = _shares;
 
 -(id)initWithJsonResponse:(NSDictionary *)jsonResponse
 {
@@ -91,6 +93,7 @@
         self.photos = [[jsonResponse objectForKey:@"photos"] intValue];
         self.totalPhotos = [[jsonResponse objectForKey:@"total_photos"] intValue];
         self.subCollections = [[jsonResponse objectForKey:@"subcollections"] intValue];
+        self.shares = [[jsonResponse objectForKey:@"shares"] intValue];
     }
     return self;
 }

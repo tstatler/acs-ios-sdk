@@ -18,6 +18,8 @@
 @property (nonatomic, readwrite) int size;
 @property (nonatomic, retain, readwrite) NSArray *collections;
 @property (nonatomic, retain, readwrite) NSString *md5;
+@property (nonatomic, retain, readwrite) NSString *title;
+@property (nonatomic, retain, readwrite) NSDate *takenAt;
 @property (nonatomic, readwrite) BOOL processed;
 @property (nonatomic, retain, readwrite) NSString *contentType;
 @property (nonatomic, retain, readwrite) NSDictionary *urls;
@@ -44,36 +46,42 @@
 @synthesize size = _size;
 @synthesize collections = _collections;
 @synthesize md5 = _md5;
+@synthesize title = _title;
 @synthesize processed = _processed;
 @synthesize contentType = _contentType;
 @synthesize urls = _urls;
 @synthesize customDate = _customDate;
 @synthesize user = _user;
 @synthesize exif = _exif;
+@synthesize takenAt = _takenAt;
 
--(id)initWithJsonResponse:(NSDictionary *)jsonResponse
-{
+-(id)initWithJsonResponse:(NSDictionary *)jsonResponse {
 
 	if ((self = [super initWithJsonResponse:jsonResponse])) {
 		self.filename = [jsonResponse objectForKey:CC_JSON_FILENAME];
 		self.size = [[jsonResponse objectForKey:CC_JSON_SIZE] intValue];
         self.collections = [CCCollection arrayWithJsonResponse:jsonResponse class:[CCCollection class]];
 		self.md5 = [jsonResponse objectForKey:CC_JSON_MD5];
+        self.title = [jsonResponse objectForKey:CC_JSON_TITLE];
+        
+        NSString *takenAt = [jsonResponse objectForKey:CC_JSON_TAKEN_AT];
+        if (takenAt) {
+            self.takenAt = [[[Cocoafish defaultCocoafish] jsonDateFormatter] dateFromString:takenAt];
+        }
+        
 		self.processed = [[jsonResponse objectForKey:CC_JSON_PROCESSED] boolValue];
 		self.contentType = [jsonResponse objectForKey:CC_JSON_CONTENT_TYPE];
 		self.urls = [jsonResponse objectForKey:CC_JSON_URLS];
         _user = [[CCUser alloc] initWithJsonResponse:[jsonResponse objectForKey:CC_JSON_USER]];
-        NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
-		dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZ";
 		
         NSString *dateString = [jsonResponse objectForKey:@"custom_date"];
 		if (dateString) {
-			self.customDate = [dateFormatter dateFromString:dateString];
+			self.customDate = [[[Cocoafish defaultCocoafish] jsonDateFormatter] dateFromString:dateString];
 		}
         
         _exif = [[CCExif alloc] initWithJsonResponse:[jsonResponse objectForKey:@"exif"]];
         
-		if (self.processed == NO) {
+		if (self.processed == NO && [[Cocoafish defaultCocoafish] downloadManagerEnabled]) {
 			// Photo hasn't been processed on the server, add to the download manager queue 
 			// it will pull for its status periodically.
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePhotoProcessed:) name:@"PhotosProcessed" object:[Cocoafish defaultCocoafish]];
@@ -107,6 +115,7 @@
 	self.filename = nil;
 	self.collections = nil;
 	self.md5 = nil;
+    self.title = nil;
 	self.contentType = nil;
 	self.urls = nil;
     self.user = nil;
@@ -196,8 +205,7 @@
 
         NSString *dateString = [jsonResponse objectForKey:@"create_date"];
 		if (dateString) {
-            NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
-			self.createDate = [dateFormatter dateFromString:dateString];
+			self.createDate = [[[Cocoafish defaultCocoafish] exifDateFormatter] dateFromString:dateString];
 		}
         
         self.make = [jsonResponse objectForKey:@"make"];

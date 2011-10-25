@@ -7,10 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AE9348C214030B4800BBC7B1 /* NSString+HTML.h in Headers */ = {isa = PBXBuildFile; fileRef = AE9348C014030B4800BBC7B1 /* NSString+HTML.h */; };
-		AE9348C314030B4800BBC7B1 /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = AE9348C114030B4800BBC7B1 /* NSString+HTML.m */; };
-		AE9348C714030B5900BBC7B1 /* CCChat.h in Headers */ = {isa = PBXBuildFile; fileRef = AE9348C514030B5900BBC7B1 /* CCChat.h */; };
-		AE9348C814030B5900BBC7B1 /* CCChat.m in Sources */ = {isa = PBXBuildFile; fileRef = AE9348C614030B5900BBC7B1 /* CCChat.m */; };
 		B604294B133D3973008CEE69 /* ASIAuthenticationDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = B60428F7133D3973008CEE69 /* ASIAuthenticationDialog.h */; };
 		B604294C133D3973008CEE69 /* ASIAuthenticationDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = B60428F8133D3973008CEE69 /* ASIAuthenticationDialog.m */; };
 		B604294D133D3973008CEE69 /* ASICacheDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = B60428F9133D3973008CEE69 /* ASICacheDelegate.h */; };
@@ -120,10 +116,6 @@
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		8D1107310486CEB800E47090 /* Cocoafish_ios_sdk-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Cocoafish_ios_sdk-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
-		AE9348C014030B4800BBC7B1 /* NSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HTML.h"; sourceTree = "<group>"; };
-		AE9348C114030B4800BBC7B1 /* NSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HTML.m"; sourceTree = "<group>"; };
-		AE9348C514030B5900BBC7B1 /* CCChat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCChat.h; sourceTree = "<group>"; };
-		AE9348C614030B5900BBC7B1 /* CCChat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCChat.m; sourceTree = "<group>"; };
 		B60428F7133D3973008CEE69 /* ASIAuthenticationDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIAuthenticationDialog.h; sourceTree = "<group>"; };
 		B60428F8133D3973008CEE69 /* ASIAuthenticationDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIAuthenticationDialog.m; sourceTree = "<group>"; };
 		B60428F9133D3973008CEE69 /* ASICacheDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASICacheDelegate.h; sourceTree = "<group>"; };
@@ -681,6 +673,7 @@
 				);
 				PREBINDING = NO;
 				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
 				SYMROOT = build;
 			};
 			name = Debug;
@@ -700,6 +693,7 @@
 				);
 				PREBINDING = NO;
 				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
 				SYMROOT = build;
 			};
 			name = Release;

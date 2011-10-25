@@ -21,6 +21,15 @@ NSString* encodeToPercentEscapeString(NSString *string) {
                                             kCFStringEncodingUTF8) autorelease];
 }
 
+void CCLog(NSString *format, ...) {
+    if (theDefaultCocoafish.loggingEnabled) {
+        va_list arglist;
+        va_start(arglist, format);
+        NSLogv(format, arglist);
+        va_end(arglist);
+    }
+}
+
 @interface Cocoafish (PrivateMethods)
 -(NSString *)getCookiePath;
 -(void)saveUserSession;
@@ -37,6 +46,11 @@ NSString* encodeToPercentEscapeString(NSString *string) {
 @synthesize downloadManager = _downloadManager;
 @synthesize cocoafishDir = _cocoafishDir;
 @synthesize deviceToken = _deviceToken;
+@synthesize loggingEnabled = _loggingEnabled;
+@synthesize jsonDateFormatter = _jsonDateFormatter;
+@synthesize exifDateFormatter = _exifDateFormatter;
+@synthesize apiURL = _apiURL;
+@synthesize downloadManagerEnabled = _downloadManagerEnabled;
 
 -(id)initWithAppKey:(NSString *)appKey customAppIds:(NSDictionary *)customAppIds
 {
@@ -68,6 +82,7 @@ NSString* encodeToPercentEscapeString(NSString *string) {
 -(void)initCommon:(NSDictionary *)customAppIds
 {
     theDefaultCocoafish = self;
+    self.apiURL = CC_BACKEND_URL;
 
 	// create Cocoafish dir if there is none
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES); 
@@ -101,6 +116,10 @@ NSString* encodeToPercentEscapeString(NSString *string) {
         [request startAsynchronous];
 	}
 	
+    // set up date formatter
+    self.jsonDateFormatter = [[[NSDateFormatter alloc] init] autorelease];
+    self.jsonDateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZ";
+    self.exifDateFormatter = [[[NSDateFormatter alloc] init] autorelease];
 }
 
 -(NSString *)getAppKey
@@ -263,7 +282,9 @@ NSString* encodeToPercentEscapeString(NSString *string) {
 	NSString *cookieDataPath = [self getCookiePath];
 	
 	// debug
-	NSLog(@"Storing cookies into file %@", cookieDataPath);
+    if ([[Cocoafish defaultCocoafish] loggingEnabled]) {
+        NSLog(@"Storing cookies into file %@", cookieDataPath);
+    }
 	
 	NSHTTPCookieStorage* sharedCookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
 	NSArray* cookies = [sharedCookieStorage cookies];
@@ -300,14 +321,14 @@ NSString* encodeToPercentEscapeString(NSString *string) {
 		[sharedCookieStorage setCookie:newCookie];
 		
 		// Debug
-		NSLog(@"Restored cookie %@", newCookie);
+		CCLog(@"Restored cookie %@", newCookie);
 	}
 }
 
 -(void) printCookieStorage {
 	NSHTTPCookieStorage* sharedCookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
 	NSArray* cookies = [sharedCookieStorage cookies] ;
-	NSLog(@"cookies: %@", cookies);
+	CCLog(@"cookies: %@", cookies);
 }
 
 
@@ -331,6 +352,8 @@ NSString* encodeToPercentEscapeString(NSString *string) {
 	[_consumerSecret release];
 	[_downloadManager release];
 	[_cocoafishDir release];
+    [_jsonDateFormatter release];
+    [_exifDateFormatter release];
 	[super dealloc];
 }
 

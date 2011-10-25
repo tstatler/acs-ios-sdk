@@ -41,6 +41,7 @@
 @property (nonatomic, readonly) NSInteger photos;
 @property (nonatomic, readonly) NSInteger totalPhotos;
 @property (nonatomic, readonly) NSInteger subCollections;
+@property (nonatomic, readonly) NSInteger shares;
 
 -(id)initWithJsonResponse:(NSDictionary *)jsonResponse;
 

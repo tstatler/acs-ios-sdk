@@ -79,6 +79,7 @@ extern NSString * const CC_JSON_FILENAME;
 extern NSString * const CC_JSON_SIZE;
 extern NSString * const CC_JSON_COLLECTION_NAME;
 extern NSString * const CC_JSON_MD5;
+extern NSString * const CC_JSON_TITLE;
 extern NSString * const CC_JSON_PROCESSED;
 extern NSString * const CC_JSON_CONTENT_TYPE;
 extern NSString * const CC_JSON_URLS;

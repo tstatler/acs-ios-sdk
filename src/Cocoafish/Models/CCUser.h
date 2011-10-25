@@ -27,6 +27,7 @@
 @property (nonatomic, retain) NSString *role;
 //@property (nonatomic, readonly) Boolean facebookAuthorized;
 @property (nonatomic, retain) NSString *facebookAccessToken;
+@property (nonatomic, retain) NSDictionary *stats;
 
 -(id)initWithId:(NSString *)objectId first:(NSString *)first last:(NSString *)last email:(NSString *)email username:(NSString *)username;
 

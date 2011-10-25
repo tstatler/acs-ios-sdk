@@ -31,6 +31,7 @@
 @synthesize role = _role;
 //@synthesize facebookAuthorized = _facebookAuthorized;
 @synthesize facebookAccessToken = _facebookAccessToken;
+@synthesize stats = _stats;
 
 -(id)initWithJsonResponse:(NSDictionary *)jsonResponse
 {
@@ -44,6 +45,7 @@
 		//self.facebookAuthorized = [[jsonResponse objectForKey:CC_JSON_USER_FACEBOOK_AUTHORIZED] boolValue];
         self.facebookAccessToken = [jsonResponse objectForKey:CC_JSON_USER_FACEBOOK_ACCESS_TOKEN];
         self.role = [jsonResponse objectForKey:@"role"];
+        self.stats = [jsonResponse objectForKey:@"stats"];
         if (self.firstName == nil && self.lastName == nil && self.username == nil) {
             NSLog(@"Invalid user object from server: %@", jsonResponse);
             [self release];
@@ -104,6 +106,7 @@
 	self.lastName = nil;
     self.facebookAccessToken = nil;
     self.role = nil;
+    self.stats = nil;
 	[super dealloc];
 }
 

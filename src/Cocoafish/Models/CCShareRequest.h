@@ -20,6 +20,7 @@
 }
 
 @property (nonatomic, retain, readonly) NSString *token;
+@property (nonatomic, retain, readonly) NSString *recipientEmail;
 @property (nonatomic, retain, readonly) NSArray *collections;
 @property (nonatomic, retain, readonly) NSArray *photos;
 @property (nonatomic, retain, readonly) CCUser *user;

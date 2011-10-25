@@ -90,7 +90,7 @@
 	NSURL *newUrl = [NSURL URLWithString:urlPath];
     self = [super initWithURL:newUrl];
     if (self) {
-        NSLog(@"CCRequest Url: %@", [newUrl absoluteString]);
+        CCLog(@"CCRequest Url: %@", [newUrl absoluteString]);
         [self setRequestMethod:httpMethod]; 
         self.requestDelegate = requestDelegate;       
         if ([httpMethod isEqualToString:@"POST"] || [httpMethod isEqualToString:@"PUT"]) {
@@ -212,6 +212,9 @@
                 key = @"photos[]";
             }
             if ([photo isKindOfClass:[ALAsset class]]) {
+                if ([[photo defaultRepresentation] respondsToSelector:@selector(filename)]) {
+                    fileName = [[photo defaultRepresentation] filename];
+                }
                 // alasset
                 if (needProcess) {
                     UIImage *image = [UIImage imageWithCGImage:[[photo defaultRepresentation] fullResolutionImage]];   
@@ -219,6 +222,7 @@
                     // convert to jpeg and save
                     photoData = UIImageJPEGRepresentation(processedImage, jpegCompression);      
                 } else {
+                    contentType = @"application/octet-stream";
                     // get filename and type
                     NSString *uti = [[photo defaultRepresentation] UTI];
                     NSArray *tokens = [NSArray arrayWithArray:[uti componentsSeparatedByString:@"."]];
@@ -227,8 +231,7 @@
                             [[token lowercaseString] isEqualToString:@"jpeg"] || 
                             [[token lowercaseString] isEqualToString:@"png"] || 
                             [[token lowercaseString] isEqualToString:@"gif"]) {
-                            fileName = [[NSString alloc] initWithFormat:@"photo.%@", token];
-                            contentType = [[NSString alloc] initWithFormat:@"image/%@", token];
+                            contentType = [[[NSString alloc] initWithFormat:@"image/%@", token] autorelease];
                             break;
                         }
                     }
@@ -258,7 +261,7 @@
     [super startSynchronous];	
     CCResponse *response = nil;
 	if (![self error]) {
-        NSLog(@"Received %@", [self responseString]);
+        CCLog(@"Received %@", [self responseString]);
         response = [[[CCResponse alloc] initWithJsonData:[self responseData]] autorelease];
 	}
     return response;
@@ -379,20 +382,21 @@
 	NSString *url = nil;
 	NSString *appKey = [[Cocoafish defaultCocoafish] getAppKey];
     NSString *paramsString = nil;
+    NSString *backendUrl = [[Cocoafish defaultCocoafish] apiURL];
     if ([additionalParams count] > 0) {
         paramsString = [additionalParams componentsJoinedByString:@"&"];
     }
 	if ([appKey length] > 0) {
 		if (paramsString) {
-			url = [NSString stringWithFormat:@"%@://%@/%@?key=%@&%@", httpProtocol, CC_BACKEND_URL, partialUrl, appKey, 
+			url = [NSString stringWithFormat:@"%@://%@/%@?key=%@&%@", httpProtocol, backendUrl, partialUrl, appKey, 
                    paramsString];
 		} else {
-			url = [NSString stringWithFormat:@"%@://%@/%@?key=%@", httpProtocol, CC_BACKEND_URL, partialUrl, appKey];
+			url = [NSString stringWithFormat:@"%@://%@/%@?key=%@", httpProtocol, backendUrl, partialUrl, appKey];
 		}
 	} else if (paramsString) {
-		url = [NSString stringWithFormat:@"%@://%@/%@?%@", httpProtocol, CC_BACKEND_URL, partialUrl, paramsString];
+		url = [NSString stringWithFormat:@"%@://%@/%@?%@", httpProtocol, backendUrl, partialUrl, paramsString];
 	} else {
-		url = [NSString stringWithFormat:@"%@://%@/%@", httpProtocol, CC_BACKEND_URL, partialUrl];
+		url = [NSString stringWithFormat:@"%@://%@/%@", httpProtocol, backendUrl, partialUrl];
 	}
 	return url;
 }
@@ -409,7 +413,7 @@
 #pragma ASIHTTPrequest Callback
 -(void)requestDone:(CCRequest *)origRequest
 {
-    NSLog(@"Received %@", [origRequest responseString]);
+    CCLog(@"Received %@", [origRequest responseString]);
     CCResponse *response = [[CCResponse alloc] initWithJsonData:[origRequest responseData]];
     if (response && ([origRequest responseStatusCode] == 200 || [origRequest responseStatusCode] == 304)) {
         // If response is ok(200) or not modified (304
