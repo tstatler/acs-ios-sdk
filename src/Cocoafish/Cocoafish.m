@@ -81,6 +81,7 @@ void CCLog(NSString *format, ...) {
 
 -(void)initCommon:(NSDictionary *)customAppIds
 {
+    self.loggingEnabled = true;
     theDefaultCocoafish = self;
     self.apiURL = CC_BACKEND_URL;
 
@@ -100,7 +101,7 @@ void CCLog(NSString *format, ...) {
 	if (customAppIds != nil) {
 		NSString *customAppId = [customAppIds objectForKey:@"Facebook"];
 		if (customAppId != nil) {
-			_facebook = [[Facebook alloc] initWithAppId:customAppId];
+			_facebook = [[Facebook alloc] initWithAppId:customAppId andDelegate:self];
 			_facebookAppId = [customAppId copy];
 			NSLog(@"Cocoafish: initialized facebook with app Id %@", customAppId);
 		}
@@ -108,12 +109,13 @@ void CCLog(NSString *format, ...) {
 	
 	// restore currentUser info if there is any
 	NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-	_currentUser = [[[CCUser alloc] initWithId:[prefs stringForKey:@"cc_user_id"] first:[prefs stringForKey:@"cc_user_first_name"] last:[prefs stringForKey:@"cc_user_last_name"] email:[prefs stringForKey:@"cc_user_email"] username:[prefs stringForKey:@"cc_username"]] retain];
+    NSDictionary *json = [prefs objectForKey:@"cc_current_user_json"];
+    if (json) {
+        _currentUser = [[CCUser alloc] initWithJsonResponse:json];
+    }
+
 	if (_currentUser) {
 		[self restoreUserSession];
-        CCRequest *request = [[[CCRequest alloc] initWithDelegate:self httpMethod:@"GET" baseUrl:@"users/show/me.json" paramDict:nil] autorelease];
-
-        [request startAsynchronous];
 	}
 	
     // set up date formatter
@@ -147,23 +149,18 @@ void CCLog(NSString *format, ...) {
 	return _facebook;
 }
 
--(void)setCurrentUser:(CCUser *)user
+-(void)setCurrentUser:(NSDictionary *)json
 {
 	[_currentUser release];
-	_currentUser = [user retain];
+    _currentUser = nil;
+    if (json) {
+        _currentUser = [[CCUser alloc] initWithJsonResponse:json];
+    }
 	NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-	if (user) {
-		[prefs setObject:user.objectId forKey:@"cc_user_id"];
-		[prefs setObject:user.firstName forKey:@"cc_user_first_name"];
-		[prefs setObject:user.lastName forKey:@"cc_user_last_name"];
-		[prefs setObject:user.email forKey:@"cc_user_email"];
-        [prefs setObject:user.username forKey:@"cc_username"];
-	} else {
-		[prefs removeObjectForKey:@"cc_user_id"];
-		[prefs removeObjectForKey:@"cc_user_first_name"];
-		[prefs removeObjectForKey:@"cc_user_last_name"];
-		[prefs removeObjectForKey:@"cc_user_email"];
-        [prefs removeObjectForKey:@"cc_username"];
+	if (_currentUser) {
+        [prefs setObject:json forKey:@"cc_current_user_json"];
+    } else {
+        [prefs removeObjectForKey:@"cc_current_user_json"];
 		// logout from facebook too if applicable
 		[_facebook logout:self];
 	}
@@ -174,14 +171,15 @@ void CCLog(NSString *format, ...) {
 
 #pragma mark -
 #pragma mark facebook related
-// handle application openurl call, used for facebook callback
--(BOOL)handleOpenURL:(NSURL *)url
-{
-	return [_facebook handleOpenURL:url];
-}
 
 -(void)facebookAuth:(NSArray *)permissions delegate:(id<CCFBSessionDelegate>)delegate
 {
+    if ([_facebook isSessionValid]) {
+        
+        // make a me call
+        [_facebook requestWithGraphPath:@"me?fields=id,first_name,last_name" andDelegate:self];
+        return;
+    }
 	_fbSessionDelegate = delegate;
 	// we will always ask for offline access permissions
 	NSMutableArray *ccPermissions = [NSMutableArray arrayWithArray:permissions];
@@ -195,21 +193,15 @@ void CCLog(NSString *format, ...) {
 	if (!found) {
 		[ccPermissions insertObject:@"offline_access" atIndex:0];
 	}
-	[_facebook authorize:permissions delegate:self];
+	[_facebook authorize:permissions];
 }
 
 -(void)unlinkFromFacebook:(NSError **)error
 {
-    CCRequest *request = [[[CCRequest alloc] initWithDelegate:self httpMethod:@"DELETE" baseUrl:@"social/facebook/unlink.json" paramDict:nil] autorelease];
+    CCRequest *request = [[[CCRequest alloc] initWithDelegate:self httpMethod:@"DELETE" baseUrl:@"users/external_accounts_unlink.json" paramDict:nil] autorelease];
 
-    CCResponse *response = [request startSynchronousRequest];
-    if (response && [response.meta.status isEqualToString:CC_STATUS_OK]) {
-        NSArray *users = [response getObjectsOfType:[CCUser class]];
-        if ([users count] == 1) {
-            CCUser *user = [users objectAtIndex:0];
-            [[Cocoafish defaultCocoafish] setCurrentUser:user];
-        }
-    }
+    [request startSynchronous];
+
 }
 
 /**
@@ -217,40 +209,9 @@ void CCLog(NSString *format, ...) {
  */
 - (void)fbDidLogin {
 	
-	// login with cocoafish
-	NSError *error = nil;
-	CCUser *user = nil;
-    NSDictionary *paramDict = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:_facebookAppId, _facebook.accessToken, nil] forKeys:[NSArray arrayWithObjects:@"facebook_app_id", @"access_token", nil]];
-    CCRequest *request = nil;
-	if ([[Cocoafish defaultCocoafish] getCurrentUser] != nil) {
-		// This is for linking facebook with the existing user
-        request = [[[CCRequest alloc] initWithDelegate:self httpMethod:@"POST" baseUrl:@"social/facebook/link.json" paramDict:paramDict] autorelease];
+    // make a me call
+    [_facebook requestWithGraphPath:@"me?fields=id,first_name,last_name" andDelegate:self];
 
-    } else {
-        request = [[[CCRequest alloc] initWithDelegate:self httpMethod:@"POST" baseUrl:@"social/facebook/login.json" paramDict:paramDict] autorelease];
-
-    }
-
-    CCResponse *response = [request startSynchronousRequest];
-    if (response && [response.meta.status isEqualToString:CC_STATUS_OK]) {
-        NSArray *users = [response getObjectsOfType:[CCUser class]];
-        if ([users count] == 1) {
-            user = [users objectAtIndex:0];
-        }
-    }
-	if (user == nil) {
-		// Failed to register with the cocoafish server, logout from facebook
-		[_facebook logout:self];
-		if (_fbSessionDelegate && [_fbSessionDelegate respondsToSelector:@selector(fbDidNotLogin:error:)]) {
-			[_fbSessionDelegate fbDidNotLogin:NO error:error];
-		}
-	} else {
-        [[Cocoafish defaultCocoafish] setCurrentUser:user];
-		if (_fbSessionDelegate && [_fbSessionDelegate respondsToSelector:@selector(fbDidLogin)]) {
-			[_fbSessionDelegate fbDidLogin];
-		}
-	}
-	_fbSessionDelegate = nil;
 }
 
 /**
@@ -267,6 +228,44 @@ void CCLog(NSString *format, ...) {
 	// Logout has to go through cocoafish server
 }
 
+- (void)request:(FBRequest *)request didLoad:(id)result
+{
+    NSString* uid = [result objectForKey:@"id"];
+    NSString *first_name = [result objectForKey:@"first_name"];
+    NSString *last_name = [result objectForKey:@"last_name"];
+
+    // login with cocoafish
+	NSError *error = nil;
+    NSMutableDictionary *paramDict = [NSMutableDictionary dictionaryWithObjects:[NSArray arrayWithObjects:uid, _facebook.accessToken, @"facebook", nil] forKeys:[NSArray arrayWithObjects:@"id", @"token", @"type", nil]];
+    CCRequest *ccrequest = nil;
+	if ([[Cocoafish defaultCocoafish] getCurrentUser] != nil) {
+		// This is for linking facebook with the existing user
+        ccrequest = [[[CCRequest alloc] initWithDelegate:self httpMethod:@"POST" baseUrl:@"users/external_account_link.json" paramDict:paramDict] autorelease];
+        
+    } else {
+        // add first name and last name
+        [paramDict setObject:first_name forKey:@"first_name"];
+        [paramDict setObject:last_name forKey:@"last_name"];
+
+        ccrequest = [[[CCRequest alloc] initWithDelegate:self httpMethod:@"POST" baseUrl:@"users/external_account_login.json" paramDict:paramDict] autorelease];
+        
+    }
+    
+    [ccrequest startSynchronousRequest];
+    
+	if (_currentUser == nil) {
+		// Failed to register with the cocoafish server, logout from facebook
+		[_facebook logout:self];
+		if (_fbSessionDelegate && [_fbSessionDelegate respondsToSelector:@selector(fbDidNotLogin:error:)]) {
+			[_fbSessionDelegate fbDidNotLogin:NO error:error];
+		}
+	} else {
+		if (_fbSessionDelegate && [_fbSessionDelegate respondsToSelector:@selector(fbDidLogin)]) {
+			[_fbSessionDelegate fbDidLogin];
+		}
+	}
+	_fbSessionDelegate = nil;
+}
 #pragma mark -
 #pragma mark user Cookie
 -(NSString *)getCookiePath {
@@ -357,7 +356,7 @@ void CCLog(NSString *format, ...) {
 	[super dealloc];
 }
 
-#pragma CCRequest delegate methods
+/*#pragma CCRequest delegate methods
 
 -(void)ccrequest:(CCRequest *)request didSucceed:(CCResponse *)response
 {
@@ -373,7 +372,7 @@ void CCLog(NSString *format, ...) {
 {
     // set current user to nil
     [[Cocoafish defaultCocoafish] setCurrentUser:nil];
-}
+}*/
 
 +(void)initializeWithAppKey:(NSString *)appKey customAppIds:(NSDictionary *)customAppIds
 {

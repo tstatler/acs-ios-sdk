@@ -18,7 +18,7 @@
 	NSArray *_admin_ids;
     NSArray *_friend_ids;
     BOOL    _access_private;
-    CCUser  *user;
+    CCUser  *_user;
   //  CCPhoto *photo;
     NSArray *_places;
     NSArray *_page_ids;

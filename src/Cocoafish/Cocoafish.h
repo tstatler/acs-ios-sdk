@@ -22,11 +22,13 @@
 #import "CCChat.h"
 #import "CCPost.h"
 #import "CCReview.h"
+#import "CCPage.h"
+#import "CCFeed.h"
 
 @protocol CCFBSessionDelegate;
 
 @class CCDownloadManager;
-@interface Cocoafish : NSObject<FBSessionDelegate, FBRequestDelegate, CCRequestDelegate> {
+@interface Cocoafish : NSObject<FBSessionDelegate, FBRequestDelegate> {
 	id<CCFBSessionDelegate> _fbSessionDelegate;
 	CCUser *_currentUser;
 	NSString *_appKey;
@@ -63,12 +65,11 @@
 -(NSString *)getOauthConsumerSecret;
 -(CCUser *)getCurrentUser;
 -(Facebook *)getFacebook;
--(void)setCurrentUser:(CCUser *)user;
+-(void)setCurrentUser:(NSDictionary *)json;
 - (NSString*)udid; // get device id
 
 -(void)facebookAuth:(NSArray *)permissions delegate:(id<CCFBSessionDelegate>)delegate;
 -(void)unlinkFromFacebook:(NSError **)error;
--(BOOL)handleOpenURL:(NSURL *)url;
 
 @end
 

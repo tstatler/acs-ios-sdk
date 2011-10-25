@@ -87,6 +87,8 @@
 		B6A1AA5413219CC700D31CD3 /* CheckinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B6A1AA5213219CC700D31CD3 /* CheckinViewController.m */; };
 		B6A1AA5513219CC700D31CD3 /* CheckinViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B6A1AA5313219CC700D31CD3 /* CheckinViewController.xib */; };
 		B6A1AA6B13248C8200D31CD3 /* TapDetectingImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = B6A1AA6A13248C8200D31CD3 /* TapDetectingImageView.m */; };
+		B6BF9E7714479D6F0043745A /* CCPage.m in Sources */ = {isa = PBXBuildFile; fileRef = B6BF9E7614479D6F0043745A /* CCPage.m */; };
+		B6BF9E7B1447F3340043745A /* CCFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = B6BF9E7A1447F3340043745A /* CCFeed.m */; };
 		B6CCC4AB12F77532006E33E7 /* FBConnect.bundle in Resources */ = {isa = PBXBuildFile; fileRef = B6CCC4AA12F77532006E33E7 /* FBConnect.bundle */; };
 		B6CCC4BF12F7754B006E33E7 /* FBLoginButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CCC4BE12F7754B006E33E7 /* FBLoginButton.m */; };
 		B6D3036A1346B79F001259F3 /* CCEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = B6D303691346B79F001259F3 /* CCEvent.m */; };
@@ -249,6 +251,10 @@
 		B6A1AA5313219CC700D31CD3 /* CheckinViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CheckinViewController.xib; sourceTree = "<group>"; };
 		B6A1AA6913248C8200D31CD3 /* TapDetectingImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TapDetectingImageView.h; sourceTree = "<group>"; };
 		B6A1AA6A13248C8200D31CD3 /* TapDetectingImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TapDetectingImageView.m; sourceTree = "<group>"; };
+		B6BF9E7514479D6F0043745A /* CCPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPage.h; sourceTree = "<group>"; };
+		B6BF9E7614479D6F0043745A /* CCPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCPage.m; sourceTree = "<group>"; };
+		B6BF9E791447F3340043745A /* CCFeed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCFeed.h; sourceTree = "<group>"; };
+		B6BF9E7A1447F3340043745A /* CCFeed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCFeed.m; sourceTree = "<group>"; };
 		B6CCC4AA12F77532006E33E7 /* FBConnect.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FBConnect.bundle; sourceTree = "<group>"; };
 		B6CCC4BD12F7754B006E33E7 /* FBLoginButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBLoginButton.h; sourceTree = "<group>"; };
 		B6CCC4BE12F7754B006E33E7 /* FBLoginButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBLoginButton.m; sourceTree = "<group>"; };
@@ -532,6 +538,10 @@
 				B65602F813E284DE0094140B /* CCPost.m */,
 				B656031313E3C0190094140B /* CCReview.h */,
 				B656031413E3C0190094140B /* CCReview.m */,
+				B6BF9E7514479D6F0043745A /* CCPage.h */,
+				B6BF9E7614479D6F0043745A /* CCPage.m */,
+				B6BF9E791447F3340043745A /* CCFeed.h */,
+				B6BF9E7A1447F3340043745A /* CCFeed.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -759,6 +769,8 @@
 				B653466513B12DED00894708 /* CCFriendRequest.m in Sources */,
 				B65602F913E284DE0094140B /* CCPost.m in Sources */,
 				B656031513E3C0190094140B /* CCReview.m in Sources */,
+				B6BF9E7714479D6F0043745A /* CCPage.m in Sources */,
+				B6BF9E7B1447F3340043745A /* CCFeed.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -809,6 +821,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Wei Kong (83669HJ83B)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Wei Kong (83669HJ83B)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -820,7 +833,8 @@
 					"-all_load",
 				);
 				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "48F344B1-CA42-4F1D-8D0B-6532F94B2F04";
+				PROVISIONING_PROFILE = "51F08804-3F87-407D-A651-8ED0CD226C6A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "51F08804-3F87-407D-A651-8ED0CD226C6A";
 				SDKROOT = iphoneos;
 				SYMROOT = build;
 			};
@@ -830,6 +844,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Wei Kong (83669HJ83B)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Wei Kong (83669HJ83B)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -841,7 +856,8 @@
 					"-all_load",
 				);
 				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "48F344B1-CA42-4F1D-8D0B-6532F94B2F04";
+				PROVISIONING_PROFILE = "51F08804-3F87-407D-A651-8ED0CD226C6A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "51F08804-3F87-407D-A651-8ED0CD226C6A";
 				SDKROOT = iphoneos;
 				SYMROOT = build;
 			};

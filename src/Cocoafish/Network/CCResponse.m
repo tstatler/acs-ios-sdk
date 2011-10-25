@@ -71,12 +71,9 @@
 		}
         // Update current User info
         if ([_meta.status isEqualToString:CC_STATUS_OK]) {
-            if ([_meta.methodName isEqualToString:@"loginUser"] || [_meta.methodName isEqualToString:@"createUser"] || [_meta.methodName isEqualToString:@"updateUser"]) {
-                NSArray *users = [self getObjectsOfType:[CCUser class]];
-                if ([users count] == 1) {
-                    CCUser *user = [users objectAtIndex:0];
-                    [[Cocoafish defaultCocoafish] setCurrentUser:user];
-                }
+            if ([_meta.methodName isEqualToString:@"loginUser"] || [_meta.methodName isEqualToString:@"createUser"] || [_meta.methodName isEqualToString:@"updateUser"] || [_meta.methodName isEqualToString:@"externalAccountLogin"] ||
+                [_meta.methodName isEqualToString:@"linkExternalAccount"] || [_meta.methodName isEqualToString:@"unlinkExternalAccount"] ) {
+                [[Cocoafish defaultCocoafish] setCurrentUser:[[[jsonResponse objectForKey:@"response"] objectForKey:@"users"] objectAtIndex:0]];
             } else if ([_meta.methodName isEqualToString:@"logoutUser"] || [_meta.methodName isEqualToString:@"deleteUser"]) {
                 [[Cocoafish defaultCocoafish] setCurrentUser:nil];
             }

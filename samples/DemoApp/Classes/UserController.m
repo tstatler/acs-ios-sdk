@@ -48,14 +48,14 @@
 		self.navigationItem.rightBarButtonItem = button;
 		[button release];
 		
-		if ([currentUser.facebookAccessToken length] > 0) {
+	/*	if ([currentUser.facebookAccessToken length] > 0) {
 			// create the link with facebook button
 			button = [[UIBarButtonItem alloc] initWithTitle:@"Unlink Facebook" style:UIBarButtonItemStylePlain target:self action:@selector(unlinkFromFacebook)];
 		} else {
 			button = [[UIBarButtonItem alloc] initWithTitle:@"Link Facebook" style:UIBarButtonItemStylePlain target:self action:@selector(linkWithFacebook)];
 		}
 		self.navigationItem.leftBarButtonItem = button;
-		[button release];
+		[button release];*/
 		
 		self.navigationItem.title = [[[Cocoafish defaultCocoafish] getCurrentUser] firstName];
 		

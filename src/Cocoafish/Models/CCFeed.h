@@ -14,8 +14,8 @@
     NSString *_name;
     CCUser *_user;
     NSString *_type;
-    NSArray *objects;
-    CCPage *page;
+    NSArray *_objects;
+    CCPage *_page;
 }
 
 @property (nonatomic, retain, readonly) NSString *name;
