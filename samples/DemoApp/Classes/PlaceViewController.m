@@ -51,7 +51,8 @@
 
 -(void)startCheckin:(CheckinViewController *)controller message:(NSString *)message image:(UIImage *)image
 {
-    NSDictionary *paramDict = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:message, place.objectId, nil] forKeys:[NSArray arrayWithObjects:@"message", @"place_id", nil]];
+    NSDictionary *paramDict = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:message, place.objectId, [NSArray arrayWithObjects:@"thumb_100", nil], nil] forKeys:[NSArray arrayWithObjects:@"message", @"place_id", @"photo_sync_sizes[]", nil]];
+
     CCRequest *request = [[[CCRequest alloc] initWithDelegate:self httpMethod:@"POST" baseUrl:@"checkins/create.json" paramDict:paramDict] autorelease];
 
     NSDictionary *imageParamDict =[ NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:800], @"max_photo_size", [NSNumber numberWithDouble:0.5], @"jpeg_compression", nil];
@@ -70,7 +71,7 @@
             checkin = [checkins objectAtIndex:0];
         }
         // update user score
-        NSString *score_key = [NSString stringWithFormat:@"%@_score",[[Cocoafish defaultCocoafish] getCurrentUser].email];
+        NSString *score_key = [NSString stringWithFormat:@"%@_score",[[Cocoafish defaultCocoafish] getCurrentUser].objectId];
         
         NSDictionary *paramDict = [NSDictionary dictionaryWithObjectsAndKeys:score_key, @"name", [NSNumber numberWithInt:5], @"value", nil];
         CCRequest *request = [[[CCRequest alloc] initWithDelegate:self httpMethod:@"PUT" baseUrl:@"keyvalues/incrby.json" paramDict:paramDict] autorelease];

@@ -81,12 +81,12 @@
         
         _exif = [[CCExif alloc] initWithJsonResponse:[jsonResponse objectForKey:@"exif"]];
         
-		if (self.processed == NO && [[Cocoafish defaultCocoafish] downloadManagerEnabled]) {
+	/*	if (self.processed == NO && [[Cocoafish defaultCocoafish] downloadManagerEnabled]) {
 			// Photo hasn't been processed on the server, add to the download manager queue 
 			// it will pull for its status periodically.
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePhotoProcessed:) name:@"PhotosProcessed" object:[Cocoafish defaultCocoafish]];
 			[[Cocoafish defaultCocoafish].downloadManager addProcessingPhoto:self parent:nil];
-		}
+		}*/
 			
 	}
 	

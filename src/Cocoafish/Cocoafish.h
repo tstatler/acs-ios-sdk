@@ -43,7 +43,7 @@
     NSDateFormatter *_jsonDateFormatter;
     NSDateFormatter *_exifDateFormatter;
     NSString *_apiUrl;
-    BOOL _downloadManagerEnabled;
+ //   BOOL _downloadManagerEnabled;
 }
 
 @property(nonatomic, assign) id<CCFBSessionDelegate> _fbSessionDelegate;
@@ -54,7 +54,7 @@
 @property(nonatomic, retain, readwrite) NSDateFormatter *jsonDateFormatter;
 @property(nonatomic, retain, readwrite) NSDateFormatter *exifDateFormatter;
 @property(nonatomic, retain, readwrite) NSString *apiURL;
-@property(nonatomic, assign, readwrite) BOOL downloadManagerEnabled;
+//@property(nonatomic, assign, readwrite) BOOL downloadManagerEnabled;
 
 +(void)initializeWithAppKey:(NSString *)appKey customAppIds:(NSDictionary *)customAppIds;;
 +(void)initializeWithOauthConsumerKey:(NSString *)consumerKey consumerSecret:(NSString *)consumerSecret customAppIds:(NSDictionary *)customAppIds;;

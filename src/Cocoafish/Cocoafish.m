@@ -50,7 +50,7 @@ void CCLog(NSString *format, ...) {
 @synthesize jsonDateFormatter = _jsonDateFormatter;
 @synthesize exifDateFormatter = _exifDateFormatter;
 @synthesize apiURL = _apiURL;
-@synthesize downloadManagerEnabled = _downloadManagerEnabled;
+//@synthesize downloadManagerEnabled = _downloadManagerEnabled;
 
 -(id)initWithAppKey:(NSString *)appKey customAppIds:(NSDictionary *)customAppIds
 {
@@ -182,7 +182,7 @@ void CCLog(NSString *format, ...) {
     }
 	_fbSessionDelegate = delegate;
 	// we will always ask for offline access permissions
-	NSMutableArray *ccPermissions = [NSMutableArray arrayWithArray:permissions];
+	/*NSMutableArray *ccPermissions = [NSMutableArray arrayWithArray:permissions];
 	BOOL found = NO;
 	for (NSString *permission in ccPermissions) {
 		if ([permission caseInsensitiveCompare:@"offline_access"] == NSOrderedSame) {
@@ -192,7 +192,7 @@ void CCLog(NSString *format, ...) {
 	}
 	if (!found) {
 		[ccPermissions insertObject:@"offline_access" atIndex:0];
-	}
+	}*/
 	[_facebook authorize:permissions];
 }
 

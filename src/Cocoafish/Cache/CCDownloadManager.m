@@ -19,12 +19,12 @@
 
 @interface CCDownloadManager ()
 
-@property (nonatomic, retain, readwrite) NSTimer *autoUpdateTimer;
+//@property (nonatomic, retain, readwrite) NSTimer *autoUpdateTimer;
 -(void)cleanupCache; 
 @end
 
 @implementation CCDownloadManager
-@synthesize autoUpdateTimer = _autoUpdateTimer;
+//@synthesize autoUpdateTimer = _autoUpdateTimer;
 
 -(id)init
 {
@@ -37,12 +37,12 @@
 	return self;
 }
 
--(BOOL)downloadPhoto:(CCPhoto *)photo size:(int)size
+-(void)downloadPhoto:(CCPhoto *)photo size:(int)size
 {
 	@synchronized(self) {
         NSString *urlPath = [photo getImageUrl:size];
         if (!urlPath) {
-            return false;
+            return;
         }
       /*  if (!urlPath && !photo.processed) {
             // we don't have the photo url info yet because the photo is being processed, put in the queue
@@ -82,7 +82,7 @@
         NSString *downloadPath = [photo localPath:size];
 		if ([_downloadInProgress containsObject:downloadPath]) {
 			// download already in progress, no op
-			return true;
+			return;
 		}
         
         NSURL *url = [NSURL URLWithString:urlPath];
@@ -95,7 +95,7 @@
         [request setDidFinishSelector:@selector(downloadDone:)];
         [request setDidFailSelector:@selector(downloadFailed:)];
         [request startAsynchronous];
-		return true;
+		return;
 	}
 }
 
@@ -122,7 +122,7 @@
 	[[NSNotificationQueue defaultQueue] enqueueNotification:myNotification postingStyle:NSPostNow];	
 } 
 
--(void)addProcessingPhoto:(CCPhoto *)photo parent:(CCObject *)parent;
+/*-(void)addProcessingPhoto:(CCPhoto *)photo parent:(CCObject *)parent;
 {
 	if (!photo) {
 		return;
@@ -286,7 +286,7 @@
 																   repeats:NO];
 		}
 	}
-}
+}*/
 
 
 -(void)cleanupCache
