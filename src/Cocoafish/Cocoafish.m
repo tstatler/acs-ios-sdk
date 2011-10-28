@@ -174,12 +174,7 @@ void CCLog(NSString *format, ...) {
 
 -(void)facebookAuth:(NSArray *)permissions delegate:(id<CCFBSessionDelegate>)delegate
 {
-    if ([_facebook isSessionValid]) {
-        
-        // make a me call
-        [_facebook requestWithGraphPath:@"me?fields=id,first_name,last_name" andDelegate:self];
-        return;
-    }
+
 	_fbSessionDelegate = delegate;
 	// we will always ask for offline access permissions
 	/*NSMutableArray *ccPermissions = [NSMutableArray arrayWithArray:permissions];
@@ -208,10 +203,34 @@ void CCLog(NSString *format, ...) {
  * Called when the user has logged in successfully.
  */
 - (void)fbDidLogin {
+    // login with cocoafish
+	NSError *error = nil;
+    NSMutableDictionary *paramDict = [NSMutableDictionary dictionaryWithObjects:[NSArray arrayWithObjects:_facebook.accessToken, @"facebook", nil] forKeys:[NSArray arrayWithObjects:@"token", @"type", nil]];
+    CCRequest *ccrequest = nil;
+	if ([[Cocoafish defaultCocoafish] getCurrentUser] != nil) {
+		// This is for linking facebook with the existing user
+        ccrequest = [[[CCRequest alloc] initWithDelegate:self httpMethod:@"POST" baseUrl:@"users/external_account_link.json" paramDict:paramDict] autorelease];
+        
+    } else {
+        ccrequest = [[[CCRequest alloc] initWithDelegate:self httpMethod:@"POST" baseUrl:@"users/external_account_login.json" paramDict:paramDict] autorelease];
+        
+    }
+    
+    [ccrequest startSynchronousRequest];
+    
+	if (_currentUser == nil) {
+		// Failed to register with the cocoafish server
+        //	[_facebook logout:self];
+		if (_fbSessionDelegate && [_fbSessionDelegate respondsToSelector:@selector(fbDidNotLogin:error:)]) {
+			[_fbSessionDelegate fbDidNotLogin:NO error:error];
+		}
+	} else {
+		if (_fbSessionDelegate && [_fbSessionDelegate respondsToSelector:@selector(fbDidLogin)]) {
+			[_fbSessionDelegate fbDidLogin];
+		}
+	}
+	_fbSessionDelegate = nil;
 	
-    // make a me call
-    [_facebook requestWithGraphPath:@"me?fields=id,first_name,last_name" andDelegate:self];
-
 }
 
 /**
@@ -254,8 +273,8 @@ void CCLog(NSString *format, ...) {
     [ccrequest startSynchronousRequest];
     
 	if (_currentUser == nil) {
-		// Failed to register with the cocoafish server, logout from facebook
-		[_facebook logout:self];
+		// Failed to register with the cocoafish server
+	//	[_facebook logout:self];
 		if (_fbSessionDelegate && [_fbSessionDelegate respondsToSelector:@selector(fbDidNotLogin:error:)]) {
 			[_fbSessionDelegate fbDidNotLogin:NO error:error];
 		}
