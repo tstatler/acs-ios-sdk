@@ -96,6 +96,10 @@
 		B656032413E3C2890094140B /* CCReview.m in Sources */ = {isa = PBXBuildFile; fileRef = B656032213E3C2890094140B /* CCReview.m */; };
 		B685E430139B41AA001B50BD /* CCCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = B685E42F139B41AA001B50BD /* CCCollection.m */; };
 		B685E434139B41B9001B50BD /* CCShareRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B685E433139B41B9001B50BD /* CCShareRequest.m */; };
+		B693786B1479E51E004A51F1 /* NSDate+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = B693786A1479E51E004A51F1 /* NSDate+JSON.m */; };
+		B69378731479E53B004A51F1 /* CCFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = B693786E1479E53B004A51F1 /* CCFeed.m */; };
+		B69378741479E53B004A51F1 /* CCPage.m in Sources */ = {isa = PBXBuildFile; fileRef = B69378701479E53B004A51F1 /* CCPage.m */; };
+		B69378751479E53B004A51F1 /* CCWhere.m in Sources */ = {isa = PBXBuildFile; fileRef = B69378721479E53B004A51F1 /* CCWhere.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -267,6 +271,14 @@
 		B685E42F139B41AA001B50BD /* CCCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCCollection.m; sourceTree = "<group>"; };
 		B685E432139B41B9001B50BD /* CCShareRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCShareRequest.h; sourceTree = "<group>"; };
 		B685E433139B41B9001B50BD /* CCShareRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCShareRequest.m; sourceTree = "<group>"; };
+		B69378691479E51E004A51F1 /* NSDate+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+JSON.h"; sourceTree = "<group>"; };
+		B693786A1479E51E004A51F1 /* NSDate+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+JSON.m"; sourceTree = "<group>"; };
+		B693786D1479E53B004A51F1 /* CCFeed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCFeed.h; sourceTree = "<group>"; };
+		B693786E1479E53B004A51F1 /* CCFeed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCFeed.m; sourceTree = "<group>"; };
+		B693786F1479E53B004A51F1 /* CCPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPage.h; sourceTree = "<group>"; };
+		B69378701479E53B004A51F1 /* CCPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCPage.m; sourceTree = "<group>"; };
+		B69378711479E53B004A51F1 /* CCWhere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCWhere.h; sourceTree = "<group>"; };
+		B69378721479E53B004A51F1 /* CCWhere.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCWhere.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -525,6 +537,8 @@
 		B64B269C138036200053E943 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				B69378691479E51E004A51F1 /* NSDate+JSON.h */,
+				B693786A1479E51E004A51F1 /* NSDate+JSON.m */,
 				B633DFC613AC60CB008A9A5D /* NSString+HTML.m */,
 				B633DFC513AC6088008A9A5D /* NSString+HTML.h */,
 				B64B269D138036200053E943 /* WBImage.h */,
@@ -539,6 +553,12 @@
 		B64B269F138036200053E943 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B693786D1479E53B004A51F1 /* CCFeed.h */,
+				B693786E1479E53B004A51F1 /* CCFeed.m */,
+				B693786F1479E53B004A51F1 /* CCPage.h */,
+				B69378701479E53B004A51F1 /* CCPage.m */,
+				B69378711479E53B004A51F1 /* CCWhere.h */,
+				B69378721479E53B004A51F1 /* CCWhere.m */,
 				B656031F13E3C2890094140B /* CCPost.h */,
 				B656032013E3C2890094140B /* CCPost.m */,
 				B656032113E3C2890094140B /* CCReview.h */,
@@ -781,6 +801,10 @@
 				B653465113B0265400894708 /* CCFriendRequest.m in Sources */,
 				B656032313E3C2890094140B /* CCPost.m in Sources */,
 				B656032413E3C2890094140B /* CCReview.m in Sources */,
+				B693786B1479E51E004A51F1 /* NSDate+JSON.m in Sources */,
+				B69378731479E53B004A51F1 /* CCFeed.m in Sources */,
+				B69378741479E53B004A51F1 /* CCPage.m in Sources */,
+				B69378751479E53B004A51F1 /* CCWhere.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

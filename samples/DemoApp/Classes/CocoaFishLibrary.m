@@ -8,11 +8,6 @@
 
 #import "CocoafishLibrary.h"
 
-NSString* getUniqueIdentifier() {
-	UIDevice *myCurrentDevice = [UIDevice currentDevice];
-	return [myCurrentDevice uniqueIdentifier];
-}
-
 // check iphone
 BOOL isIphone() {
 	NSString *deviceType = [UIDevice currentDevice].model;

@@ -75,6 +75,8 @@
 		B6898BE612C0328F006D4ED8 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6898BE512C0328F006D4ED8 /* CoreLocation.framework */; };
 		B6898C1012C03445006D4ED8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6898C0F12C03445006D4ED8 /* UIKit.framework */; };
 		B6898C1212C03445006D4ED8 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B6898C1112C03445006D4ED8 /* libz.dylib */; };
+		B693784C1479A043004A51F1 /* CCWhere.m in Sources */ = {isa = PBXBuildFile; fileRef = B693784B1479A043004A51F1 /* CCWhere.m */; };
+		B69378501479D1C0004A51F1 /* NSDate+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = B693784F1479D1C0004A51F1 /* NSDate+JSON.m */; };
 		B6A1A9A31321895D00D31CD3 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B6A1A9A11321895D00D31CD3 /* RegisterViewController.m */; };
 		B6A1A9A41321895D00D31CD3 /* RegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B6A1A9A21321895D00D31CD3 /* RegisterViewController.xib */; };
 		B6A1A9A81321898300D31CD3 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B6A1A9A61321898300D31CD3 /* LoginViewController.m */; };
@@ -234,6 +236,10 @@
 		B6898C0F12C03445006D4ED8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		B6898C1112C03445006D4ED8 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		B68993E512C31063006D4ED8 /* libCocoafish.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCocoafish.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		B693784A1479A043004A51F1 /* CCWhere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCWhere.h; sourceTree = "<group>"; };
+		B693784B1479A043004A51F1 /* CCWhere.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCWhere.m; sourceTree = "<group>"; };
+		B693784E1479D1C0004A51F1 /* NSDate+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+JSON.h"; sourceTree = "<group>"; };
+		B693784F1479D1C0004A51F1 /* NSDate+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+JSON.m"; sourceTree = "<group>"; };
 		B6A1A9A01321895D00D31CD3 /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
 		B6A1A9A11321895D00D31CD3 /* RegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterViewController.m; sourceTree = "<group>"; };
 		B6A1A9A21321895D00D31CD3 /* RegisterViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RegisterViewController.xib; sourceTree = "<group>"; };
@@ -400,6 +406,8 @@
 				B636155E13A958B1007D1D99 /* NSString+HTML.m */,
 				B653F29B1360AA7600686E72 /* WBImage.h */,
 				B653F29C1360AA7600686E72 /* WBImage.m */,
+				B693784E1479D1C0004A51F1 /* NSDate+JSON.h */,
+				B693784F1479D1C0004A51F1 /* NSDate+JSON.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -542,6 +550,8 @@
 				B6BF9E7614479D6F0043745A /* CCPage.m */,
 				B6BF9E791447F3340043745A /* CCFeed.h */,
 				B6BF9E7A1447F3340043745A /* CCFeed.m */,
+				B693784A1479A043004A51F1 /* CCWhere.h */,
+				B693784B1479A043004A51F1 /* CCWhere.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -771,6 +781,8 @@
 				B656031513E3C0190094140B /* CCReview.m in Sources */,
 				B6BF9E7714479D6F0043745A /* CCPage.m in Sources */,
 				B6BF9E7B1447F3340043745A /* CCFeed.m in Sources */,
+				B693784C1479A043004A51F1 /* CCWhere.m in Sources */,
+				B69378501479D1C0004A51F1 /* NSDate+JSON.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

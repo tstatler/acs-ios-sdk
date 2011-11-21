@@ -24,6 +24,8 @@
 #import "CCReview.h"
 #import "CCPage.h"
 #import "CCFeed.h"
+#import "CCWhere.h"
+#import "NSDate+JSON.h"
 
 @protocol CCFBSessionDelegate;
 
@@ -66,7 +68,6 @@
 -(CCUser *)getCurrentUser;
 -(Facebook *)getFacebook;
 -(void)setCurrentUser:(NSDictionary *)json;
-- (NSString*)udid; // get device id
 
 -(void)facebookAuth:(NSArray *)permissions delegate:(id<CCFBSessionDelegate>)delegate;
 -(void)unlinkFromFacebook:(NSError **)error;

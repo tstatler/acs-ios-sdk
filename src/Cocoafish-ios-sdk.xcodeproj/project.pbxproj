@@ -102,6 +102,14 @@
 		B656033E13E3D6AB0094140B /* CCShareRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = B656033413E3D6AB0094140B /* CCShareRequest.h */; };
 		B656033F13E3D6AB0094140B /* CCShareRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B656033513E3D6AB0094140B /* CCShareRequest.m */; };
 		B68992AC12C30077006D4ED8 /* YAJL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B68992AA12C30077006D4ED8 /* YAJL.framework */; };
+		B69378551479E4AD004A51F1 /* NSDate+JSON.h in Headers */ = {isa = PBXBuildFile; fileRef = B69378541479E4AD004A51F1 /* NSDate+JSON.h */; };
+		B69378581479E4BA004A51F1 /* NSDate+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = B69378571479E4BA004A51F1 /* NSDate+JSON.m */; };
+		B693785F1479E4E6004A51F1 /* CCFeed.h in Headers */ = {isa = PBXBuildFile; fileRef = B69378591479E4E6004A51F1 /* CCFeed.h */; };
+		B69378601479E4E6004A51F1 /* CCFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = B693785A1479E4E6004A51F1 /* CCFeed.m */; };
+		B69378611479E4E6004A51F1 /* CCPage.h in Headers */ = {isa = PBXBuildFile; fileRef = B693785B1479E4E6004A51F1 /* CCPage.h */; };
+		B69378621479E4E6004A51F1 /* CCPage.m in Sources */ = {isa = PBXBuildFile; fileRef = B693785C1479E4E6004A51F1 /* CCPage.m */; };
+		B69378631479E4E6004A51F1 /* CCWhere.h in Headers */ = {isa = PBXBuildFile; fileRef = B693785D1479E4E6004A51F1 /* CCWhere.h */; };
+		B69378641479E4E6004A51F1 /* CCWhere.m in Sources */ = {isa = PBXBuildFile; fileRef = B693785E1479E4E6004A51F1 /* CCWhere.m */; };
 		B6954FC1140351C40081F31F /* CCChat.h in Headers */ = {isa = PBXBuildFile; fileRef = B6954FBF140351C40081F31F /* CCChat.h */; };
 		B6954FC2140351C40081F31F /* CCChat.m in Sources */ = {isa = PBXBuildFile; fileRef = B6954FC0140351C40081F31F /* CCChat.m */; };
 		B6954FC9140352380081F31F /* GTMdefines.h in Headers */ = {isa = PBXBuildFile; fileRef = B6954FC4140352380081F31F /* GTMdefines.h */; };
@@ -218,6 +226,14 @@
 		B68992C012C30544006D4ED8 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		B68992C212C30544006D4ED8 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		B68992C612C3055A006D4ED8 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		B69378541479E4AD004A51F1 /* NSDate+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+JSON.h"; sourceTree = "<group>"; };
+		B69378571479E4BA004A51F1 /* NSDate+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+JSON.m"; sourceTree = "<group>"; };
+		B69378591479E4E6004A51F1 /* CCFeed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCFeed.h; sourceTree = "<group>"; };
+		B693785A1479E4E6004A51F1 /* CCFeed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCFeed.m; sourceTree = "<group>"; };
+		B693785B1479E4E6004A51F1 /* CCPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPage.h; sourceTree = "<group>"; };
+		B693785C1479E4E6004A51F1 /* CCPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCPage.m; sourceTree = "<group>"; };
+		B693785D1479E4E6004A51F1 /* CCWhere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCWhere.h; sourceTree = "<group>"; };
+		B693785E1479E4E6004A51F1 /* CCWhere.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCWhere.m; sourceTree = "<group>"; };
 		B6954FBF140351C40081F31F /* CCChat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCChat.h; sourceTree = "<group>"; };
 		B6954FC0140351C40081F31F /* CCChat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCChat.m; sourceTree = "<group>"; };
 		B6954FC4140352380081F31F /* GTMdefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMdefines.h; sourceTree = "<group>"; };
@@ -377,6 +393,8 @@
 		B64B26F6138097890053E943 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				B69378571479E4BA004A51F1 /* NSDate+JSON.m */,
+				B69378541479E4AD004A51F1 /* NSDate+JSON.h */,
 				B6954FC4140352380081F31F /* GTMdefines.h */,
 				B6954FC5140352380081F31F /* GTMNSString+HTML.h */,
 				B6954FC6140352380081F31F /* GTMNSString+HTML.m */,
@@ -391,6 +409,12 @@
 		B64B26F9138097890053E943 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B69378591479E4E6004A51F1 /* CCFeed.h */,
+				B693785A1479E4E6004A51F1 /* CCFeed.m */,
+				B693785B1479E4E6004A51F1 /* CCPage.h */,
+				B693785C1479E4E6004A51F1 /* CCPage.m */,
+				B693785D1479E4E6004A51F1 /* CCWhere.h */,
+				B693785E1479E4E6004A51F1 /* CCWhere.m */,
 				B6954FBF140351C40081F31F /* CCChat.h */,
 				B6954FC0140351C40081F31F /* CCChat.m */,
 				B656032C13E3D6AB0094140B /* CCCollection.h */,
@@ -516,6 +540,10 @@
 				B6954FC9140352380081F31F /* GTMdefines.h in Headers */,
 				B6954FCA140352380081F31F /* GTMNSString+HTML.h in Headers */,
 				B6954FCC140352380081F31F /* NSString+HTML.h in Headers */,
+				B69378551479E4AD004A51F1 /* NSDate+JSON.h in Headers */,
+				B693785F1479E4E6004A51F1 /* CCFeed.h in Headers */,
+				B69378611479E4E6004A51F1 /* CCPage.h in Headers */,
+				B69378631479E4E6004A51F1 /* CCWhere.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -615,6 +643,10 @@
 				B6954FC2140351C40081F31F /* CCChat.m in Sources */,
 				B6954FCB140352380081F31F /* GTMNSString+HTML.m in Sources */,
 				B6954FCD140352380081F31F /* NSString+HTML.m in Sources */,
+				B69378581479E4BA004A51F1 /* NSDate+JSON.m in Sources */,
+				B69378601479E4E6004A51F1 /* CCFeed.m in Sources */,
+				B69378621479E4E6004A51F1 /* CCPage.m in Sources */,
+				B69378641479E4E6004A51F1 /* CCWhere.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

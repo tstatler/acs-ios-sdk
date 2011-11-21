@@ -70,11 +70,35 @@
                 id valueObject = [paramDict valueForKey:key];
                 NSString *value = nil;
                 // URL encode string
+                NSRange range = [key rangeOfString : @"[]"];
+                
+                BOOL isArray = NO;
+                if (range.location == [key length] - 2) {
+                    isArray = YES;
+                }
+
+                // URL encode string
                 if ([valueObject isKindOfClass:[NSArray class]]) {
-                    // concatenate the array
-                    value = [valueObject componentsJoinedByString:@","];
+                    if (isArray) {
+                        // convert to mulple fields
+                        for (id item in valueObject) {
+                            if ([item isKindOfClass:[NSString class]]) {
+                                value = item;
+                            } else {
+                                value = [item description];
+                            }
+                            value = encodeToPercentEscapeString(value);
+                            [paramArray addObject:[NSString stringWithFormat:@"%@=%@", key, value]];
+                            
+                        }
+                        continue;
+
+                    } else {
+                        // concatenate the array
+                        value = [valueObject componentsJoinedByString:@","];
+                    }
                 } else if (![valueObject isKindOfClass:[NSString class]]) {
-                    value = [valueObject description];
+                    value = [valueObject yajl_JSONString];
                 } else {
                     value = (NSString *)valueObject;
                 }
@@ -124,10 +148,8 @@
                     value = [valueObject yajl_JSONString];
                     // if it is keyvalues set, convert array or dictionary to json and set type to json
                     [self setPostValue:@"json" forKey:@"type"];
-                } else if ([valueObject isKindOfClass:[NSDictionary class]]) {
-                    value = [valueObject yajl_JSONString];
                 } else if (![valueObject isKindOfClass:[NSString class]]) {
-                    value = [valueObject description];
+                    value = [valueObject yajl_JSONString];
                 } else {
                     value = (NSString *)valueObject;
                 }
