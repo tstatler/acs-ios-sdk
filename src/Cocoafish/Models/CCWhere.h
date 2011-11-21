@@ -16,6 +16,7 @@
 -(void)fieldName:(NSString *)fieldName lessThan:(NSObject *)value;
 -(void)fieldName:(NSString *)fieldName greaterThan:(NSObject *)value;
 -(void)fieldName:(NSString *)fieldName equalTo:(NSObject *)value;
+-(void)fieldName:(NSString *)fieldName notEqualTo:(NSObject *)value;
 -(void)fieldName:(NSString *)fieldName lessThanEqualTo:(NSObject *)value;
 -(void)fieldName:(NSString *)fieldName greaterThanEqualTo:(NSObject *)value;
 -(void)fieldName:(NSString *)fieldName containedIn:(NSArray *)values;
