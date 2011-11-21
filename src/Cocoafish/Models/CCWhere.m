@@ -47,6 +47,15 @@
     [_where setObject:value forKey:fieldName];
 }
 
+-(void)fieldName:(NSString *)fieldName notEqualTo:(NSObject *)value
+{
+    if (!([value isKindOfClass:[NSString class]] || [value isKindOfClass:[NSNumber class]] || [value isKindOfClass:[NSDate class]])) {
+        [NSException raise:@"Invalid Type" format:@"value must be type of NSString, NSNumber or NSDate"];
+        
+    }
+    [_where setObject:[NSDictionary dictionaryWithObjectsAndKeys:value, @"$ne",nil] forKey:fieldName];
+}
+
 -(void)fieldName:(NSString *)fieldName lessThanEqualTo:(NSObject *)value
 {
     if (!([value isKindOfClass:[NSString class]] || [value isKindOfClass:[NSNumber class]] || [value isKindOfClass:[NSDate class]])) {
