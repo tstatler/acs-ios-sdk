@@ -350,12 +350,6 @@ void CCLog(NSString *format, ...) {
 }
 
 
-- (NSString*)udid
-{
-	UIDevice* device = [UIDevice currentDevice];
-	return [device.uniqueIdentifier stringByReplacingOccurrencesOfString:@"-" withString:@""];
-}
-
 /*-(void)cleanupCacheDir
 {
 	[[NSFileManager defaultManager] removeItemAtPath:_cocoafishDir error:nil];

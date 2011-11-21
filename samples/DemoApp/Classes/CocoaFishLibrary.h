@@ -15,8 +15,6 @@
 #define debug_NSLog(format, ...)
 #endif
 
-NSString* getUniqueIdentifier();
-
 // iOS Version
 float osVersion();
 
