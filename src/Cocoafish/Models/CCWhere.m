@@ -14,7 +14,7 @@
 {
     self = [super init];
     if (self) {
-        _where = [NSMutableDictionary dictionaryWithCapacity:0];
+        _where = [[NSMutableDictionary alloc] initWithCapacity:0];
     }
     return self;
 }
