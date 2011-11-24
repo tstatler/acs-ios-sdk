@@ -35,6 +35,7 @@
 		B6544FFA125FC8A9003AFCAB /* AnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = B6544FF8125FC8A9003AFCAB /* AnnotationView.m */; };
 		B65602F913E284DE0094140B /* CCPost.m in Sources */ = {isa = PBXBuildFile; fileRef = B65602F813E284DE0094140B /* CCPost.m */; };
 		B656031513E3C0190094140B /* CCReview.m in Sources */ = {isa = PBXBuildFile; fileRef = B656031413E3C0190094140B /* CCReview.m */; };
+		B6589931147C37C900B445DB /* CLLocation+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = B6589930147C37C900B445DB /* CLLocation+JSON.m */; };
 		B67B691513341319001E4472 /* ASIAuthenticationDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = B67B68C413341319001E4472 /* ASIAuthenticationDialog.m */; };
 		B67B691613341319001E4472 /* ASIDataCompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = B67B68C713341319001E4472 /* ASIDataCompressor.m */; };
 		B67B691713341319001E4472 /* ASIDataDecompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = B67B68C913341319001E4472 /* ASIDataDecompressor.m */; };
@@ -154,6 +155,8 @@
 		B65602F813E284DE0094140B /* CCPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCPost.m; sourceTree = "<group>"; };
 		B656031313E3C0190094140B /* CCReview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCReview.h; sourceTree = "<group>"; };
 		B656031413E3C0190094140B /* CCReview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCReview.m; sourceTree = "<group>"; };
+		B658992F147C37C900B445DB /* CLLocation+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CLLocation+JSON.h"; sourceTree = "<group>"; };
+		B6589930147C37C900B445DB /* CLLocation+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CLLocation+JSON.m"; sourceTree = "<group>"; };
 		B67B68C313341319001E4472 /* ASIAuthenticationDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIAuthenticationDialog.h; sourceTree = "<group>"; };
 		B67B68C413341319001E4472 /* ASIAuthenticationDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIAuthenticationDialog.m; sourceTree = "<group>"; };
 		B67B68C513341319001E4472 /* ASICacheDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASICacheDelegate.h; sourceTree = "<group>"; };
@@ -408,6 +411,8 @@
 				B653F29C1360AA7600686E72 /* WBImage.m */,
 				B693784E1479D1C0004A51F1 /* NSDate+JSON.h */,
 				B693784F1479D1C0004A51F1 /* NSDate+JSON.m */,
+				B658992F147C37C900B445DB /* CLLocation+JSON.h */,
+				B6589930147C37C900B445DB /* CLLocation+JSON.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -783,6 +788,7 @@
 				B6BF9E7B1447F3340043745A /* CCFeed.m in Sources */,
 				B693784C1479A043004A51F1 /* CCWhere.m in Sources */,
 				B69378501479D1C0004A51F1 /* NSDate+JSON.m in Sources */,
+				B6589931147C37C900B445DB /* CLLocation+JSON.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

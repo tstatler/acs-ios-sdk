@@ -51,6 +51,8 @@
 		B6042994133D3973008CEE69 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = B6042948133D3973008CEE69 /* SBJsonParser.m */; };
 		B6042995133D3973008CEE69 /* SBJsonWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = B6042949133D3973008CEE69 /* SBJsonWriter.h */; };
 		B6042996133D3973008CEE69 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = B604294A133D3973008CEE69 /* SBJsonWriter.m */; };
+		B619BBEF147DC42900AE5D60 /* CLLocation+JSON.h in Headers */ = {isa = PBXBuildFile; fileRef = B619BBED147DC42900AE5D60 /* CLLocation+JSON.h */; };
+		B619BBF0147DC42900AE5D60 /* CLLocation+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = B619BBEE147DC42900AE5D60 /* CLLocation+JSON.m */; };
 		B64B2722138097890053E943 /* CCDownloadManager.h in Headers */ = {isa = PBXBuildFile; fileRef = B64B26F2138097890053E943 /* CCDownloadManager.h */; };
 		B64B2723138097890053E943 /* CCDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B26F3138097890053E943 /* CCDownloadManager.m */; };
 		B64B2724138097890053E943 /* Cocoafish.h in Headers */ = {isa = PBXBuildFile; fileRef = B64B26F4138097890053E943 /* Cocoafish.h */; };
@@ -169,6 +171,8 @@
 		B6042948133D3973008CEE69 /* SBJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonParser.m; sourceTree = "<group>"; };
 		B6042949133D3973008CEE69 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
 		B604294A133D3973008CEE69 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
+		B619BBED147DC42900AE5D60 /* CLLocation+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CLLocation+JSON.h"; sourceTree = "<group>"; };
+		B619BBEE147DC42900AE5D60 /* CLLocation+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CLLocation+JSON.m"; sourceTree = "<group>"; };
 		B64B26F2138097890053E943 /* CCDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCDownloadManager.h; sourceTree = "<group>"; };
 		B64B26F3138097890053E943 /* CCDownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCDownloadManager.m; sourceTree = "<group>"; };
 		B64B26F4138097890053E943 /* Cocoafish.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cocoafish.h; sourceTree = "<group>"; };
@@ -393,6 +397,8 @@
 		B64B26F6138097890053E943 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				B619BBED147DC42900AE5D60 /* CLLocation+JSON.h */,
+				B619BBEE147DC42900AE5D60 /* CLLocation+JSON.m */,
 				B69378571479E4BA004A51F1 /* NSDate+JSON.m */,
 				B69378541479E4AD004A51F1 /* NSDate+JSON.h */,
 				B6954FC4140352380081F31F /* GTMdefines.h */,
@@ -544,6 +550,7 @@
 				B693785F1479E4E6004A51F1 /* CCFeed.h in Headers */,
 				B69378611479E4E6004A51F1 /* CCPage.h in Headers */,
 				B69378631479E4E6004A51F1 /* CCWhere.h in Headers */,
+				B619BBEF147DC42900AE5D60 /* CLLocation+JSON.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -647,6 +654,7 @@
 				B69378601479E4E6004A51F1 /* CCFeed.m in Sources */,
 				B69378621479E4E6004A51F1 /* CCPage.m in Sources */,
 				B69378641479E4E6004A51F1 /* CCWhere.m in Sources */,
+				B619BBF0147DC42900AE5D60 /* CLLocation+JSON.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

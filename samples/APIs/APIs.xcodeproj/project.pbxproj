@@ -66,6 +66,7 @@
 		B6042824133B1296008CEE69 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B6042811133B1294008CEE69 /* RegisterViewController.m */; };
 		B6042825133B1296008CEE69 /* RegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B6042812133B1295008CEE69 /* RegisterViewController.xib */; };
 		B6042826133B1296008CEE69 /* TapDetectingImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = B6042814133B1296008CEE69 /* TapDetectingImageView.m */; };
+		B619BBE8147DC39900AE5D60 /* CLLocation+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = B619BBE7147DC39900AE5D60 /* CLLocation+JSON.m */; };
 		B633DF8213ABA7CE008A9A5D /* CCChat.m in Sources */ = {isa = PBXBuildFile; fileRef = B633DF8113ABA7CE008A9A5D /* CCChat.m */; };
 		B633DFC713AC60CB008A9A5D /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = B633DFC613AC60CB008A9A5D /* NSString+HTML.m */; };
 		B636155613A936A6007D1D99 /* GTMNSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = B636155513A936A6007D1D99 /* GTMNSString+HTML.m */; };
@@ -212,6 +213,8 @@
 		B6042812133B1295008CEE69 /* RegisterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RegisterViewController.xib; sourceTree = "<group>"; };
 		B6042813133B1295008CEE69 /* TapDetectingImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TapDetectingImageView.h; sourceTree = "<group>"; };
 		B6042814133B1296008CEE69 /* TapDetectingImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TapDetectingImageView.m; sourceTree = "<group>"; };
+		B619BBE6147DC39900AE5D60 /* CLLocation+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CLLocation+JSON.h"; sourceTree = "<group>"; };
+		B619BBE7147DC39900AE5D60 /* CLLocation+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CLLocation+JSON.m"; sourceTree = "<group>"; };
 		B633DF8013ABA7CE008A9A5D /* CCChat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCChat.h; sourceTree = "<group>"; };
 		B633DF8113ABA7CE008A9A5D /* CCChat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCChat.m; sourceTree = "<group>"; };
 		B633DFC513AC6088008A9A5D /* NSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HTML.h"; sourceTree = "<group>"; };
@@ -537,6 +540,8 @@
 		B64B269C138036200053E943 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				B619BBE6147DC39900AE5D60 /* CLLocation+JSON.h */,
+				B619BBE7147DC39900AE5D60 /* CLLocation+JSON.m */,
 				B69378691479E51E004A51F1 /* NSDate+JSON.h */,
 				B693786A1479E51E004A51F1 /* NSDate+JSON.m */,
 				B633DFC613AC60CB008A9A5D /* NSString+HTML.m */,
@@ -805,6 +810,7 @@
 				B69378731479E53B004A51F1 /* CCFeed.m in Sources */,
 				B69378741479E53B004A51F1 /* CCPage.m in Sources */,
 				B69378751479E53B004A51F1 /* CCWhere.m in Sources */,
+				B619BBE8147DC39900AE5D60 /* CLLocation+JSON.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

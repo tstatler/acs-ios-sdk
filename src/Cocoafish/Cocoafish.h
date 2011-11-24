@@ -26,6 +26,7 @@
 #import "CCFeed.h"
 #import "CCWhere.h"
 #import "NSDate+JSON.h"
+#import "CLLocation+JSON.h"
 
 @protocol CCFBSessionDelegate;
 
