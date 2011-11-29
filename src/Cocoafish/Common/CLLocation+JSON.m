@@ -14,6 +14,6 @@
 {
     double latitude = self.coordinate.latitude;
     double longitude = self.coordinate.longitude;
-    return [NSArray arrayWithObjects:[NSNumber numberWithDouble:longitude], [NSNumber numberWithDouble:latitude] nil];
+    return [NSArray arrayWithObjects:[NSNumber numberWithDouble:longitude], [NSNumber numberWithDouble:latitude], nil];
 }
 @end
