@@ -318,19 +318,6 @@
 
 }
 
--(void)addCustomField:(NSString *)customKey value:(NSString *)value type:(NSString *)type
-{
-    if (!([self.requestMethod isEqualToString:@"PUT"] || [self.requestMethod isEqualToString:@"POST"])) {
-        [NSException raise:@"addCustomField is only supported with PUT and POST" format:@"invalid operation"];
-    }
-    NSString *customType = [type lowercaseString];
-    if (!([customType isEqualToString:@"string"] || [customType isEqualToString:@"integer"])) {
-        [NSException raise:@"addCustomField supported type: string, integer" format:@"invalid operation"];
-    }
-    [self addPostValue:value forKey:[NSString stringWithFormat:@"custom_%@_%@", customType, customKey]];
-    
-}
-
 -(void)checkPhotoParams:(NSDictionary *)paramDict
 {
     NSNumber *maxPhotoSize = [paramDict objectForKey:@"max_photo_size"];
