@@ -20,6 +20,8 @@
 -(void)fieldName:(NSString *)fieldName lessThanEqualTo:(NSObject *)value;
 -(void)fieldName:(NSString *)fieldName greaterThanEqualTo:(NSObject *)value;
 -(void)fieldName:(NSString *)fieldName containedIn:(NSArray *)values;
+-(void)fieldName:(NSString *)fieldName notContainedIn:(NSArray *)values;
+-(void)fieldName:(NSString *)fieldName regex:(NSString *)value;
 -(void)fieldName:(NSString *)fieldName nearLat:(double)latitude nearLng:(double)longitude;
 -(void)fieldName:(NSString *)fieldName nearLat:(double)latitude nearLng:(double)longitude maxDistanceKm:(double)distanceKm;
 -(void)fieldName:(NSString *)fieldName nearLat:(double)latitude nearLng:(double)longitude maxDistanceMi:(double)distanceMi;
