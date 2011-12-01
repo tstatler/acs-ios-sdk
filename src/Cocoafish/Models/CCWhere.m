@@ -79,6 +79,18 @@
     [_where setObject:[NSDictionary dictionaryWithObjectsAndKeys:values, @"$in" ,nil] forKey:fieldName];
 }
 
+-(void)fieldName:(NSString *)fieldName notContainedIn:(NSArray *)values
+{
+    [_where setObject:[NSDictionary dictionaryWithObjectsAndKeys:values, @"$nin" ,nil] forKey:fieldName];
+
+}
+
+-(void)fieldName:(NSString *)fieldName regex:(NSString *)value
+{
+    [_where setObject:[NSDictionary dictionaryWithObjectsAndKeys:value, @"$regex", nil] forKey:fieldName];
+    
+}
+
 -(void)fieldName:(NSString *)fieldName nearLat:(double)latitude nearLng:(double)longitude
 {
     if (latitude > 90 || latitude < -90 || longitude > 180 || longitude < -180) {
