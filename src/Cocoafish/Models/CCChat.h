@@ -10,14 +10,22 @@
 
 @class CCUser;
 
+@interface CCChatGroup : CCObject {
+@private
+    NSArray *_participate_users;
+}
+@property (nonatomic, retain, readonly) NSArray *participate_users;
+
+@end
+
 @interface CCChat : CCObject {
     NSString *_message;
     CCUser *_from;
-    CCUser *_to;
+    CCChatGroup *_chatGroup;
 }
 
 @property (nonatomic, retain, readonly) NSString *message;
 @property (nonatomic, retain, readonly) CCUser *from;
-@property (nonatomic, retain, readonly) CCUser *to;
+@property (nonatomic, retain, readonly) CCChatGroup *chatGroup;
 
 @end
