@@ -16,7 +16,8 @@
     NSString *_title;
     NSString *_content;
 	NSArray *_admin_ids;
-    NSArray *_friend_ids;
+    NSArray *_friends;
+    NSNumber *_friends_count;
     BOOL    _access_private;
     CCUser  *_user;
   //  CCPhoto *photo;
@@ -29,7 +30,8 @@
 @property (nonatomic, retain, readonly) NSString *content;
 @property (nonatomic, retain, readonly) CCUser *user;
 @property (nonatomic, retain, readonly) NSArray *admin_ids;
-@property (nonatomic, retain, readonly) NSArray *friend_ids;
+@property (nonatomic, retain, readonly) NSArray *friends;
+@property (nonatomic, retain, readonly) NSNumber *friends_count;
 @property (nonatomic, readonly) BOOL access_private;
 //@property (nonatomic, retain, readonly) CCPhoto *photo;
 @property (nonatomic, retain, readonly) NSArray *places;

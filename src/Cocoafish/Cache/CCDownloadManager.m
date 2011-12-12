@@ -37,7 +37,7 @@
 	return self;
 }
 
--(void)downloadPhoto:(CCPhoto *)photo size:(int)size
+-(void)downloadPhoto:(CCPhoto *)photo size:(NSString *)size
 {
 	@synchronized(self) {
         NSString *urlPath = [photo getImageUrl:size];
@@ -79,7 +79,7 @@
             }
             return;
         }*/
-        NSString *downloadPath = [photo localPath:size];
+        NSString *downloadPath = [photo localPathForPhotoSize:size];
 		if ([_downloadInProgress containsObject:downloadPath]) {
 			// download already in progress, no op
 			return;
@@ -87,8 +87,8 @@
         
         NSURL *url = [NSURL URLWithString:urlPath];
         ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
-        [request setUserInfo:[NSDictionary dictionaryWithObjectsAndKeys:photo, @"object", [NSNumber numberWithInt:size], @"size", nil]];
-        [request setDownloadDestinationPath:[photo localPath:size]];
+        [request setUserInfo:[NSDictionary dictionaryWithObjectsAndKeys:photo, @"object", size, @"size", nil]];
+        [request setDownloadDestinationPath:[photo localPathForPhotoSize:size]];
       //  [request setDownloadCache:[ASIDownloadCache sharedCache]]; 
         // set callbacks
         [request setDelegate:self];
@@ -107,11 +107,11 @@
 	NSNotification * myNotification = [NSNotification notificationWithName:@"DownloadFinished" object:[Cocoafish defaultCocoafish] userInfo:request.userInfo];
 	[[NSNotificationQueue defaultQueue] enqueueNotification:myNotification postingStyle:NSPostNow];	
 	@synchronized(self) {
-        NSNumber *size = [request.userInfo objectForKey:@"size"];
+        NSString *size = [request.userInfo objectForKey:@"size"];
         CCObject *object = [request.userInfo objectForKey:@"object"];
 		if ([object class] == [CCPhoto class]) {
 			// it is a photo download
-			[_downloadInProgress removeObject:[(CCPhoto *)object localPath:[size intValue]]];
+			[_downloadInProgress removeObject:[(CCPhoto *)object localPathForPhotoSize:size]];
 		}
 	}
 } 

@@ -17,7 +17,8 @@
 @property (nonatomic, retain, readwrite) NSString *content;
 @property (nonatomic, retain, readwrite) CCUser *user;
 @property (nonatomic, retain, readwrite) NSArray *admin_ids;
-@property (nonatomic, retain, readwrite) NSArray *friend_ids;
+@property (nonatomic, retain, readwrite) NSArray *friends;
+@property (nonatomic, retain, readwrite) NSNumber *friends_count;
 @property (nonatomic, readwrite) BOOL access_private;
 //@property (nonatomic, retain, readwrite) CCPhoto *photo;
 @property (nonatomic, retain, readwrite) NSArray *places;
@@ -30,7 +31,8 @@
 @synthesize content = _content;
 @synthesize user = _user;
 @synthesize admin_ids = _admin_ids;
-@synthesize friend_ids = _friend_ids;
+@synthesize friends = _friends;
+@synthesize friends_count = _friends_count;
 @synthesize access_private = _access_private;
 //@synthesize photo = _photo;
 @synthesize places = _places;
@@ -45,9 +47,13 @@
         _user = [[CCUser alloc] initWithJsonResponse:[jsonResponse objectForKey:CC_JSON_USER]];            
         self.content = [jsonResponse objectForKey:@"content"];
         self.admin_ids = [jsonResponse objectForKey:@"admin_ids"];
-        self.friend_ids = [jsonResponse objectForKey:@"friend_ids"];
+        self.friends = [CCUser arrayWithJsonResponse:jsonResponse class:[CCUser class] jsonTag:@"friends"];
      //   _photo = [[CCPhoto alloc] initWithJsonResponse:[jsonResponse objectForKey:CC_JSON_PHOTO]];
         self.access_private = [[jsonResponse objectForKey:@"access_private"] boolValue];
+        NSString *friends_count_str = [jsonResponse objectForKey:@"friends_count"];
+        if (friends_count_str) {
+            self.friends_count = [NSNumber numberWithInt:[friends_count_str intValue]];
+        }
         NSArray *jsonPlaces = [jsonResponse objectForKey:@"places"];
         if ([jsonPlaces count] > 0) {
             self.places = [CCPlace arrayWithJsonResponse:jsonResponse class:[CCPlace class]];
@@ -84,7 +90,8 @@
     self.content = nil;
     self.user = nil;
     self.admin_ids = nil;
-    self.friend_ids = nil;
+    self.friends = nil;
+    self.friends_count = nil;
   //  self.photo = nil;
     self.places = nil;
     self.page_ids = nil;

@@ -21,6 +21,6 @@
 }
 
 
--(void)downloadPhoto:(CCPhoto *)photo size:(int)size;
+-(void)downloadPhoto:(CCPhoto *)photo size:(NSString *)size;
 //-(void)addProcessingPhoto:(CCPhoto *)photo parent:(CCObject *)parent;
 @end
