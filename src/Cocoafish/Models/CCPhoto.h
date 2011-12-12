@@ -54,9 +54,14 @@ typedef enum PhotoSize {
 @property (nonatomic, retain, readonly) CCExif *exif;
 
 
--(NSString *)getImageUrl:(PhotoSize)photoSize;
+-(NSString *)getImageUrl:(NSString *)photoSize;
+-(UIImage *)getImageForPhotoSize:(NSString *)photoSize;
+-(NSString *)localPathForPhotoSize:(NSString *)photoSize;
+
+/* obsolete */
 -(UIImage *)getImage:(PhotoSize)photoSize;
 -(NSString *)localPath:(PhotoSize)photoSize;
++(NSString *)getPhotoSizeString:(PhotoSize)photoSize;
 @end
 
 @interface CCExif : NSObject {

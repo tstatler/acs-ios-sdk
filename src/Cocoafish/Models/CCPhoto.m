@@ -137,6 +137,14 @@
     
 }
 
+-(NSString *)getImageUrl:(NSString *)photoSize
+{
+    @synchronized(self) {
+        return [_urls objectForKey:photoSize];
+    }
+    
+}
+/*
 -(NSString *)getImageUrl:(PhotoSize)photoSize
 {
 	@synchronized(self) {
@@ -162,13 +170,34 @@
 	}
 	return nil;
 			
-}
+}*/
 
++(NSString *)getPhotoSizeString:(PhotoSize)photoSize
+{
+    switch (photoSize) {
+        case CC_SQUARE_75:
+            return @"square_75";
+        case CC_THUMB_100:
+            return @"thumb_100";
+        case CC_SMALL_240:
+            return @"small_240";
+        case CC_MEDIUM_500:
+            return @"medium_500";
+        case CC_MEDIUM_640:
+            return @"medium_640";
+        case CC_LARGE_1024:
+            return @"large_1024";			
+        case CC_ORIGINAL:
+            return @"original";
+        default:
+            return nil;
+    }
+}
 -(UIImage *)getImage:(PhotoSize)photoSize
 {
     UIImage *image = [UIImage imageWithContentsOfFile:[self localPath:photoSize]];
     if (!image) {
-        [[Cocoafish defaultCocoafish].downloadManager downloadPhoto:self size:photoSize];
+        [[Cocoafish defaultCocoafish].downloadManager downloadPhoto:self size:[CCPhoto getPhotoSizeString:photoSize]];
         // try again if the image was just downloaded
         image = [UIImage imageWithContentsOfFile:[self localPath:photoSize]];
     }
@@ -180,6 +209,23 @@
     if (photoSize < CC_SQUARE_75 || photoSize > CC_ORIGINAL) {
         [NSException raise:@"Invalid Photo Size" format:@"Unknown photo size",photoSize];
     }
+	return [NSString stringWithFormat:@"%@/%@_%d", [Cocoafish defaultCocoafish].cocoafishDir, self.objectId, photoSize];
+}
+
+-(UIImage *)getImageForPhotoSize:(NSString *)photoSize
+{
+    UIImage *image = [UIImage imageWithContentsOfFile:[self localPathForPhotoSize:photoSize]];
+    if (!image) {
+        [[Cocoafish defaultCocoafish].downloadManager downloadPhoto:self size:photoSize];
+        // try again if the image was just downloaded
+        image = [UIImage imageWithContentsOfFile:[self localPathForPhotoSize:photoSize]];
+    }
+    return image;
+    
+}
+
+-(NSString *)localPathForPhotoSize:(NSString *)photoSize
+{
 	return [NSString stringWithFormat:@"%@/%@_%d", [Cocoafish defaultCocoafish].cocoafishDir, self.objectId, photoSize];
 }
 

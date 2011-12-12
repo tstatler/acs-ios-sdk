@@ -189,7 +189,7 @@
     // Configure the cell...
 	CCCheckin *checkin = [placeCheckins objectAtIndex:indexPath.row];
 	cell.imageView.image = nil;
-    cell.imageView.image = [checkin.photo getImage:CC_THUMB_100];
+    cell.imageView.image = [checkin.photo getImageForPhotoSize:@"thumb_100"];
 		
 	cell.textLabel.text = checkin.message;
 	
