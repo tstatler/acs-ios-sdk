@@ -19,6 +19,8 @@
 @property (nonatomic, retain, readwrite) NSArray *admin_ids;
 @property (nonatomic, retain, readwrite) NSArray *friends;
 @property (nonatomic, retain, readwrite) NSNumber *friends_count;
+@property (nonatomic, retain, readwrite) NSNumber *currentUserIsAdmin;
+@property (nonatomic, retain, readwrite) NSNumber *currentUserIsFriend;
 @property (nonatomic, readwrite) BOOL access_private;
 //@property (nonatomic, retain, readwrite) CCPhoto *photo;
 @property (nonatomic, retain, readwrite) NSArray *places;
@@ -33,6 +35,8 @@
 @synthesize admin_ids = _admin_ids;
 @synthesize friends = _friends;
 @synthesize friends_count = _friends_count;
+@synthesize currentUserIsAdmin = _currentUserIsAdmin;
+@synthesize currentUserIsFriend = _currentUserIsFriend;
 @synthesize access_private = _access_private;
 //@synthesize photo = _photo;
 @synthesize places = _places;
@@ -50,9 +54,17 @@
         self.friends = [CCUser arrayWithJsonResponse:jsonResponse class:[CCUser class] jsonTag:@"friends"];
      //   _photo = [[CCPhoto alloc] initWithJsonResponse:[jsonResponse objectForKey:CC_JSON_PHOTO]];
         self.access_private = [[jsonResponse objectForKey:@"access_private"] boolValue];
-        NSString *friends_count_str = [jsonResponse objectForKey:@"friends_count"];
-        if (friends_count_str) {
-            self.friends_count = [NSNumber numberWithInt:[friends_count_str intValue]];
+        NSString *tmp_str = [jsonResponse objectForKey:@"friends_count"];
+        if (tmp_str) {
+            self.friends_count = [NSNumber numberWithInt:[tmp_str intValue]];
+        }
+        tmp_str = [jsonResponse objectForKey:@"current_user_is_admin"];
+        if (tmp_str) {
+            self.currentUserIsAdmin = [NSNumber numberWithBool:[tmp_str boolValue]];
+        }
+        tmp_str = [jsonResponse objectForKey:@"current_user_is_friend"];
+        if (tmp_str) {
+            self.currentUserIsFriend = [NSNumber numberWithBool:[tmp_str boolValue]];
         }
         NSArray *jsonPlaces = [jsonResponse objectForKey:@"places"];
         if ([jsonPlaces count] > 0) {
@@ -92,6 +104,8 @@
     self.admin_ids = nil;
     self.friends = nil;
     self.friends_count = nil;
+    self.currentUserIsFriend = nil;
+    self.currentUserIsAdmin = nil;
   //  self.photo = nil;
     self.places = nil;
     self.page_ids = nil;

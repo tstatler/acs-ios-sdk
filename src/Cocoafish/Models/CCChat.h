@@ -6,7 +6,7 @@
 //  Copyright 2011 Cocoafish Inc. All rights reserved.
 //
 
-#import "CCObject.h"
+#import "CCObjectWithPhoto.h"
 
 @class CCUser;
 
@@ -18,7 +18,7 @@
 
 @end
 
-@interface CCChat : CCObject {
+@interface CCChat : CCObjectWithPhoto {
     NSString *_message;
     CCUser *_from;
     CCChatGroup *_chatGroup;
