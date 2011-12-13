@@ -18,6 +18,8 @@
 	NSArray *_admin_ids;
     NSArray *_friends;
     NSNumber *_friends_count;
+    NSNumber *_currentUserIsAdmin;
+    NSNumber *_currentUserIsFriend;
     BOOL    _access_private;
     CCUser  *_user;
   //  CCPhoto *photo;
@@ -32,6 +34,8 @@
 @property (nonatomic, retain, readonly) NSArray *admin_ids;
 @property (nonatomic, retain, readonly) NSArray *friends;
 @property (nonatomic, retain, readonly) NSNumber *friends_count;
+@property (nonatomic, retain, readonly) NSNumber *currentUserIsAdmin;
+@property (nonatomic, retain, readonly) NSNumber *currentUserIsFriend;
 @property (nonatomic, readonly) BOOL access_private;
 //@property (nonatomic, retain, readonly) CCPhoto *photo;
 @property (nonatomic, retain, readonly) NSArray *places;
