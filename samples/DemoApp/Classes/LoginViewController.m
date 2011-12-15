@@ -237,6 +237,7 @@
 	[textField resignFirstResponder];
 	if (textField == passwordTextField) {
 		[self startLogin];
+        return NO;
 	} else {
 		[passwordTextField becomeFirstResponder];		
 	}

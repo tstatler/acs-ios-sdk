@@ -46,7 +46,6 @@
 		B60427F0133B1227008CEE69 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B60427EF133B1227008CEE69 /* CoreLocation.framework */; };
 		B60427F2133B122E008CEE69 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B60427F1133B122E008CEE69 /* MobileCoreServices.framework */; };
 		B60427F4133B1235008CEE69 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B60427F3133B1235008CEE69 /* SystemConfiguration.framework */; };
-		B60427F6133B123A008CEE69 /* libz.1.2.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B60427F5133B123A008CEE69 /* libz.1.2.3.dylib */; };
 		B60427F8133B124A008CEE69 /* YAJL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B60427F7133B124A008CEE69 /* YAJL.framework */; };
 		B6042815133B1296008CEE69 /* AlertPrompt.m in Sources */ = {isa = PBXBuildFile; fileRef = B60427FA133B1291008CEE69 /* AlertPrompt.m */; };
 		B6042816133B1296008CEE69 /* AlertPrompt.xib in Resources */ = {isa = PBXBuildFile; fileRef = B60427FB133B1291008CEE69 /* AlertPrompt.xib */; };
@@ -95,6 +94,7 @@
 		B653465113B0265400894708 /* CCFriendRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B653465013B0265400894708 /* CCFriendRequest.m */; };
 		B656032313E3C2890094140B /* CCPost.m in Sources */ = {isa = PBXBuildFile; fileRef = B656032013E3C2890094140B /* CCPost.m */; };
 		B656032413E3C2890094140B /* CCReview.m in Sources */ = {isa = PBXBuildFile; fileRef = B656032213E3C2890094140B /* CCReview.m */; };
+		B66EDD301499670E004236A4 /* libz.1.1.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B66EDD2F1499670E004236A4 /* libz.1.1.3.dylib */; };
 		B685E430139B41AA001B50BD /* CCCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = B685E42F139B41AA001B50BD /* CCCollection.m */; };
 		B685E434139B41B9001B50BD /* CCShareRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B685E433139B41B9001B50BD /* CCShareRequest.m */; };
 		B693786B1479E51E004A51F1 /* NSDate+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = B693786A1479E51E004A51F1 /* NSDate+JSON.m */; };
@@ -183,7 +183,6 @@
 		B60427EF133B1227008CEE69 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		B60427F1133B122E008CEE69 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		B60427F3133B1235008CEE69 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		B60427F5133B123A008CEE69 /* libz.1.2.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.3.dylib; path = usr/lib/libz.1.2.3.dylib; sourceTree = SDKROOT; };
 		B60427F7133B124A008CEE69 /* YAJL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = YAJL.framework; path = ../../src/YAJL.framework; sourceTree = "<group>"; };
 		B60427F9133B1291008CEE69 /* AlertPrompt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertPrompt.h; sourceTree = "<group>"; };
 		B60427FA133B1291008CEE69 /* AlertPrompt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertPrompt.m; sourceTree = "<group>"; };
@@ -270,6 +269,7 @@
 		B656032013E3C2890094140B /* CCPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCPost.m; sourceTree = "<group>"; };
 		B656032113E3C2890094140B /* CCReview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCReview.h; sourceTree = "<group>"; };
 		B656032213E3C2890094140B /* CCReview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCReview.m; sourceTree = "<group>"; };
+		B66EDD2F1499670E004236A4 /* libz.1.1.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.1.3.dylib; path = usr/lib/libz.1.1.3.dylib; sourceTree = SDKROOT; };
 		B685E42E139B41AA001B50BD /* CCCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCCollection.h; sourceTree = "<group>"; };
 		B685E42F139B41AA001B50BD /* CCCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCCollection.m; sourceTree = "<group>"; };
 		B685E432139B41B9001B50BD /* CCShareRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCShareRequest.h; sourceTree = "<group>"; };
@@ -289,9 +289,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B66EDD301499670E004236A4 /* libz.1.1.3.dylib in Frameworks */,
 				B63DBCF8139853D20068E556 /* AssetsLibrary.framework in Frameworks */,
 				B60427F8133B124A008CEE69 /* YAJL.framework in Frameworks */,
-				B60427F6133B123A008CEE69 /* libz.1.2.3.dylib in Frameworks */,
 				B60427F4133B1235008CEE69 /* SystemConfiguration.framework in Frameworks */,
 				B60427F2133B122E008CEE69 /* MobileCoreServices.framework in Frameworks */,
 				B60427F0133B1227008CEE69 /* CoreLocation.framework in Frameworks */,
@@ -318,6 +318,7 @@
 		B604272C133B1161008CEE69 = {
 			isa = PBXGroup;
 			children = (
+				B66EDD2F1499670E004236A4 /* libz.1.1.3.dylib */,
 				B63DBCF7139853D20068E556 /* AssetsLibrary.framework */,
 				B64B2696138036200053E943 /* Cocoafish */,
 				B6042774133B120B008CEE69 /* ASIHTTPRequest */,
@@ -342,7 +343,6 @@
 			isa = PBXGroup;
 			children = (
 				B60427F7133B124A008CEE69 /* YAJL.framework */,
-				B60427F5133B123A008CEE69 /* libz.1.2.3.dylib */,
 				B60427F3133B1235008CEE69 /* SystemConfiguration.framework */,
 				B60427F1133B122E008CEE69 /* MobileCoreServices.framework */,
 				B60427EF133B1227008CEE69 /* CoreLocation.framework */,

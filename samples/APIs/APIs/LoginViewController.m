@@ -237,6 +237,7 @@
 	[textField resignFirstResponder];
 	if (textField == passwordTextField) {
 		[self startLogin];
+        return NO;
 	} else {
 		[passwordTextField becomeFirstResponder];		
 	}
@@ -290,6 +291,7 @@
 	NSString *password = ((UITextField *)[textFields objectAtIndex:PASSWORD]).text;
 	
     NSDictionary *paramDict = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:email_address, password, nil] forKeys:[NSArray arrayWithObjects:@"login", @"password", nil]];
+    // make a http call
     CCRequest *request = [[[CCRequest alloc] initHttpsWithDelegate:self httpMethod:@"POST" baseUrl:@"users/login.json" paramDict:paramDict] autorelease];
     [request startAsynchronous];
     

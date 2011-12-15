@@ -230,7 +230,7 @@
 {
     switch (section) {
         case USERS: 
-            return 5;
+            return 4;
         case PLACES:
             return 4;
         case CHECKINS:
@@ -304,13 +304,7 @@
                 cell.textLabel.text = @"Update current user profile";
             } else if (indexPath.row == 3) {
                 cell.textLabel.text = @"Search users";
-            } else {
-                if ([[Cocoafish defaultCocoafish] getCurrentUser].facebookAccessToken != nil) {
-                    cell.textLabel.text = @"Unlink from Facebook";
-                } else {
-                    cell.textLabel.text = @"Link to Facebook";
-                }
-            }
+            } 
             break;
         case PLACES:
             switch (indexPath.row) {
@@ -584,9 +578,6 @@
                                           otherButtonTitles:nil];
                     [alert show];
                     [alert release];
-                } else if ([[Cocoafish defaultCocoafish] getCurrentUser].facebookAccessToken == nil) {
-                    // link with facebook
-                    [[Cocoafish defaultCocoafish] facebookAuth:[NSArray arrayWithObjects:@"publish_stream", @"email", @"offline_access", nil] delegate:self];
                 } else {
                     // unlink rom facebook
                     NSError *error;
