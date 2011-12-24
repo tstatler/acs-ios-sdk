@@ -47,6 +47,7 @@
 {
 	
 	if ((self = [super init])) {
+        _jsonResponse = [jsonResponse retain];
 		self.response = [jsonResponse objectForKey:CC_JSON_RESPONSE];
 		_meta = [[CCMeta alloc] initWithJsonResponse:jsonResponse];
 		
@@ -95,11 +96,17 @@
 	return nil;
 }
 
+-(NSString *)jsonResponse
+{
+    return [_jsonResponse yajl_JSONString];
+}
+
 -(void)dealloc
 {
 	self.response = nil;
 	self.meta = nil;
-	self.responses = nil;    
+	self.responses = nil;  
+    [_jsonResponse release];
 
 	[super dealloc];
 	

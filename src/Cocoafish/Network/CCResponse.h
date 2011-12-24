@@ -13,6 +13,7 @@
 @interface CCResponse : NSObject {
 	CCMeta *_meta;
 	NSDictionary *_response; // parsed json response in NSDictionary format
+    NSDictionary *_jsonResponse; // original json reponse including meta
 	NSArray *_responses; // If this is a compound response, it contains an array of responses
 }
 
@@ -22,6 +23,7 @@
 
 -(id)initWithJsonData:(NSData *)jsonData;
 -(NSArray *)getObjectsOfType:(Class)objectType;
+-(NSString *)jsonResponse;
 
 @end
 
