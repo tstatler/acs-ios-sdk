@@ -8,11 +8,13 @@
 
 #import "CCPost.h"
 #import "CCUser.h"
+#import "CCEvent.h"
 
 @interface CCPost ()
 @property (nonatomic, retain, readwrite) NSString *title;
 @property (nonatomic, retain, readwrite) NSString *content;
 @property (nonatomic, retain, readwrite) CCUser *user;
+@property (nonatomic, retain, readwrite) CCEvent *event;
 @property (nonatomic, readwrite) NSInteger reviewsCount;
 @property (nonatomic, readwrite) double ratingsAverage;
 @property (nonatomic, retain, readwrite) NSDictionary *ratingsSummary;
@@ -22,6 +24,7 @@
 @synthesize title = _title;
 @synthesize content = _content;
 @synthesize user = _user;
+@synthesize event = _event;
 @synthesize reviewsCount = _reviewsCount;
 @synthesize ratingsAverage = _ratingsAverage;
 @synthesize ratingsSummary = _ratingsSummary;
@@ -50,6 +53,8 @@
             _ratingsAverage = [tmpStr doubleValue];
         }
         self.ratingsSummary = [jsonResponse objectForKey:@"ratings_summary"];
+        _event = [[CCEvent alloc] initWithJsonResponse:[jsonResponse objectForKey:@"event"]];
+        
         
 	}
 	return self;
@@ -77,6 +82,7 @@
 	self.title = nil;
 	self.content = nil;
     self.ratingsSummary = nil;
+    self.event = nil;
 	[super dealloc];
 }
 @end

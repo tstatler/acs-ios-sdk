@@ -9,12 +9,14 @@
 #import "CCCheckin.h"
 #import "CCUser.h"
 #import "CCPlace.h"
+#import "CCEvent.h"
 
 @interface CCCheckin ()
 
 @property (nonatomic, retain, readwrite) CCUser *user;
 @property (nonatomic, retain, readwrite) CCPlace *place;
 @property (nonatomic, retain, readwrite) NSString *message;
+@property (nonatomic, retain, readwrite) CCEvent *event;
 
 @end
 
@@ -22,6 +24,7 @@
 @synthesize user = _user;
 @synthesize place = _place;
 @synthesize message = _message;
+@synthesize event = _event;
 
 -(id)initWithJsonResponse:(NSDictionary *)jsonResponse
 {
@@ -31,6 +34,7 @@
 		@try {
 			_user = [[CCUser alloc] initWithJsonResponse:[jsonResponse objectForKey:CC_JSON_USER]];
 			_place = [[CCPlace alloc] initWithJsonResponse:[jsonResponse objectForKey:CC_JSON_PLACE]];
+            _event = [[CCEvent alloc] initWithJsonResponse:[jsonResponse objectForKey:@"event"]];
 		}
 		@catch (NSException *e) {
 			NSLog(@"Error: Failed to parse checkin object. Reason: %@", [e reason]);
@@ -48,12 +52,6 @@
 	return self;
 }
 
-/*- (NSString *)description {
-    return [NSString stringWithFormat:@"CCCheckin:\n\tmessage=%@\n\tuser=[\n\t%@\n\t]\n\tplace=[\n\t%@\n\t]\n\t%@",
-                                    self.message, [self.user description],
-                                    [self.place description], [super description]];
-}*/
-
 +(NSString *)modelName
 {
     return @"checkin";
@@ -69,6 +67,7 @@
 	self.user = nil;
 	self.place = nil;
 	self.message = nil;
+    self.event = nil;
 	[super dealloc];
 }
 
