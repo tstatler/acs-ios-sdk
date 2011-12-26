@@ -24,6 +24,7 @@
 -(id)initWithJsonData:(NSData *)jsonData;
 -(NSArray *)getObjectsOfType:(Class)objectType;
 -(NSString *)jsonResponse;
+-(NSString *)jsonMeta;
 
 @end
 
