@@ -101,6 +101,13 @@
     return [_jsonResponse yajl_JSONString];
 }
 
+-(NSString *)jsonMeta
+{
+    NSMutableDictionary *meta = [NSMutableDictionary dictionaryWithDictionary:_jsonResponse];
+    [meta removeObjectForKey:@"response"];
+    return [meta yajl_JSONString];
+}
+
 -(void)dealloc
 {
 	self.response = nil;
