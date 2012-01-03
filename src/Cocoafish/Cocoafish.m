@@ -86,7 +86,7 @@ void CCLog(NSString *format, ...) {
     self.apiURL = CC_BACKEND_URL;
 
 	// create Cocoafish dir if there is none
-	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES); 
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES); 
 	NSString *documentsDirectory = [paths objectAtIndex:0]; // Get documents folder
 	_cocoafishDir = [[NSString alloc] initWithFormat:@"%@/CocoafishCache", documentsDirectory];
 	//[self cleanupCacheDir];
@@ -288,7 +288,7 @@ void CCLog(NSString *format, ...) {
 #pragma mark -
 #pragma mark user Cookie
 -(NSString *)getCookiePath {
-	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
 	NSString *documentsDirectory = [paths objectAtIndex:0];
 	NSString *cookieDataPath = [documentsDirectory stringByAppendingPathComponent:@"cookieData.txt"];
 	return cookieDataPath;
