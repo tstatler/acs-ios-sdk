@@ -23,7 +23,6 @@
 @property (nonatomic, readwrite) NSInteger numOccurrences;
 @property (nonatomic, retain, readwrite) NSString *ical;
 @property (nonatomic, retain, readwrite) NSDate *recurringUntil;
-@property (nonatomic, readwrite) Boolean exclusive;
 @end
 
 @interface CCEventOccurrence ()
@@ -46,7 +45,6 @@
 @synthesize numOccurrences = _numOccurrences;
 @synthesize ical = _ical;
 @synthesize recurringUntil = _recurringUntil;
-@synthesize exclusive = _exclusive;
 
 -(id)initWithJsonResponse:(NSDictionary *)jsonResponse
 {
@@ -81,7 +79,6 @@
         if (dateString) {
             self.recurringUntil = [[[Cocoafish defaultCocoafish] jsonDateFormatter] dateFromString:dateString];
         }
-        self.exclusive = [[jsonResponse objectForKey:@"exclusive"] boolValue];
 
 
 	}

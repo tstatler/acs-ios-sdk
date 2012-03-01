@@ -119,6 +119,8 @@
 		B6954FCB140352380081F31F /* GTMNSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = B6954FC6140352380081F31F /* GTMNSString+HTML.m */; };
 		B6954FCC140352380081F31F /* NSString+HTML.h in Headers */ = {isa = PBXBuildFile; fileRef = B6954FC7140352380081F31F /* NSString+HTML.h */; };
 		B6954FCD140352380081F31F /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = B6954FC8140352380081F31F /* NSString+HTML.m */; };
+		B6B273C914FE0C0A002AD928 /* CCFile.h in Headers */ = {isa = PBXBuildFile; fileRef = B6B273C714FE0C0A002AD928 /* CCFile.h */; };
+		B6B273CA14FE0C0A002AD928 /* CCFile.m in Sources */ = {isa = PBXBuildFile; fileRef = B6B273C814FE0C0A002AD928 /* CCFile.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -245,6 +247,8 @@
 		B6954FC6140352380081F31F /* GTMNSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSString+HTML.m"; sourceTree = "<group>"; };
 		B6954FC7140352380081F31F /* NSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HTML.h"; sourceTree = "<group>"; };
 		B6954FC8140352380081F31F /* NSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HTML.m"; sourceTree = "<group>"; };
+		B6B273C714FE0C0A002AD928 /* CCFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCFile.h; sourceTree = "<group>"; };
+		B6B273C814FE0C0A002AD928 /* CCFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCFile.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -415,6 +419,8 @@
 		B64B26F9138097890053E943 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B6B273C714FE0C0A002AD928 /* CCFile.h */,
+				B6B273C814FE0C0A002AD928 /* CCFile.m */,
 				B69378591479E4E6004A51F1 /* CCFeed.h */,
 				B693785A1479E4E6004A51F1 /* CCFeed.m */,
 				B693785B1479E4E6004A51F1 /* CCPage.h */,
@@ -551,6 +557,7 @@
 				B69378611479E4E6004A51F1 /* CCPage.h in Headers */,
 				B69378631479E4E6004A51F1 /* CCWhere.h in Headers */,
 				B619BBEF147DC42900AE5D60 /* CLLocation+JSON.h in Headers */,
+				B6B273C914FE0C0A002AD928 /* CCFile.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -655,6 +662,7 @@
 				B69378621479E4E6004A51F1 /* CCPage.m in Sources */,
 				B69378641479E4E6004A51F1 /* CCWhere.m in Sources */,
 				B619BBF0147DC42900AE5D60 /* CLLocation+JSON.m in Sources */,
+				B6B273CA14FE0C0A002AD928 /* CCFile.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

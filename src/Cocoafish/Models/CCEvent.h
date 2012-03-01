@@ -20,7 +20,6 @@
     NSString *_recurring;
     NSInteger _recurringCount;
     NSDate *_recurringUntil;
-    Boolean _exclusive;
     NSInteger _numOccurrences;
     NSString *_ical;
 	CCUser *_user;
@@ -37,7 +36,6 @@
 @property (nonatomic, retain, readonly) NSString *recurring;
 @property (nonatomic, readonly) NSInteger recurringCount;
 @property (nonatomic, retain, readonly) NSDate *recurringUntil;
-@property (nonatomic, readonly) Boolean exclusive;
 @property (nonatomic, readonly) NSInteger numOccurrences;
 @property (nonatomic, retain, readonly) NSString *ical;
 

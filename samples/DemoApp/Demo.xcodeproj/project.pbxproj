@@ -90,6 +90,7 @@
 		B6A1AA5413219CC700D31CD3 /* CheckinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B6A1AA5213219CC700D31CD3 /* CheckinViewController.m */; };
 		B6A1AA5513219CC700D31CD3 /* CheckinViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B6A1AA5313219CC700D31CD3 /* CheckinViewController.xib */; };
 		B6A1AA6B13248C8200D31CD3 /* TapDetectingImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = B6A1AA6A13248C8200D31CD3 /* TapDetectingImageView.m */; };
+		B6B273C214FE0A17002AD928 /* CCFile.m in Sources */ = {isa = PBXBuildFile; fileRef = B6B273C114FE0A17002AD928 /* CCFile.m */; };
 		B6BF9E7714479D6F0043745A /* CCPage.m in Sources */ = {isa = PBXBuildFile; fileRef = B6BF9E7614479D6F0043745A /* CCPage.m */; };
 		B6BF9E7B1447F3340043745A /* CCFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = B6BF9E7A1447F3340043745A /* CCFeed.m */; };
 		B6CCC4AB12F77532006E33E7 /* FBConnect.bundle in Resources */ = {isa = PBXBuildFile; fileRef = B6CCC4AA12F77532006E33E7 /* FBConnect.bundle */; };
@@ -260,6 +261,8 @@
 		B6A1AA5313219CC700D31CD3 /* CheckinViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CheckinViewController.xib; sourceTree = "<group>"; };
 		B6A1AA6913248C8200D31CD3 /* TapDetectingImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TapDetectingImageView.h; sourceTree = "<group>"; };
 		B6A1AA6A13248C8200D31CD3 /* TapDetectingImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TapDetectingImageView.m; sourceTree = "<group>"; };
+		B6B273C014FE0A17002AD928 /* CCFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCFile.h; sourceTree = "<group>"; };
+		B6B273C114FE0A17002AD928 /* CCFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCFile.m; sourceTree = "<group>"; };
 		B6BF9E7514479D6F0043745A /* CCPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPage.h; sourceTree = "<group>"; };
 		B6BF9E7614479D6F0043745A /* CCPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCPage.m; sourceTree = "<group>"; };
 		B6BF9E791447F3340043745A /* CCFeed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCFeed.h; sourceTree = "<group>"; };
@@ -517,6 +520,8 @@
 		B67B68DD13341319001E4472 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B6B273C014FE0A17002AD928 /* CCFile.h */,
+				B6B273C114FE0A17002AD928 /* CCFile.m */,
 				B653466313B12DED00894708 /* CCFriendRequest.h */,
 				B653466413B12DED00894708 /* CCFriendRequest.m */,
 				B633DF9813ABBBA8008A9A5D /* CCChat.h */,
@@ -789,6 +794,7 @@
 				B693784C1479A043004A51F1 /* CCWhere.m in Sources */,
 				B69378501479D1C0004A51F1 /* NSDate+JSON.m in Sources */,
 				B6589931147C37C900B445DB /* CLLocation+JSON.m in Sources */,
+				B6B273C214FE0A17002AD928 /* CCFile.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
