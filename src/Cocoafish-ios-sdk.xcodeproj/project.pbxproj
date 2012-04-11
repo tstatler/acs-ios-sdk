@@ -65,8 +65,6 @@
 		B64B272B138097890053E943 /* CCEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B26FD138097890053E943 /* CCEvent.m */; };
 		B64B272C138097890053E943 /* CCKeyValuePair.h in Headers */ = {isa = PBXBuildFile; fileRef = B64B26FE138097890053E943 /* CCKeyValuePair.h */; };
 		B64B272D138097890053E943 /* CCKeyValuePair.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B26FF138097890053E943 /* CCKeyValuePair.m */; };
-		B64B272E138097890053E943 /* CCLeaderboard.h in Headers */ = {isa = PBXBuildFile; fileRef = B64B2700138097890053E943 /* CCLeaderboard.h */; };
-		B64B272F138097890053E943 /* CCLeaderboard.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B2701138097890053E943 /* CCLeaderboard.m */; };
 		B64B2730138097890053E943 /* CCMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = B64B2702138097890053E943 /* CCMessage.h */; };
 		B64B2731138097890053E943 /* CCMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B2703138097890053E943 /* CCMessage.m */; };
 		B64B2732138097890053E943 /* CCObject.h in Headers */ = {isa = PBXBuildFile; fileRef = B64B2704138097890053E943 /* CCObject.h */; };
@@ -187,8 +185,6 @@
 		B64B26FD138097890053E943 /* CCEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCEvent.m; sourceTree = "<group>"; };
 		B64B26FE138097890053E943 /* CCKeyValuePair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCKeyValuePair.h; sourceTree = "<group>"; };
 		B64B26FF138097890053E943 /* CCKeyValuePair.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCKeyValuePair.m; sourceTree = "<group>"; };
-		B64B2700138097890053E943 /* CCLeaderboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCLeaderboard.h; sourceTree = "<group>"; };
-		B64B2701138097890053E943 /* CCLeaderboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCLeaderboard.m; sourceTree = "<group>"; };
 		B64B2702138097890053E943 /* CCMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCMessage.h; sourceTree = "<group>"; };
 		B64B2703138097890053E943 /* CCMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCMessage.m; sourceTree = "<group>"; };
 		B64B2704138097890053E943 /* CCObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCObject.h; sourceTree = "<group>"; };
@@ -445,8 +441,6 @@
 				B64B26FD138097890053E943 /* CCEvent.m */,
 				B64B26FE138097890053E943 /* CCKeyValuePair.h */,
 				B64B26FF138097890053E943 /* CCKeyValuePair.m */,
-				B64B2700138097890053E943 /* CCLeaderboard.h */,
-				B64B2701138097890053E943 /* CCLeaderboard.m */,
 				B64B2702138097890053E943 /* CCMessage.h */,
 				B64B2703138097890053E943 /* CCMessage.m */,
 				B64B2704138097890053E943 /* CCObject.h */,
@@ -529,7 +523,6 @@
 				B64B2728138097890053E943 /* CCCheckin.h in Headers */,
 				B64B272A138097890053E943 /* CCEvent.h in Headers */,
 				B64B272C138097890053E943 /* CCKeyValuePair.h in Headers */,
-				B64B272E138097890053E943 /* CCLeaderboard.h in Headers */,
 				B64B2730138097890053E943 /* CCMessage.h in Headers */,
 				B64B2732138097890053E943 /* CCObject.h in Headers */,
 				B64B2734138097890053E943 /* CCObjectWithPhoto.h in Headers */,
@@ -635,7 +628,6 @@
 				B64B2729138097890053E943 /* CCCheckin.m in Sources */,
 				B64B272B138097890053E943 /* CCEvent.m in Sources */,
 				B64B272D138097890053E943 /* CCKeyValuePair.m in Sources */,
-				B64B272F138097890053E943 /* CCLeaderboard.m in Sources */,
 				B64B2731138097890053E943 /* CCMessage.m in Sources */,
 				B64B2733138097890053E943 /* CCObject.m in Sources */,
 				B64B2735138097890053E943 /* CCObjectWithPhoto.m in Sources */,

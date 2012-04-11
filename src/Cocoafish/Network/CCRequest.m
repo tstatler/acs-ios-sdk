@@ -46,7 +46,7 @@
 
 -(id)initWithDelegate:(id)requestDelegate httpMethod:(NSString *)httpMethod baseUrl:(NSString *)baseUrl paramDict:(NSDictionary *)paramDict
 {
-    return [self initWithDelegate:requestDelegate httpProtocol:@"http" httpMethod:httpMethod baseUrl:baseUrl paramDict:paramDict];
+    return [self initWithDelegate:requestDelegate httpProtocol:@"https" httpMethod:httpMethod baseUrl:baseUrl paramDict:paramDict];
 }
 
 -(id)initHttpsWithDelegate:(id)requestDelegate httpMethod:(NSString *)httpMethod baseUrl:(NSString *)baseUrl paramDict:(NSDictionary *)paramDict
