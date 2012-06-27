@@ -53,6 +53,8 @@
 		B6042996133D3973008CEE69 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = B604294A133D3973008CEE69 /* SBJsonWriter.m */; };
 		B619BBEF147DC42900AE5D60 /* CLLocation+JSON.h in Headers */ = {isa = PBXBuildFile; fileRef = B619BBED147DC42900AE5D60 /* CLLocation+JSON.h */; };
 		B619BBF0147DC42900AE5D60 /* CLLocation+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = B619BBEE147DC42900AE5D60 /* CLLocation+JSON.m */; };
+		B6204B2E159BB6D10017206C /* CCAcl.h in Headers */ = {isa = PBXBuildFile; fileRef = B6204B2C159BB6D10017206C /* CCAcl.h */; };
+		B6204B2F159BB6D10017206C /* CCAcl.m in Sources */ = {isa = PBXBuildFile; fileRef = B6204B2D159BB6D10017206C /* CCAcl.m */; };
 		B64B2722138097890053E943 /* CCDownloadManager.h in Headers */ = {isa = PBXBuildFile; fileRef = B64B26F2138097890053E943 /* CCDownloadManager.h */; };
 		B64B2723138097890053E943 /* CCDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B26F3138097890053E943 /* CCDownloadManager.m */; };
 		B64B2724138097890053E943 /* Cocoafish.h in Headers */ = {isa = PBXBuildFile; fileRef = B64B26F4138097890053E943 /* Cocoafish.h */; };
@@ -173,6 +175,8 @@
 		B604294A133D3973008CEE69 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
 		B619BBED147DC42900AE5D60 /* CLLocation+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CLLocation+JSON.h"; sourceTree = "<group>"; };
 		B619BBEE147DC42900AE5D60 /* CLLocation+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CLLocation+JSON.m"; sourceTree = "<group>"; };
+		B6204B2C159BB6D10017206C /* CCAcl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCAcl.h; sourceTree = "<group>"; };
+		B6204B2D159BB6D10017206C /* CCAcl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCAcl.m; sourceTree = "<group>"; };
 		B64B26F2138097890053E943 /* CCDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCDownloadManager.h; sourceTree = "<group>"; };
 		B64B26F3138097890053E943 /* CCDownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCDownloadManager.m; sourceTree = "<group>"; };
 		B64B26F4138097890053E943 /* Cocoafish.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cocoafish.h; sourceTree = "<group>"; };
@@ -415,6 +419,8 @@
 		B64B26F9138097890053E943 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B6204B2C159BB6D10017206C /* CCAcl.h */,
+				B6204B2D159BB6D10017206C /* CCAcl.m */,
 				B6B273C714FE0C0A002AD928 /* CCFile.h */,
 				B6B273C814FE0C0A002AD928 /* CCFile.m */,
 				B69378591479E4E6004A51F1 /* CCFeed.h */,
@@ -551,6 +557,7 @@
 				B69378631479E4E6004A51F1 /* CCWhere.h in Headers */,
 				B619BBEF147DC42900AE5D60 /* CLLocation+JSON.h in Headers */,
 				B6B273C914FE0C0A002AD928 /* CCFile.h in Headers */,
+				B6204B2E159BB6D10017206C /* CCAcl.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -655,6 +662,7 @@
 				B69378641479E4E6004A51F1 /* CCWhere.m in Sources */,
 				B619BBF0147DC42900AE5D60 /* CLLocation+JSON.m in Sources */,
 				B6B273CA14FE0C0A002AD928 /* CCFile.m in Sources */,
+				B6204B2F159BB6D10017206C /* CCAcl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
