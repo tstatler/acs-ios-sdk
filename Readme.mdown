@@ -61,8 +61,11 @@ Follow these steps to integrate Cocoafish with an existing application:
 
 * Select add files to 'Your project'. Go to cocoafish-ios-sdk/src and select the Cocoafish, ASIHTTPRequest and FBConnect folders. Make sure to check create groups for added folders.
 
-* Add YAJL.framework to your project. There is a copy of YAJL.framework under cocoafish-ios-sdk/src. 
-
+* Add YAJL.framework to your project. 
+	There are two copies of YAJL.framework under cocoafish-ios-sdk/src. One copy is under cocoafish-ios-sdk/src/YAJL.framework, another is under cocoafish-ios-sdk/src/ARMv7s-YAJL-framework.
+	We suggest you add cocoafish-ios-sdk/src/ARMv7s-YAJL-framework to your project, which is the newest version for ARMv7s. 
+	If you get any errors when using ARMv7s-YAJL-framework, please switch to the older version which is located in cocoafish-ios-sdk/src/YAJL.framework.
+	
 * Add libz.1.2.3.dylib, SystemConfiguration.framework, MobileCoreServices.framework, CoreLocation.framework and CFNetwork.framework to your project.
 
 * Under Other Linker Flags in your target, add -ObjC and -all_load  
