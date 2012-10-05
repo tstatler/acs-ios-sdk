@@ -2,8 +2,8 @@
 //  ASIDataDecompressor.h
 //  Part of ASIHTTPRequest -> http://allseeing-i.com/ASIHTTPRequest
 //
-//  Created by Ben Copsey on 17/08/2011.
-//  Copyright 2011 All-Seeing Interactive. All rights reserved.
+//  Created by Ben Copsey on 17/08/2010.
+//  Copyright 2010 All-Seeing Interactive. All rights reserved.
 //
 
 // This is a helper class used by ASIHTTPRequest to handle inflating (decompressing) data in memory and on disk
