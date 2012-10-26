@@ -60,6 +60,11 @@ Follow these steps to integrate Cocoafish with an existing application:
 * Create your own ios project, for example -- client.
 
 * Select add files to 'Your project'. Go to cocoafish-ios-sdk/src and select the Cocoafish, ASIHTTPRequest and FBConnect folders. Make sure to check create groups for added folders.
+* Add Facebook.framework to your project
+	There is one copy of FacebookSDK.framework under cocoafish-ios-sdk/src. In order to use FacebookSDK.framework, you also need to do the following steps:
+	a. add AdSupport, Accounts and Social framework to project
+	b. add the link falg ''-lsqlite3.0'' SQL library to Build Settings->Linking->Other Linker Flags. See details at https://developers.facebook.com/docs/getting-started/facebook-sdk-for-ios/3.1/ .
+	c. add FacebookSDKResources.bundle and FBUserSettingsViewResources.bundle to project. FacebookSDKResources.bundle and FBUserSettingsViewResources.bundle is under cocoafish-ios-sdk/src/FacebookSDK.framework/Resources
 
 * Add YAJL.framework to your project. 
 	There are two copies of YAJL.framework under cocoafish-ios-sdk/src. One copy is under cocoafish-ios-sdk/src/YAJL.framework, another is under cocoafish-ios-sdk/src/ARMv7s-YAJL-framework.
