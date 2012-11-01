@@ -49,7 +49,7 @@
             }
         }
 		@catch (NSException *e) {
-			NSLog(@"Error: Failed to parse Message object. Reason: %@", [e reason]);
+			CCLog(@"Error: Failed to parse Message object. Reason: %@", [e reason]);
 			[self release];
 			self = nil;
 		}

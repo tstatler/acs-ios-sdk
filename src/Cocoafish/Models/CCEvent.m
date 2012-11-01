@@ -65,7 +65,7 @@
 
         }
 		@catch (NSException *e) {
-			NSLog(@"Error: Failed to parse Event object. Reason: %@", [e reason]);
+			CCLog(@"Error: Failed to parse Event object. Reason: %@", [e reason]);
 			[self release];
 			self = nil;
 		}
@@ -140,7 +140,7 @@
             
         }
 		@catch (NSException *e) {
-			NSLog(@"Error: Failed to parse EventOccurrence object. Reason: %@", [e reason]);
+			CCLog(@"Error: Failed to parse EventOccurrence object. Reason: %@", [e reason]);
 			[self release];
 			self = nil;
 		}
