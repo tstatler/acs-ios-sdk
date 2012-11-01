@@ -110,4 +110,18 @@ to yourappDelegate.m
 
 Don't forget to edit your app-info.plist to add URL types for your facebook id. See facebook ios sdk for more information.
 
+-----
+Enable/Disable runtime log
+You can enable/disable runtime log by set loggingEnabled variable in Cocoafish.m :
+
+-(void)initCommon:(NSDictionary *)customAppIds
+{
+    //other code
+    //true, enable log
+    //false, disable log
+    self.loggingEnabled = true;
+    
+    // other code
+}
+
 With the Cocoafish IOS SDK, you can perform all the actions described in http://cocoafish.com/docs/quickstart

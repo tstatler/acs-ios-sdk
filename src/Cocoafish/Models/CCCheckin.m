@@ -37,13 +37,13 @@
             _event = [[CCEvent alloc] initWithJsonResponse:[jsonResponse objectForKey:@"event"]];
 		}
 		@catch (NSException *e) {
-			NSLog(@"Error: Failed to parse checkin object. Reason: %@", [e reason]);
+			CCLog(@"Error: Failed to parse checkin object. Reason: %@", [e reason]);
 			[self release];
 			self = nil;
             return self;
 		}
         if (self.user == nil || self.place == nil) {
-            NSLog(@"invalid checkin object from server: %@", jsonResponse);
+            CCLog(@"invalid checkin object from server: %@", jsonResponse);
             [self release];
             self = nil;
             return self;

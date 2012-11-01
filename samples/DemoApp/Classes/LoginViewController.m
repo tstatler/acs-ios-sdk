@@ -308,7 +308,7 @@
 
 -(void)registerSucceeded
 {
-	NSLog(@"Register controller succeeded now we're in login controller");
+	CCLog(@"Register controller succeeded now we're in login controller");
 	
 	// call the delegate's method
 	[self.delegate loginSucceeded];
@@ -319,14 +319,14 @@
 
 -(void)registerFailed
 {
-	NSLog(@"Register controller failed");
+	CCLog(@"Register controller failed");
 }
 
 #pragma -
 #pragma mark CCFBSessionDelegate methods
 -(void)fbDidLogin
 {
-	NSLog(@"fbDidLogin");
+	CCLog(@"fbDidLogin");
 	// call the delegate's method
 	[self.navigationController popViewControllerAnimated:NO];
     

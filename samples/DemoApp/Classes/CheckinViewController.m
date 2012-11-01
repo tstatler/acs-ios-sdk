@@ -127,9 +127,9 @@
 	
 	/*// Write the image to the photo album if we took it with the camera
 	if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
-		NSLog(@"Start saving fullsize image to the camera roll");
+		CCLog(@"Start saving fullsize image to the camera roll");
 		UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
-		NSLog(@"End saving fullsize image to the camera roll");
+		CCLog(@"End saving fullsize image to the camera roll");
 	}*/
 	
 	[self preparePhoto:image];

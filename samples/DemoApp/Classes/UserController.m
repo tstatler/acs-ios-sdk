@@ -300,7 +300,7 @@
 #pragma mark CCFBSessionDelegate methods
 -(void)fbDidLogin
 {
-	NSLog(@"fbDidLogin");
+	CCLog(@"fbDidLogin");
 	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Unlink Facebook" style:UIBarButtonItemStylePlain target:self action:@selector(unlinkFromFacebook)];
 	self.navigationItem.leftBarButtonItem = button;
 	[button release];

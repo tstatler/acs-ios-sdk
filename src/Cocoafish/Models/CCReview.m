@@ -30,7 +30,7 @@
 			_user = [[CCUser alloc] initWithJsonResponse:[jsonResponse objectForKey:CC_JSON_USER]];            
         }
 		@catch (NSException *e) {
-			NSLog(@"Error: Failed to parse Review object. Reason: %@", [e reason]);
+			CCLog(@"Error: Failed to parse Review object. Reason: %@", [e reason]);
 			[self release];
 			self = nil;
 		}
