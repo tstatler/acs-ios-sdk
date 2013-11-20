@@ -3,7 +3,7 @@
 //  GoogleMap
 //
 //  Created by Wei Kong on 8/26/09.
-//  Copyright 2011 Cocoafish Inc. All rights reserved.
+//  Copyright 2011 Appcelerator Inc. All rights reserved.
 //
 
 #import "AnnotationView.h"

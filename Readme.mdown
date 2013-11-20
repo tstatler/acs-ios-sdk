@@ -1,9 +1,9 @@
-Cocoafish iOS SDK
+ACS iOS SDK
 ===========================
 
-This open source iOS library allows you to integrate the Cocoafish server backend into your iOS application on iPhone, iPad, and iPod touch.
+This open source iOS library allows you to integrate the ACS server backend into your iOS application on iPhone, iPad, and iPod touch.
 
-Except as otherwise noted, the Cocoafish iOS SDK is licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
+Except as otherwise noted, the ACS iOS SDK is licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
 
 Getting Started
 ===============
@@ -19,20 +19,20 @@ Setup Your Environment
 
 * Pull this SDK from GitHub:
 
-       git clone git://github.com/cocoafish/cocoafish-ios-sdk.git
+       git clone git://github.com/cocoafish/acs-ios-sdk.git
 
 Sample Applications
 -------------------
 
 This SDK comes with a sample application that demonstrates authorization, making API calls including user registration, Facebook integration, checkin, place searches and photo uploads to guide you in development.
 
-The Sample appication requires some authorization and API keys inorder to access the services provided by CocoaFish. You will need to obtain these values before you can run the Sample Application. To do so, follow the steps below:
+The Sample appication requires some authorization and API keys inorder to access the services provided by Appcelerator. You will need to obtain these values before you can run the Sample Application. To do so, follow the steps below:
 
-* Log into cocoafish (http://cocoafish.com)
+* Log into ACS (https://cloud.appcelerator.com)
 
 * View the list of Applications currently registered with your account by selecting the "<YourName>'s Apps" link from the top menu bar. This should bring you to the Applications page.
 
-* On the Applications page, you should see a line entitled "Cocoafish Sample App". On that line, click on the "Actions" drop down menu then select the "Show/Edit Apps" option. This will bring you to the Application details page which list the keys used by this Application. Make a note of these keys and their values.
+* On the Applications page, you should see a line entitled "ACS Sample App". On that line, click on the "Actions" drop down menu then select the "Show/Edit Apps" option. This will bring you to the Application details page which list the keys used by this Application. Make a note of these keys and their values.
 
 * Note, the values for all keys except for "Facebook App Id" should be already populated. If you want to use Facebook integration, you will need populate the "Facebook App Id" key with your own ID. To do so, select the "Edit" link at the bottom of the Application Details page.
 
@@ -40,9 +40,9 @@ To build and run the sample application with Xcode (4.0):
 
 * Open the included Xcode Project File by selecting _File_->_Open..._ and select samples/DemoApp/DemoApp.xcodeproj.
 
-* Create a Cocoafish App ID (see http://cocoafish.com/). If you'd like to integrate your app with Facebook, provide your Facebook app id.
+* Create a ACS App ID (see https://cloud.appcelerator.com). If you'd like to integrate your app with Facebook, provide your Facebook app id.
 
-* Modify Classes/DemoAppDelegate.m to fill in your actual Cocoafish app key (cocoafishAppKey) or OAuth consumer key (oauthConsumerKey) and secret (oauthConsumerSecret), along with an optional Facebook App id (facebookAppId). If you are using Facebook integration, you will need to modify the didFinishLaunchingWithOptions method so that the Cocoafish object is initialized with the Facebook App ID, there is comment above the cocoafish initialization line which shows you how to do this.
+* Modify Classes/DemoAppDelegate.m to fill in your actual ACS app key (ACS_APP_KEY) or OAuth consumer key (oauthConsumerKey) and secret (oauthConsumerSecret), along with an optional Facebook App id (facebookAppId). If you are using Facebook integration, you will need to modify the didFinishLaunchingWithOptions method so that the ACSClient object is initialized with the Facebook App ID, there is comment above the ACSClient initialization line which shows you how to do this.
 
 * Finally, select _Product_ -> _Build_ to build the application and then _Product_ -> _Run_ to launch it.
 
@@ -55,55 +55,55 @@ The APIs application under samples provides a list of API calls supported by SDK
 Integrate With Your Own Application
 -----------------------------------
 
-Follow these steps to integrate Cocoafish with an existing application:
+Follow these steps to integrate ACSClient with an existing application:
 
 * Create your own ios project, for example -- client.
 
-* Select add files to 'Your project'. Go to cocoafish-ios-sdk/src and select the Cocoafish, ASIHTTPRequest and FBConnect folders. Make sure to check create groups for added folders.
+* Select add files to 'Your project'. Go to acs-ios-sdk/src and select the ACSClient, ASIHTTPRequest and FBConnect folders. Make sure to check create groups for added folders.
 * Add Facebook.framework to your project
-	There is one copy of FacebookSDK.framework under cocoafish-ios-sdk/src. In order to use FacebookSDK.framework, you also need to do the following steps:
+	There is one copy of FacebookSDK.framework under acs-ios-sdk/src. In order to use FacebookSDK.framework, you also need to do the following steps:
 	a. add AdSupport, Accounts and Social framework to project
 	b. add the link falg ''-lsqlite3.0'' SQL library to Build Settings->Linking->Other Linker Flags. See details at https://developers.facebook.com/docs/getting-started/facebook-sdk-for-ios/3.1/ .
-	c. add FacebookSDKResources.bundle and FBUserSettingsViewResources.bundle to project. FacebookSDKResources.bundle and FBUserSettingsViewResources.bundle is under cocoafish-ios-sdk/src/FacebookSDK.framework/Resources
+	c. add FacebookSDKResources.bundle and FBUserSettingsViewResources.bundle to project. FacebookSDKResources.bundle and FBUserSettingsViewResources.bundle is under acs-ios-sdk/src/FacebookSDK.framework/Resources
 
 * Add YAJL.framework to your project. 
-	There are two copies of YAJL.framework under cocoafish-ios-sdk/src. One copy is under cocoafish-ios-sdk/src/YAJL.framework, another is under cocoafish-ios-sdk/src/ARMv7s-YAJL-framework.
-	We suggest you add cocoafish-ios-sdk/src/ARMv7s-YAJL-framework to your project, which is the newest version for ARMv7s. 
-	If you get any errors when using ARMv7s-YAJL-framework, please switch to the older version which is located in cocoafish-ios-sdk/src/YAJL.framework.
+	There are two copies of YAJL.framework under acs-ios-sdk/src. One copy is under acs-ios-sdk/src/YAJL.framework, another is under acs-ios-sdk/src/ARMv7s-YAJL-framework.
+	We suggest you add acs-ios-sdk/src/ARMv7s-YAJL-framework to your project, which is the newest version for ARMv7s. 
+	If you get any errors when using ARMv7s-YAJL-framework, please switch to the older version which is located in acs-ios-sdk/src/YAJL.framework.
 	
 * Add libz.1.2.3.dylib, SystemConfiguration.framework, MobileCoreServices.framework, CoreLocation.framework and CFNetwork.framework to your project.
 
 * Under Other Linker Flags in your target, add -ObjC and -all_load  
 
-* You should now be able to build and use all the Cocoafish APIs.
+* You should now be able to build and use all the ACS APIs.
 
 Usage
 -----
 
-Begin by instantiating the Cocoafish object:
+Begin by instantiating the ACSClient object:
 
-#import "Cocoafish.h"
+#import "ACSClient.h"
 
-If you choose to use Cocoafish app key, 
+If you choose to use ACS app key, 
 
-	[Cocoafish initializeWithAppKey:cocoafishAppKey customAppIds:nil];
+	[ACSClient initializeWithAppKey:ACS_APP_KEY customAppIds:nil];
 
-If you choose to use Cocoafish oauth consumer key and secret,
+If you choose to use ACS oauth consumer key and secret,
 
-	[Cocoafish initializeWithOauthConsumerKey:oauthConsumerKey consumerSecret:oauthConsumerSecret customAppIds:nil];
+	[ACSClient initializeWithOauthConsumerKey:oauthConsumerKey consumerSecret:oauthConsumerSecret customAppIds:nil];
 
 If you want to use facebook integration:
 
-	[Cocoafish initializeWithAppKey:cocoafishAppKey customAppIds:[NSDictionary dictionaryWithObject:facebookAppId forKey:@"Facebook"]];
+	[ACSClient initializeWithAppKey:ACS_APP_KEY customAppIds:[NSDictionary dictionaryWithObject:facebookAppId forKey:@"Facebook"]];
 
 or
-	[Cocoafish initializeWithOauthConsumerKey:oauthConsumerKey consumerSecret:oauthConsumerSecret customAppIds:[NSDictionary dictionaryWithObject:facebookAppId forKey:@"Facebook"]];
+	[ACSClient initializeWithOauthConsumerKey:oauthConsumerKey consumerSecret:oauthConsumerSecret customAppIds:[NSDictionary dictionaryWithObject:facebookAppId forKey:@"Facebook"]];
 
 Then add:
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
 {
-	return [[Cocoafish defaultCocoafish] handleOpenURL:url];
+	return [[ACSClient defaultACSClient] handleOpenURL:url];
 }
 
 to yourappDelegate.m
@@ -112,7 +112,7 @@ Don't forget to edit your app-info.plist to add URL types for your facebook id. 
 
 -----
 Enable/Disable runtime log
-You can enable/disable runtime log by set loggingEnabled variable in Cocoafish.m :
+You can enable/disable runtime log by set loggingEnabled variable in ACSClient.m :
 
 -(void)initCommon:(NSDictionary *)customAppIds
 {
@@ -124,4 +124,4 @@ You can enable/disable runtime log by set loggingEnabled variable in Cocoafish.m
     // other code
 }
 
-With the Cocoafish IOS SDK, you can perform all the actions described in http://cocoafish.com/docs/quickstart
+With the ACS IOS SDK, you can perform all the actions described in http://docs.appcelerator.com/cloud/latest/#!/guide/ios

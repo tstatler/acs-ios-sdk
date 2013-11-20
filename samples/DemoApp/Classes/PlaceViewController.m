@@ -3,12 +3,12 @@
 //  Demo
 //
 //  Created by Wei Kong on 10/17/10.
-//  Copyright 2011 Cocoafish Inc. All rights reserved.
+//  Copyright 2011 Appcelerator Inc. All rights reserved.
 //
 
 #import "PlaceViewController.h"
 #import "CheckinViewController.h"
-#import "CocoaFishLibrary.h"
+#import "ACSClientLibrary.h"
 
 @implementation PlaceViewController
 
@@ -27,7 +27,7 @@
     CCRequest *request = [[[CCRequest alloc] initWithDelegate:self httpMethod:@"GET" baseUrl:@"checkins/search.json" paramDict:paramDict] autorelease];
     [request startAsynchronous];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDownloaded:) name:@"DownloadFinished" object:[Cocoafish defaultCocoafish]];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDownloaded:) name:@"DownloadFinished" object:[ACSClient defaultACSClient]];
 
     self.navigationItem.title = place.name;
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
@@ -71,7 +71,7 @@
             checkin = [checkins objectAtIndex:0];
         }
         // update user score
-        NSString *score_key = [NSString stringWithFormat:@"%@_score",[[Cocoafish defaultCocoafish] getCurrentUser].objectId];
+        NSString *score_key = [NSString stringWithFormat:@"%@_score",[[ACSClient defaultACSClient] getCurrentUser].objectId];
         
         NSDictionary *paramDict = [NSDictionary dictionaryWithObjectsAndKeys:score_key, @"name", [NSNumber numberWithInt:5], @"value", nil];
         CCRequest *request = [[[CCRequest alloc] initWithDelegate:self httpMethod:@"PUT" baseUrl:@"keyvalues/incrby.json" paramDict:paramDict] autorelease];
@@ -134,7 +134,7 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 	
-	if ([[Cocoafish defaultCocoafish] getCurrentUser] != nil) {
+	if ([[ACSClient defaultACSClient] getCurrentUser] != nil) {
 		UIBarButtonItem *checkinButton = [[UIBarButtonItem alloc] initWithTitle:@"Checkin" style:UIBarButtonItemStylePlain target:self action:@selector(showCheckin)];
 		self.navigationItem.rightBarButtonItem = checkinButton;
 		[checkinButton release];

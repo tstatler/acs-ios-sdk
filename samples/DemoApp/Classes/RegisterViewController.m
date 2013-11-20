@@ -1,9 +1,9 @@
 //
 //  RegisterViewController.m
-//  Cocoafish-ios-demo
+//  Appcelerator-ios-demo
 //
 //  Created by Michael Goff on 11/27/09.
-//  Copyright 2011 Cocoafish Inc. All rights reserved.
+//  Copyright 2011 Appcelerator Inc. All rights reserved.
 //
 
 #import "RegisterViewController.h"

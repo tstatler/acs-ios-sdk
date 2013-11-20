@@ -3,12 +3,12 @@
 //  Demo
 //
 //  Created by Wei Kong on 10/15/10.
-//  Copyright 2011 Cocoafish Inc. All rights reserved.
+//  Copyright 2011 Appcelerator Inc. All rights reserved.
 //
 
 #import "UserController.h"
 #import "LoginViewController.h"
-#import "CocoafishLibrary.h"
+#import "ACSClientLibrary.h"
 
 @implementation UserController
 
@@ -19,7 +19,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDownloaded:) name:@"DownloadFinished" object:[Cocoafish defaultCocoafish]];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDownloaded:) name:@"DownloadFinished" object:[ACSClient defaultACSClient]];
 
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
@@ -33,7 +33,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 
-	CCUser *currentUser = [[Cocoafish defaultCocoafish] getCurrentUser];
+	CCUser *currentUser = [[ACSClient defaultACSClient] getCurrentUser];
 	if (!currentUser) {
 		// show login window
 		LoginViewController *loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil];
@@ -57,7 +57,7 @@
 		self.navigationItem.leftBarButtonItem = button;
 		[button release];*/
 		
-		self.navigationItem.title = [[[Cocoafish defaultCocoafish] getCurrentUser] firstName];
+		self.navigationItem.title = [[[ACSClient defaultACSClient] getCurrentUser] firstName];
 		
 	}
 	
@@ -95,7 +95,7 @@
 
 -(void)getUserCheckins
 {
-    NSDictionary *paramDict = [NSDictionary dictionaryWithObjectsAndKeys:[[Cocoafish defaultCocoafish] getCurrentUser].objectId, @"user_id", nil];
+    NSDictionary *paramDict = [NSDictionary dictionaryWithObjectsAndKeys:[[ACSClient defaultACSClient] getCurrentUser].objectId, @"user_id", nil];
 	
     CCRequest *request = [[[CCRequest alloc] initWithDelegate:self httpMethod:@"GET" baseUrl:@"checkins/search.json" paramDict:paramDict] autorelease];
 
@@ -118,7 +118,7 @@
 -(void)unlinkFromFacebook
 {
 	NSError *error;
-	[[Cocoafish defaultCocoafish] unlinkFromFacebook:&error];
+	[[ACSClient defaultACSClient] unlinkFromFacebook:&error];
 	if (error == nil) {
 		UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Link With Facebook" style:UIBarButtonItemStylePlain target:self action:@selector(linkWithFacebook)];
 		self.navigationItem.leftBarButtonItem = button;
@@ -129,11 +129,11 @@
 // link with facebook account
 - (void)linkWithFacebook
 {	
-    if ([[Cocoafish defaultCocoafish] getFacebook] == nil) {
+    if ([[ACSClient defaultACSClient] getFacebook] == nil) {
         
         UIAlertView *alert = [[UIAlertView alloc] 
                               initWithTitle:@"Error" 
-                              message:@"Please initialize Cocoafish with a valid facebook id first!"
+                              message:@"Please initialize ACS with a valid facebook id first!"
                               delegate:self 
                               cancelButtonTitle:@"Ok"
                               otherButtonTitles:nil];
@@ -141,7 +141,7 @@
         [alert release];
         return;
     }
-	[[Cocoafish defaultCocoafish] facebookAuth:[NSArray arrayWithObjects:@"publish_stream", @"email", @"read_friendlists", @"offline_access", @"user_photos", nil] delegate:self];
+	[[ACSClient defaultACSClient] facebookAuth:[NSArray arrayWithObjects:@"publish_stream", @"email", @"read_friendlists", @"offline_access", @"user_photos", nil] delegate:self];
 }
 
 #pragma mark -

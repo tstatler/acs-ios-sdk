@@ -3,7 +3,7 @@
 //  Demo
 //
 //  Created by Wei Kong on 3/4/11.
-//  Copyright 2011 Cocoafish Inc. All rights reserved.
+//  Copyright 2011 Appcelerator Inc. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

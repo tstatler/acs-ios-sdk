@@ -1,0 +1,26 @@
+Contents of /Users/xzhang/Projects/acs-ios-sdk/samples/DemoApp/Demo_Prefix.pch
+
+arm-apple-darwin11.4.2
+-x
+objective-c
+-arch
+armv7
+-fmessage-length=0
+-std=c99
+-fpascal-strings
+-O0
+-isysroot
+/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk
+-fstrict-aliasing
+-g
+-fvisibility=hidden
+-miphoneos-version-min=6.1
+-I/Users/xzhang/Projects/acs-ios-sdk/samples/DemoApp/build/Debug-iphoneos/include
+-F/Users/xzhang/Projects/acs-ios-sdk/samples/DemoApp/build/Debug-iphoneos
+-F/Users/xzhang/Projects/acs-ios-sdk/samples/DemoApp
+-F/Users/xzhang/Projects/acs-ios-sdk/samples/DemoApp/../../src
+-ferror-limit=10
+-working-directory=/Users/xzhang/Projects/acs-ios-sdk/samples/DemoApp
+-Xclang
+-detailed-preprocessing-record
+SDK_PRODUCT_BUILD_VERSION=10B141

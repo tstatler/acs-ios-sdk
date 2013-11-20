@@ -3,16 +3,16 @@
 //  Demo
 //
 //  Created by Wei Kong on 10/7/10.
-//  Copyright 2011 Cocoafish Inc. All rights reserved.
+//  Copyright 2011 Appcelerator Inc. All rights reserved.
 //
 
 #import "DemoAppDelegate.h"
 #import "MainViewController.h"
-#import "Cocoafish.h"
+#import "ACSClient.h"
 
-// Your cocoafish app key must be set before running this demo
-//#define COCOAFISH_APP_KEY @"your app key here"
-#if !defined(COCOAFISH_APP_KEY) 
+// Your ACS app key must be set before running this demo
+// #define ACS_APP_KEY @"your app key here"
+#if !defined(ACS_APP_KEY) 
     #error : Please uncomment above line and set your app key
 #endif
 
@@ -32,11 +32,11 @@ static NSString * const facebookAppId = nil;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {    
     
-	// Initialize Cocoafish
-    [Cocoafish initializeWithAppKey:COCOAFISH_APP_KEY customAppIds:nil];
+	// Initialize ACS
+    [ACSClient initializeWithAppKey:ACS_APP_KEY customAppIds:nil];
    
-    // Initialize Cocoafish with facebook App Id if you set one
- /*   [Cocoafish initializeWithAppKey:COCOAFISH_APP_KEY customAppIds:[NSDictionary dictionaryWithObject:facebookAppId forKey:@"Facebook"]]; */
+    // Initialize ACSClient with facebook App Id if you set one
+ /*   [ACSClient initializeWithAppKey:ACS_APP_KEY customAppIds:[NSDictionary dictionaryWithObject:facebookAppId forKey:@"Facebook"]]; */
     
 	 // Add the tab bar controller's view to the window and display.
     [window addSubview:tabBarController.view];
@@ -48,13 +48,13 @@ static NSString * const facebookAppId = nil;
 // 4.2+
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-	return [[[Cocoafish defaultCocoafish] getFacebook] handleOpenURL:url];
+	return [[[ACSClient defaultACSClient] getFacebook] handleOpenURL:url];
 }
 
 // pre 4.2
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
 {
-	return [[[Cocoafish defaultCocoafish] getFacebook] handleOpenURL:url];
+	return [[[ACSClient defaultACSClient] getFacebook] handleOpenURL:url];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
