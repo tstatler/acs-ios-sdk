@@ -3,11 +3,11 @@
 //  Demo
 //
 //  Created by Wei Kong on 10/7/10.
-//  Copyright 2011 Cocoafish Inc. All rights reserved.
+//  Copyright 2011 Appcelerator Inc. All rights reserved.
 //
 
 #import "MainViewController.h"
-#import "Cocoafish.h"
+#import "ACSClient.h"
 
 @implementation MainViewController
 @synthesize viewSwitchButton, mapViewController, listViewController;

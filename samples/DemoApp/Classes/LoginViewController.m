@@ -1,14 +1,14 @@
 //
 //  LoginViewController.m
-//  Cocoafish-ios-demo
+//  Appcelerator-ios-demo
 //
 //  Created by Michael Goff on 11/23/09.
-//  Copyright 2011 Cocoafish Inc. All rights reserved.
+//  Copyright 2011 Appcelerator Inc. All rights reserved.
 //
 
 #import "LoginViewController.h"
 #import "RegisterViewController.h"
-#import "Cocoafish.h"
+#import "ACSClient.h"
 
 #define SECTION_LOGIN 0
 #define EMAIL_ADDRESS 0
@@ -249,11 +249,11 @@
 
 -(IBAction)fbLoginButtonPressed:(id)sender
 {
-    if ([[Cocoafish defaultCocoafish] getFacebook] == nil) {
+    if ([[ACSClient defaultACSClient] getFacebook] == nil) {
         
         UIAlertView *alert = [[UIAlertView alloc] 
                               initWithTitle:@"Error" 
-                              message:@"Please initialize Cocoafish with a valid facebook id first!"
+                              message:@"Please initialize ACS with a valid facebook id first!"
                               delegate:self 
                               cancelButtonTitle:@"Ok"
                               otherButtonTitles:nil];
@@ -261,7 +261,7 @@
         [alert release];
         return;
     }
-	[[Cocoafish defaultCocoafish] facebookAuth:[NSArray arrayWithObjects:@"publish_stream", @"email", @"offline_access", nil] delegate:self];
+	[[ACSClient defaultACSClient] facebookAuth:[NSArray arrayWithObjects:@"publish_stream", @"email", @"offline_access", nil] delegate:self];
 }
 
 // start the login process

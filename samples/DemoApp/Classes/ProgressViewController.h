@@ -1,9 +1,9 @@
 //
 //  UploadProgressViewController.h
-//  Cocoafish-ios-demo
+//  Appcelerator-ios-demo
 //
 //  Created by Michael Goff on 9/19/09.
-//  Copyright 2011 Cocoafish Inc. All rights reserved.
+//  Copyright 2011 Appcelerator Inc. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
