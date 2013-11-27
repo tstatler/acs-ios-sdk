@@ -19,7 +19,7 @@ Setup Your Environment
 
 * Pull this SDK from GitHub:
 
-       git clone git://github.com/cocoafish/acs-ios-sdk.git
+       git clone git@github.com:appcelerator/acs-ios-sdk.git
 
 Sample Applications
 -------------------
