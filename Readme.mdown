@@ -5,126 +5,559 @@ This open source iOS library allows you to integrate the ACS server backend into
 
 Except as otherwise noted, the ACS iOS SDK is licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
 
+**Note**: The ACS iOS SDK is no longer being developed or maintained. Please consider using
+the [Appcelerator Platform Services SDK for iOS](http://docs.appcelerator.com/cloud/latest/#!/guide/ios) instead 
+(Platform subscription required).
+
 Getting Started
 ===============
 
-The SDK is lightweight. Getting started is easy.
+## Download the SDK
 
-Setup Your Environment
-----------------------
+Grab the ACS iOS SDK from <https://github.com/appcelerator/acs-ios-sdk>. See the
+[DemoApp](https://github.com/appcelerator/acs-ios-sdk/tree/master/samples/DemoApp) sample project for
+an example of storing and retrieving data with the SDK.
 
-* If you haven't already done so, set up your iPhone development environment by following the [iPhone Dev Center Getting Started Documents](https://developer.apple.com/iphone/index.action).
+## Adding ACS to your XCode Project
 
-* Install [Git](http://git-scm.com/).
+1.  Create a ACS app from the [My Apps page](https://my.appcelerator.com/apps). Then in
+    XCode, create an iOS project and add the following folders from `acs-ios-sdk/src/` to your project:
 
-* Pull this SDK from GitHub:
+        ACSClient
+        ASIHTTPRequest
+        FBConnect
 
-       git clone git@github.com:appcelerator/acs-ios-sdk.git
+    You can choose to use your own copy of `ASIHTTPRequest` (v1.8 or above) and
+    `FBConnect` from facebook-ios-sdk (updated on or after Jan 31, 2011). The only
+    change we made to the `ASIHTTPRequest` in our copy is in `ASIHttpRequest.m`:
 
-Sample Applications
--------------------
+        - (void)readResponseHeaders
+        {
+          ...
+          if ([self responseStatusCode] == 401) {
+            // Commented out by ACS
+            // [self setAuthenticationNeeded:ASIHTTPAuthenticationNeeded];
+          } else if ([self responseStatusCode] == 407) {
+            [self setAuthenticationNeeded:ASIProxyAuthenticationNeeded];
+          }
+          ...
+        }
 
-This SDK comes with a sample application that demonstrates authorization, making API calls including user registration, Facebook integration, checkin, place searches and photo uploads to guide you in development.
+    The ACS API server returns HTTP response code `401` in a number
+    of different error situations. However, `ASIHttpRequest` interprets all `401`
+    responses as Authentication Needed. This can be confusing if you want to
+    show users the exact error that has occurred. For instance: Invalid user
+    email/password, invalid oauth token. We commented out the above line to let
+    the server error message to pass through.
 
-The Sample appication requires some authorization and API keys inorder to access the services provided by Appcelerator. You will need to obtain these values before you can run the Sample Application. To do so, follow the steps below:
+    If you are using your own version of `ASIHttpRequest`, you can choose to do the
+    same to let server authentication error message pass through.
 
-* Log into ACS (https://cloud.appcelerator.com)
+2.  Add the following frameworks to your project:
 
-* View the list of Applications currently registered with your account by selecting the "<YourName>'s Apps" link from the top menu bar. This should bring you to the Applications page.
+        libz.1.2.3.dylib
+        SystemConfiguration.framework
+        MobileCoreService.framework
+        CoreLocation.framework
+        CFNetwork.framework
+        YAJL.framework
+        AssetsLibrary.framework
 
-* On the Applications page, you should see a line entitled "ACS Sample App". On that line, click on the "Actions" drop down menu then select the "Show/Edit Apps" option. This will bring you to the Application details page which list the keys used by this Application. Make a note of these keys and their values.
+    There are two copies of `YAJL.framework` under `acs-ios-sdk/src/`:
 
-* Note, the values for all keys except for "Facebook App Id" should be already populated. If you want to use Facebook integration, you will need populate the "Facebook App Id" key with your own ID. To do so, select the "Edit" link at the bottom of the Application Details page.
+        acs-ios-sdk/src/YAJL.framework
+        acs-ios-sdk/src/ARMv7s-YAJL-framework
 
-To build and run the sample application with Xcode (4.0):
+    We suggest that you add `ARMv7s-YAJL-framework` to your project, which is the newest
+    version of the YAJL framework, for ARMv7s. If you get any errors when using
+    `ARMv7s-YAJL-framework`, please switch to the older version YAJL framework
+    (`acs-ios-sdk/src/YAJL.framework`). The older version of the YAJL framework
+    is also availabe from the following github repo:
 
-* Open the included Xcode Project File by selecting _File_->_Open..._ and select samples/DemoApp/DemoApp.xcodeproj.
+    <https://github.com/gabriel/yajl-objc>
 
-* Create a ACS App ID (see https://cloud.appcelerator.com). If you'd like to integrate your app with Facebook, provide your Facebook app id.
+3.  Under Other Linker Flags in your target, add:
 
-* Modify Classes/DemoAppDelegate.m to fill in your actual ACS app key (ACS_APP_KEY) or OAuth consumer key (oauthConsumerKey) and secret (oauthConsumerSecret), along with an optional Facebook App id (facebookAppId). If you are using Facebook integration, you will need to modify the didFinishLaunchingWithOptions method so that the ACSClient object is initialized with the Facebook App ID, there is comment above the ACSClient initialization line which shows you how to do this.
+        -ObjC -all_load
 
-* Finally, select _Product_ -> _Build_ to build the application and then _Product_ -> _Run_ to launch it.
+4.  In your code, include the ACS header:
 
-* Select view/edit places to add a couple places to your app.
+        #import "ACSClient.h"
 
-APIs Application
-----------------
-The APIs application under samples provides a list of API calls supported by SDK.
+Now you're ready to go!
 
-Integrate With Your Own Application
------------------------------------
 
-Follow these steps to integrate ACSClient with an existing application:
+## Initialization & Authorization
 
-* Create your own ios project, for example -- client.
+If you choose to use oauth consumer key/secret to authenticate your app with
+ACS, in your `AppDelegate.m`, define:
 
-* Select add files to 'Your project'. Go to acs-ios-sdk/src and select the ACSClient, ASIHTTPRequest and FBConnect folders. Make sure to check create groups for added folders.
-* Add Facebook.framework to your project
-	There is one copy of FacebookSDK.framework under acs-ios-sdk/src. In order to use FacebookSDK.framework, you also need to do the following steps:
-	a. add AdSupport, Accounts and Social framework to project
-	b. add the link falg ''-lsqlite3.0'' SQL library to Build Settings->Linking->Other Linker Flags. See details at https://developers.facebook.com/docs/getting-started/facebook-sdk-for-ios/3.1/ .
-	c. add FacebookSDKResources.bundle and FBUserSettingsViewResources.bundle to project. FacebookSDKResources.bundle and FBUserSettingsViewResources.bundle is under acs-ios-sdk/src/FacebookSDK.framework/Resources
+    #define ACSCLIENT_OAUTH_CONSUMER_KEY @"your consumer key here"
+    #define ACSCLIENT_OAUTH_CONSUMER_SECRET @"your consumer secret here"
 
-* Add YAJL.framework to your project. 
-	There are two copies of YAJL.framework under acs-ios-sdk/src. One copy is under acs-ios-sdk/src/YAJL.framework, another is under acs-ios-sdk/src/ARMv7s-YAJL-framework.
-	We suggest you add acs-ios-sdk/src/ARMv7s-YAJL-framework to your project, which is the newest version for ARMv7s. 
-	If you get any errors when using ARMv7s-YAJL-framework, please switch to the older version which is located in acs-ios-sdk/src/YAJL.framework.
-	
-* Add libz.1.2.3.dylib, SystemConfiguration.framework, MobileCoreServices.framework, CoreLocation.framework and CFNetwork.framework to your project.
+and initialize ACS with the key/secret:
 
-* Under Other Linker Flags in your target, add -ObjC and -all_load  
+    [ACSClient initializeWithOauthConsumerKey:ACSCLIENT_OAUTH_CONSUMER_KEY consumerSecret:ACSCLIENT_OAUTH_CONSUMER_SECRET customAppIds:nil];
 
-* You should now be able to build and use all the ACS APIs.
+Or, if you choose to use app key to authenticate your app, in your `AppDelegate.m`, define:
 
-Usage
------
+    #define ACSCLIENT_APP_KEY @"your app key here"
 
-Begin by instantiating the ACSClient object:
+and initialize ACS with the app key:
 
-#import "ACSClient.h"
+    [ACSClient initializeWithAppKey:ACSCLIENT_APP_KEY customAppIds:nil];
 
-If you choose to use ACS app key, 
+Once ACS is initialized, you can access it by calling:
 
-	[ACSClient initializeWithAppKey:ACS_APP_KEY customAppIds:nil];
+    [ACSClient defaultACSClient]
 
-If you choose to use ACS oauth consumer key and secret,
+## Facebook Integration
 
-	[ACSClient initializeWithOauthConsumerKey:oauthConsumerKey consumerSecret:oauthConsumerSecret customAppIds:nil];
+1.  Create a new [Facebook App](https://developers.facebook.com/apps) if you
+    don't have one yet.
 
-If you want to use facebook integration:
+2.  Obtain the Facebook App ID from Facebook.
+    You can get the Facebook App ID from Facebook, you will use it later in your
+    project.
 
-	[ACSClient initializeWithAppKey:ACS_APP_KEY customAppIds:[NSDictionary dictionaryWithObject:facebookAppId forKey:@"Facebook"]];
+3.  Add the Facebook framework to your Xcode project.
+    The ACS iOS SDK currently uses the Facebook SDK version 3.1, which only
+    provides a framework. To use this framework, you must add it to your Xcode
+    project:
 
-or
-	[ACSClient initializeWithOauthConsumerKey:oauthConsumerKey consumerSecret:oauthConsumerSecret customAppIds:[NSDictionary dictionaryWithObject:facebookAppId forKey:@"Facebook"]];
+    1.  In Xcode with your project open, and your target selected go to the **Build Phases**
+        tab and expand the **Link Binary With Libraries** item.
 
-Then add:
+    2.  Click the **Add** button (+) located at the bottom of the
+        **Link Binary With Libraries** section.
 
-- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
-{
-	return [[ACSClient defaultACSClient] handleOpenURL:url];
-}
+    3.  In the **Choose frameworks and libraries to add:** click **Add Other**.
 
-to yourappDelegate.m
+    4.  Select the folder: `acs-ios-sdk/src/FacebookSDK.framework`.
 
-Don't forget to edit your app-info.plist to add URL types for your facebook id. See facebook ios sdk for more information.
+4.  Add additional iOS frameworks. Some additional frameworks must be linked in
+    your Xcode project.
 
------
-Enable/Disable runtime log
-You can enable/disable runtime log by set loggingEnabled variable in ACSClient.m :
+    1.  In Xcode with your project open, and your target selected go to the **Build
+        Phases** tab and expand the **Link Binary With Libraries** item.
 
--(void)initCommon:(NSDictionary *)customAppIds
-{
-    //other code
-    //true, enable log
-    //false, disable log
-    self.loggingEnabled = true;
-    
-    // other code
-}
+    2.  Click the **Add** button (+) located at the bottom of the **Link Binary With
+        Libraries** section.
 
-With the ACS IOS SDK, you can perform all the actions described in http://docs.appcelerator.com/cloud/latest/#!/guide/ios
+    3.  Select `Accounts.framework`, `AdSupport.framework`, and `Social.framework` and
+        click the **Add** button.
+
+5.  Add the SQLite dynamic linked library to your Xcode project.
+
+    1.  In Xcode with your project open, and your project selected go to the **Build
+        Settings** tab and expand the **Linking** item
+
+    2.  Add the flag `-lsqlite3.0` to the **Other Linker Flags** item.
+
+6.  Add two Facebook bundles to your project.
+
+    Drag the following two files to your project navigator pane to add them to your project:
+
+        acs-ios-sdk/src/FacebookSDK.framework/Resources/FacebookSDKResources.bundle
+        acs-ios-sdk/src/FacebookSDK.framework/Resources/FBUserSettingsViewResources.bundle
+
+7.  Add the Facebook SDK Header files to your project.
+
+    Drag the following folder to your project navigator pane to add it to your project:
+
+        acs-ios-sdk/src/FBConnect
+
+8.  Add the Facebook ID to your app's `Info.plist` file under `URL types`.
+
+9.  Add the following code to your `AppDelegate.m` file:
+
+        // pre 4.2
+        - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+        {
+        	return [[[ACSClient defaultACSClient] getFacebook] handleOpenURL:url];
+        }
+
+        // 4.2+
+        - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+          sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+        	return [[[ACSClient defaultACSClient] getFacebook] handleOpenURL:url];
+        }
+
+## Push Notification
+
+To enable Apple Push Notification service for your application, create an
+Apple Push Notification certificate and upload the certificate to the ACS server.
+
+Note that Apple push notifications do **not** work on simulators.
+
+For information about iOS push notifications, see
+[iOS Developer Library: Local and Push Notification Programming Guide](http://developer.apple.com/library/ios/#documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Introduction.html).
+
+### Create and Upload a Push Notification Certificate
+
+To create an Apple Push Notification certificate, you need to first create an Explicit App ID.  The
+App ID is used to identify where to send the push notification, which is tied to the certificate
+when you create it.  After you create the certificate, export the certificate to PKCS #12 format and
+upload it to the ACS server. This certificate allows the ACS server to communicate with the Apple
+Push Notification server to send push notifications to iOS devices.
+
+#### Register an App ID
+
+  1. Log in to the [Apple Developer Member Center](https://developer.apple.com/membercenter/) as the Team Agent or Admin.
+  2. Click the link under **Certificates, Identifiers & Profiles**.
+  3. Click **Identifiers**, then click the plus sign (**+**) button near the top-right corner.
+  4. Enter a description, which cannot include special characters (including most punctuation).
+  5. Select the App ID Prefix to use.
+  6. For the App ID Suffix, choose **Explicit App ID** and enter your Bundle ID. For Titanium
+     applications, this is your Application ID from the `tiapp.xml` file.
+  7. Under App Services, check the **Push Notifications** checkbox to enable push notifications for
+     this App ID.
+  8. Click **Continue**, **Submit**, then **Done**.
+
+Note: You cannot use a **Wildcard App ID** for an application with push notifications.
+
+#### Generate an Apple Push Notification Certificate
+
+These directions cover how to generate an Apple Push Notification certificate for both testing
+(Development) and production (Distribution).  Only step #4 differs based on which certificate you
+create.
+
+  1. Log in to the [Apple Developer Member Center](https://developer.apple.com/membercenter/) as the Team Agent or Admin.
+  2. Click the link under **Certificates, Identifiers & Profiles**.
+  3. Click **Certificates**, then click the plus sign (**+**) button near the top-right corner.
+  4. For testing, select **Apple Push Notification service SSL (Sandbox)** and for production,
+     select **Apple Push Notification service SSL (Production)**, then click **Continue**.
+  5. Select the App ID that you created previously from the drop-down list, then click **Continue**.
+  6. Follow the directions to create a Certificate Signing Request (CSR). Click **Continue**.
+  7. Upload your CSR and click **Generate**.
+  8. You will be returned to the Certificates page with the status listed as Pending. Wait a moment then
+     refresh the page in your browser.
+  9. Even though you are logged in as the Team Agent or Admin, you may need to approve your certificate.
+     Click **Approve**.
+ 10. Download the certificate (.cer) file to your computer.
+ 11. Double-click the file to install it into your keychain.
+
+#### Export the Certificate
+
+  1. Open your Keychain.  Select **Applications** > **Utitlies** > **Keychain Access**.
+  2. Under Categories on the left side, click **My Certificates**.
+  3. Right-click the certificate you installed previously and select **Export**.
+  4. In the **File Format** drop-down, select **Personal Information Exchange (.p12)**.
+  5. Click **Save**.
+  6. You are prompted to enter a password for the file. Enter a password, then click **Save**.
+
+Keychain exports your certificate as a PKCS #12 file that you upload to ACS to enable Apple Push Notification for your application.
+
+#### Configure the ACS web console ####
+
+You use the Dashboard (Enterprise applications) or My App (Community applications) to upload your PKCS #12 (.p12) file to ACS and enable Apple Push Notification with your application.
+
+**To configure your app for push notifications (Enterprise developers):**
+
+ 1. Open [Dashboard](https://dashboard.appcelerator.com).
+ 2. Select your application from the drop-down list of applications.
+ 3. Select the **Cloud** tab.
+ 4. Select **Settings & Configuration** from the left-hand navigation.
+ 5. Select the **iOS Push** tab.
+ 6. Click **Choose File** in the Push Certificate field.
+ 7. Locate the PKCS #12 file your exported previously and click **Choose**.
+ 8. Enter the certificate's password in the Certificate Password box field.
+ 9. Click **Save Changes**.
+
+ **To configure your app for push notifications (Community developers):**
+
+1. Open [My Apps](https://cloud.appcelerator.com/apps).
+2. Find your application in the list of apps and click the **Manage ACS** link.
+3. In the **Apple iOS Push Certificates** section, click **Choose File**.
+4. Locate the PKCS #12 file your exported previously and click **Choose**.
+5. Enter the certificate's password in the Certificate Password box field. (A password is required despite the placeholder text indicating it's optional.)
+6. Click **Save Changes**.
+
+
+### Create a Provisioning Profile
+
+You need to create a provisioning profile to embed in your application.  This verifies the
+integrity of the application based on the information within the profile,
+such as the App ID and certificate you created previously.
+
+These directions cover how to generate a provisioning profile for Development, Ad Hoc, In House and App Store distribution.
+If you are distributing as a member of the iOS Developer Enterprise Program, you will have the
+**In House** distribution option instead of the **App Store** option.
+Only steps #4 and #7 differ based on which profile you create.
+
+  1. Log in to the [Apple Developer Member Center](https://developer.apple.com/membercenter/) as the Team Agent or Admin.
+  2. Click the link under **Certificates, Identifiers & Profiles**.
+  3. Click **Provision Profiles**, then click the plus sign (**+**) button near the top-right corner.
+  4. For testing, select **iOS App Development**, and for production, select either **App Store** to distribute to the
+     App Store, **Ad Hoc** to distribute to a limited number of devices or **In House** for in house
+     distribution to your company's employees, then click **Continue**.
+  5. Select the App ID you created previously from the drop-down list, then click **Continue**.
+  6. Select a certificate, then click **Continue**.
+  7. For development and ad hoc distributions, select the devices you want to be able to run the app on, then click
+     **Continue**.
+  8. Enter a name for your provisioning profile. You should use a word like "dev", "distribution" or "ad hoc" in
+     the name so that it is clear later what this profile is for. Click **Generate**.
+  9. Click **Download** to save your provisioning profile file (.mobileprovision) to your computer, then
+     click **Done**.
+ 10. Double-click the provisioning profile file to install it to Xcode.
+
+### Update your code to register for push notifications
+
+In yourAppDelegate.m, add the following code after initializing ACS
+in method didFinishLaunchingWithOptions:
+
+    - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+    {
+    	// Initialize the ACSClient with Facebook App Id if you set one
+    	[ACSClient initializeWithOauthConsumerKey:ACSCLIENT_OAUTH_CONSUMER_KEY consumerSecret:ACSCLIENT_OAUTH_CONSUMER_SECRET customAppIds:[NSDictionary dictionaryWithObject:facebookAppId forKey:@"Facebook"]];
+
+    	...
+
+    	[[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge)];
+
+    	// Code below is optional if you want to handle the notification after the app is launched by push notification
+    	if (launchOptions != nil)
+    	{
+    		NSDictionary* dictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+    		if (dictionary != nil)
+    		{
+    			NSLog(@"Launched from push notification: %@", dictionary);
+    			...
+    		}
+    	}
+
+        return YES;
+    }
+
+Also add the following code to `yourAppDelegate.m` to receive a device token to
+pass to ACS:
+
+    - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
+    {
+    	NSString* newToken = [deviceToken description];
+    	newToken = [newToken stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+    	newToken = [newToken stringByReplacingOccurrencesOfString:@" " withString:@""];
+
+    	NSLog(@"My token is: %@", newToken);
+
+    	// Add to ACS
+    	[[ACSClient defaultACSClient] setDeviceToken:newToken];
+    }
+
+Then refer to the {@link PushNotifications} API reference to
+see how to subscribe and send push notifications. You can also log on to your
+ACS App Console to send push notifications to all your
+subscribed clients.
+
+## ACS Model Classes
+
+The SDK defines a list of object model classes that correspond to the server
+objects under `ACS/Models`. They are all subclasses of `CCObject`
+or `CCObjectWithPhoto`.
+
+## Making API Calls
+
+The ACS iOS SDK provides the `CCRequest` class with delegate
+callbacks to make synchronous or asynchronous REST calls to the ACS
+server easier. `CCRequest` is a subclass of the `ASIHttpRequest` class.
+(For more information on `ASIHTTPRequest`, see the
+[`ASIHTTPRequest` web site](http://allseeing-i.com/ASIHTTPRequest/).)
+
+To instantiate a `CCRequest` object:
+
+    // Use HTTPS by default
+    -(id)initWithDelegate:(id)requestDelegate httpMethod:(NSString *)httpMethod baseUrl:(NSString *)baseUrl paramDict:(NSDictionary *)paramDict;
+
+    or
+
+    // Use HTTP. set protocol to @"http"
+    -(id)initWithDelegate:(id)requestDelegate httpProtocol:(NSString *)protocol httpMethod:(NSString *)httpMethod baseUrl:(NSString *)baseUrl paramDict:(NSDictionary *)paramDict;
+
+### `delegate`
+
+If you want to perform an asynchronous call, pass in the delegate object that
+implements the `CCRequestDelegate` methods `didSucceed` and `didFailWithError`:
+
+    -(void)ccrequest:(CCRequest *)request didSucceed:(CCResponse *)response;
+
+    -(void)ccrequest:(CCRequest *)request didFailWithError:(NSError *)error;
+
+If you want to perform a synchronous REST call, you can pass in `nil` to the
+`delegate` parameter.
+
+### `baseUrl`
+
+If the request url is:
+
+    http://api.cloud.appcelerator.com/v1/users/create.json
+
+Then the baseUrl is:
+
+    @"users/create.json"
+
+### `httpMethod`
+
+The possible values are `@"GET"`, `@"POST"`, `@"PUT:` or `@"DELETE"`
+
+### `paramDict`
+
+It is a NSDictionary of parameters and values that will be passed to the
+baseUrl.
+
+### Example
+
+Register a new user:
+
+    NSMutableDictionary *paramDict = [NSMutableDictionary dictionaryWithCapacity:5];
+    [paramDict setObject:@"email@email.com" forKey:@"email"];
+    [paramDict setObject:@"John" forKey:@"first_name"];
+    [paramDict setObject:@"Woo" forKey:@"last_name"];
+    [paramDict setObject:@"pass" forKey:@"password"];
+    [paramDict setObject:@"pass" forKey:@"password_confirmation"];
+    CCRequest *request = [[CCRequest alloc] initWithDelegate:self httpMethod:@"POST" baseUrl:@"users/create.json" paramDict:paramDict];
+    [request startAsynchronous]; // for asynchronous call and use ASIHttp's shared operation queue
+
+To make an asynchronous request and use your own operation queue, replace the last line
+with:
+
+    [myOperationQueue addOperation:request]; // for asynchronous call and use my own operation queue
+
+Or to make a synchronous call, replace the `startAsynchronous` call with the following
+line:
+
+    CCResponse *response = [request startSynchronousRequest]; // for synchronous call
+
+## Asynchronous call
+
+It is recommended to run all the REST calls asynchronously for better user
+experience. If you want to be able to identify the request in the callback,
+you can add custom `userInfo` to the `CCRequest` object for your own record.
+
+    NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"custom", @"type", nil];
+    [request setUserInfo:userInfo];
+
+## Handling Server Responses
+
+The `CCResponse` object defined in `ACS/Network/CCResponse.h` contains the
+response sent back from the ACS server. It has the following
+objects:
+
+*   `response.meta` contains the response metadata.
+*   `response.response` is an `NSDictionary` representation of the raw JSON response.
+
+For example, if the REST call is expected to return an array of {@link Users}, your
+handler code might look like this:
+
+    -(void)ccrequest:(CCRequest *)request didSucceed:(CCResponse *)response
+    {
+    	NSArray *results = [response getObjectsOfType:[CCUser class]];
+    	for (CCUser *user in results) {
+    		NSLog(@"user is %@", user)
+    	}
+    }
+
+The `getObjectsOfType` method is used to extract a list of objects from the response.
+Refer to `ACS/Models` for a list of supported class names.
+
+## Photo Uploads
+
+To upload a photo, after you have instantiated a `CCRequest` object, you can use
+one of the following two methods:
+
+    // For uploading directly from photo album using ALAssetLibrary
+    [request addPhotoALAsset:(ALAsset *)alasset paramDict:(NSDictionary *)paramDict];
+
+    or
+
+    // For uploading an UIImage
+    [request addPhotoUIImage:(UIImage *)image paramDict:(NSDictionary *)paramDict];
+
+If you have more than one photo to send, you can call any of the above
+methods with a new image. Currently only photo update allows multiple photos
+upload.
+
+`paramDict` is optional, if you want the SDK to resize the original photo or
+lower the image quality for faster uploads, you set the following key/values
+in the paramDict:
+
+    [params setObject:[NSNumber numberWithInt:800] forKey:@"max_size"]; // maximum pixels allowed
+    [params setObject:[NSNumber numberWithDouble:0.5] forKey:@"jpeg_compression"]; // (0 < jpeg compression <= 1), 1 is the highest quality.
+
+You can also choose to upload a photo synchronously. See [Photo Uploads and Resizing](#!/guide/photosizes)
+for more information.
+
+## Photo Downloads
+
+`CCPhoto` class contains URLs of different sizes of a photo. By default,
+photos are uploaded asynchronously and each photo comes with a boolean
+`processed` attribute to indicate whether the background processing has
+finished. If you want to access the actual photo, you need to download it from
+the given URL and if the URL is not available, you have to try again until the
+`processed` is NO.
+
+    CCPhoto *photo;
+    [photo getImage:(PhotoSize)photoSize];
+
+It returns the `UIImage` of the photo requested if it has already been
+downloaded, otherwise it returns `nil` and kicks off the download in the
+background. If the photo size is not available (if you request an incorrect
+size or the requested size hasn't been processed yet), no background download
+will be kicked off. In order to get the notification when a download has
+completed, you need to register to listen to the following notification in
+your view:
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDownloaded:) name:@"DownloadFinished" object:[ACSClient defaultACSClient]];
+
+When the notification is delivered, the userInfo contains the requesting
+CCPhoto object under key name `object`, and the size of the photo requested
+under key name `size`. Then you can get the actual image by calling:
+
+    CCPhoto *photo;
+    [photo getImage:(NSString *)photoSize;
+
+If you created a photo using default sizes, the photo sizes are:
+
+      @"square_75",
+      @"thumb_100",
+      @"small_240",
+      @"medium_500",
+      @"medium_640",
+      @"large_1024",
+      @"original"
+
+If you created a photo using custom sizes, the photo sizes are the name of your custom sizes.
+For details on custom sizes, see [Photo Uploads and Resizing](#!/guide/photosizes).
+
+## Troubleshooting & Common Errors
+
+If you hit the following runtime error:
+
+    -[NSConcreteMutableData yajl_JSON]: unrecognized selector sent to instance 0x4d87400
+
+Solution: Make sure you have included the YAJL framework. Click on your
+project's target, select **Other Linker Flags** and add:
+
+    -ObjC -all_load
+
+
+In Xcode 4, make sure to add the above flags to all the fields under **Other
+Linker Flags**:
+
+## Enable and Disable Runtime Logging
+
+To enable or disable runtime logging, set the `loggingEnabled` variable in
+`ACSClient.m`:
+
+    -(void)initCommon:(NSDictionary *)customAppIds
+    {
+        //other code
+
+    	//true, enable log
+    	//false, disable log
+        self.loggingEnabled = true;
+
+        // other code
+    }
 
 LICENSE
 ------
